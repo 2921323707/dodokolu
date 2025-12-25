@@ -1,0 +1,186 @@
+/* 维护配置组件样式 */
+.maintenance-config {
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 12px;
+    padding: 20px;
+    background: var(--surface, #fff);
+    margin-bottom: 20px;
+}
+
+.maintenance-config h3 {
+    font-size: 1.3rem;
+    margin: 0 0 16px 0;
+    color: var(--text-primary, #1e293b);
+}
+
+.maintenance-config .config-description {
+    color: var(--text-secondary, #64748b);
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.maintenance-pages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.maintenance-page-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid var(--border, #e5e7eb);
+}
+
+.maintenance-page-item span {
+    color: var(--text-primary, #1e293b);
+    font-size: 0.9rem;
+    word-break: break-all;
+}
+
+.maintenance-page-item button {
+    background: #ef4444;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.2s ease;
+    margin-left: 8px;
+    flex-shrink: 0;
+}
+
+.maintenance-page-item button:hover {
+    background: #dc2626;
+}
+
+.maintenance-input-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.maintenance-input-group input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.maintenance-input-group input:focus {
+    border-color: #ffc0cb;
+}
+
+.maintenance-input-group button {
+    padding: 10px 20px;
+    background: #3b82f6;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+}
+
+.maintenance-input-group button:hover {
+    background: #2563eb;
+}
+
+.maintenance-input-group button:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+.maintenance-save-btn {
+    width: 100%;
+    padding: 12px;
+    background: #10b981;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+.maintenance-save-btn:hover {
+    background: #059669;
+}
+
+.maintenance-save-btn:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+.maintenance-message {
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    display: none;
+}
+
+.maintenance-message.success {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #10b981;
+    display: block;
+}
+
+.maintenance-message.error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #ef4444;
+    display: block;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-secondary, #64748b);
+    font-size: 0.9rem;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .maintenance-config {
+        padding: 16px;
+    }
+
+    .maintenance-config h3 {
+        font-size: 1.1rem;
+    }
+
+    .maintenance-input-group {
+        flex-direction: column;
+    }
+
+    .maintenance-page-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .maintenance-page-item button {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .maintenance-pages-list {
+        max-height: 150px;
+    }
+}

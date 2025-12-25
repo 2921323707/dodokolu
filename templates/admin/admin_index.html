@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员 - JY's Chat</title>
+    <!-- 与 index.html 相同的 CSS 引用，保持字体和导航栏风格一致 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin_index/admin_index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin_index/admin_index_maintenance.css') }}">
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <span>JY's Chat</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="{{ url_for('login.pages.alert_page') }}">提醒</a></li>
+                <li><a href="{{ url_for('login.feedback.feedback_page') }}">反馈</a></li>
+                <li><a href="/#chat">对话</a></li>
+                <li><a href="{{ url_for('login.account.account_page') }}">账户</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <main class="container admin-container">
+        <div class="admin-card">
+            <div class="admin-header">
+                <h1 class="admin-title">管理员控制台</h1>
+                <span id="adminStatus" class="status-pill">已登录</span>
+            </div>
+
+            <div class="admin-content">
+                <div class="admin-section">
+                    <h2>欢迎，管理员！</h2>
+                    <p>这里是管理员控制台，您可以在此管理网站的各种功能。</p>
+                </div>
+
+                <div class="admin-section">
+                    <h3>功能菜单</h3>
+                    <div class="admin-menu">
+                        <a href="{{ url_for('admin.pages.admin_database') }}" class="menu-item"
+                            style="text-decoration: none; color: inherit;">
+                            <h4>数据库管理</h4>
+                            <p>查看和管理数据库表单</p>
+                        </a>
+                        <div class="menu-item">
+                            <h4>用户管理</h4>
+                            <p>查看和管理用户信息</p>
+                        </div>
+                        <div class="menu-item">
+                            <h4>内容管理</h4>
+                            <p>管理网站内容</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-section" id="maintenanceConfig">
+                    <div class="maintenance-config">
+                        <h3>维护模式配置</h3>
+                        <div class="config-description">
+                            配置需要维护的页面路径。精确匹配：'/login' 只匹配 '/login'；前缀匹配：'/api' 匹配所有以 '/api' 开头的路径。
+                        </div>
+
+                        <div id="maintenanceMessage" class="maintenance-message"></div>
+
+                        <div class="maintenance-pages-list" id="maintenancePagesList">
+                            <div class="empty-state">加载中...</div>
+                        </div>
+
+                        <div class="maintenance-input-group">
+                            <input type="text" id="maintenancePageInput" placeholder="请输入页面路径，例如：/login 或 /api/chat">
+                            <button id="maintenanceAddBtn">添加</button>
+                        </div>
+
+                        <button class="maintenance-save-btn" id="maintenanceSaveBtn">保存配置</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 与 index.html 相同的 JS 引用，保证导航栏交互一致 -->
+    <script src="{{ url_for('static', filename='js/chat_js/chat_variables.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat_js/chat_navbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/admin/admin_index/admin_index.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/admin/admin_index/admin_index_maintenance.js') }}"></script>
+</body>
+
+</html>

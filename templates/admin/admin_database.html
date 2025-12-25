@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据库管理 - JY's Chat</title>
+    <!-- 与 index.html 相同的 CSS 引用，保持字体和导航栏风格一致 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin_database/admin_database.css') }}">
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <span>JY's Chat</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="{{ url_for('login.pages.alert_page') }}">提醒</a></li>
+                <li><a href="{{ url_for('login.feedback.feedback_page') }}">反馈</a></li>
+                <li><a href="/#chat">对话</a></li>
+                <li><a href="{{ url_for('login.account.account_page') }}">账户</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <main class="container admin-database-container">
+        <div class="admin-database-card">
+            <div class="admin-database-header">
+                <h1>数据库管理</h1>
+                <div class="table-selector">
+                    <label for="tableSelect">选择表：</label>
+                    <select id="tableSelect">
+                        <option value="">加载中...</option>
+                    </select>
+                    <button class="btn btn-success" id="addRowBtn">添加新行</button>
+                    <a href="{{ url_for('admin.pages.admin_index') }}" class="btn btn-secondary">返回控制台</a>
+                </div>
+            </div>
+
+            <div id="dbMessage" class="message"></div>
+
+            <div id="tableContainer">
+                <div class="empty-state">
+                    <p>请选择一个表开始管理</p>
+                </div>
+            </div>
+
+            <div id="paginationContainer"></div>
+        </div>
+    </main>
+
+    <!-- 添加/编辑行模态框 -->
+    <div class="modal" id="rowModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">添加新行</h2>
+                <button class="modal-close" id="modalClose">×</button>
+            </div>
+            <div id="formContainer"></div>
+            <div class="form-actions">
+                <button class="btn btn-secondary" onclick="dbManager.closeModal()">取消</button>
+                <button class="btn btn-primary" id="saveRowBtn">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 与 index.html 相同的 JS 引用，保证导航栏交互一致 -->
+    <script src="{{ url_for('static', filename='js/chat_js/chat_variables.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat_js/chat_navbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/admin/admin_database/admin_database.js') }}"></script>
+</body>
+
+</html>
