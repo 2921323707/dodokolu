@@ -1,0 +1,45 @@
+/* 表格样式 */
+.data-table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 24px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+}
+
+.data-table th {
+    background: #f8f9fa;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-primary, #1e293b);
+    border-bottom: 2px solid var(--border, #e5e7eb);
+    white-space: nowrap;
+}
+
+.data-table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border, #e5e7eb);
+    color: var(--text-primary, #1e293b);
+    word-break: break-word;
+    max-width: 300px;
+}
+
+.data-table tr:hover {
+    background: #f8f9fa;
+}
+
+.data-table tr.editing {
+    background: #fff3cd;
+}
+
+.table-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+

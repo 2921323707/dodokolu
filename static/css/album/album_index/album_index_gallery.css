@@ -146,7 +146,7 @@
 
 /* 未登录时的模糊效果 */
 .category-section[data-requires-login="true"] .gallery-wrapper:not(.logged-in) .gallery-grid {
-    filter: blur(8px);
+    filter: blur(20px);
     pointer-events: none;
     user-select: none;
     transition: filter 0.3s ease;
@@ -168,8 +168,14 @@
     border-radius: 12px;
 }
 
-.category-section[data-requires-login="true"] .gallery-wrapper:not(.logged-in) .login-overlay {
+/* 只在需要登录且未被ban的情况下显示登录提示 */
+.category-section[data-requires-login="true"]:not([data-banned="true"]) .gallery-wrapper:not(.logged-in) .login-overlay {
     display: flex;
+}
+
+/* 被ban的类别不显示登录提示 */
+.category-section[data-banned="true"] .login-overlay {
+    display: none !important;
 }
 
 /* 登录提示卡片 */
@@ -227,4 +233,55 @@
 
 .login-prompt-button:active {
     transform: translateY(0);
+}
+
+/* 被ban类别的模糊效果 - 加大模糊程度 */
+.category-section[data-banned="true"] .gallery-wrapper .gallery-grid.banned-blur {
+    filter: blur(30px);
+    pointer-events: none;
+    user-select: none;
+    transition: filter 0.3s ease;
+}
+
+/* 被ban类别的覆盖层 */
+.banned-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 15;
+    border-radius: 12px;
+}
+
+/* 被ban提示卡片 */
+.banned-prompt {
+    background: transparent;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 32px 40px;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 320px;
+    width: 90%;
+    animation: fadeInScale 0.3s ease-out;
+}
+
+.banned-prompt-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ff6b6b;
+    margin: 0 0 12px 0;
+}
+
+.banned-prompt-text {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #ff8787;
+    margin: 0;
 }

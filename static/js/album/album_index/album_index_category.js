@@ -17,8 +17,14 @@ async function loadCategoryImages(category) {
     // 更新计数
     updateGalleryCount(category, '加载中...');
     
-    // 获取图片数据
-    const images = await fetchCategoryImages(category);
+    // 获取图片数据和可见性状态
+    const result = await fetchCategoryImages(category);
+    const images = result.images;
+    const isVisible = result.isVisible;
+    
+    // 检查类别是否被ban
+    const section = document.querySelector(`.category-section[data-category="${category}"]`);
+    const isBanned = section && section.dataset.banned === 'true';
     
     // 渲染图片
     if (images.length > 0) {
@@ -27,6 +33,21 @@ async function loadCategoryImages(category) {
     } else {
         showEmptyState(galleryGrid);
         updateGalleryCount(category, '0 张图片');
+    }
+    
+    // 如果类别被ban，添加模糊效果并确保overlay显示
+    if (isBanned || !isVisible) {
+        galleryGrid.classList.add('banned-blur');
+        // 确保有banned-overlay（如果函数存在）
+        if (section && typeof ensureBannedOverlay === 'function') {
+            ensureBannedOverlay(section, category);
+        }
+    } else {
+        galleryGrid.classList.remove('banned-blur');
+        // 移除banned-overlay（如果函数存在）
+        if (section && typeof removeBannedOverlay === 'function') {
+            removeBannedOverlay(section);
+        }
     }
 }
 

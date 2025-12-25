@@ -10,7 +10,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_reset.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_layout.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_navbar.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin_database/admin_database.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin_database/admin_database_layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin_database/admin_database_table.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin_database/admin_database_buttons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin_database/admin_database_pagination.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin_database/admin_database_modal.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin_database/admin_database_form.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin_database/admin_database_message.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin_database/admin_database_responsive.css') }}">
 </head>
 
 <body>
@@ -74,6 +81,10 @@
     <!-- 与 index.html 相同的 JS 引用，保证导航栏交互一致 -->
     <script src="{{ url_for('static', filename='js/chat_js/chat_variables.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chat_js/chat_navbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/admin/admin_database/admin_database_init.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/admin/admin_database/admin_database_table.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/admin/admin_database/admin_database_form.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/admin/admin_database/admin_database_utils.js') }}"></script>
     <script src="{{ url_for('static', filename='js/admin/admin_database/admin_database.js') }}"></script>
 </body>
 

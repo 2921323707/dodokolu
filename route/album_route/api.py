@@ -13,6 +13,64 @@ from route.album_route.utils import (
     get_base_dir,
     check_image_permission
 )
+from database import get_db_connection
+
+
+def is_category_visible(category_key):
+    """检查类别是否可见"""
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            SELECT is_visible
+            FROM album_category_config
+            WHERE category_key = ?
+        ''', (category_key,))
+        result = cursor.fetchone()
+        conn.close()
+        
+        # 如果数据库中没有记录，默认返回True（向后兼容）
+        if result is None:
+            return True
+        
+        return bool(result['is_visible'])
+    except Exception:
+        # 如果查询出错，默认返回True（向后兼容）
+        return True
+
+
+@album_bp.route('/api/categories', methods=['GET'])
+def get_visible_categories():
+    """获取所有可见的类别列表（公开API）"""
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            SELECT category_key, display_name, is_visible
+            FROM album_category_config
+            ORDER BY category_key
+        ''')
+        
+        categories = []
+        for row in cursor.fetchall():
+            categories.append({
+                'category_key': row['category_key'],
+                'display_name': row['display_name'],
+                'is_visible': bool(row['is_visible'])
+            })
+        
+        conn.close()
+        
+        return jsonify({
+            "success": True,
+            "data": categories
+        })
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"获取类别列表失败: {str(e)}",
+            "data": []
+        }), 500
 
 
 @album_bp.route('/api/images/<category>')
@@ -24,6 +82,9 @@ def get_images(category):
             "message": "无效的分类",
             "data": []
         }), 400
+    
+    # 检查类别是否可见（被ban的类别也返回图片，但前端会显示模糊效果）
+    is_visible = is_category_visible(category)
     
     # 获取登录状态和角色
     user_id = session.get('user_id')

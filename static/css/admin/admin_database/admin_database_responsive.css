@@ -1,0 +1,336 @@
+/* 移动端适配 */
+@media (max-width: 768px) {
+    /* 覆盖父容器.container的宽度限制 */
+    main.container.admin-database-container,
+    .container.admin-database-container,
+    body .container.admin-database-container {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        display: block !important;
+        grid-template-columns: none !important;
+        gap: 0 !important;
+    }
+
+    .admin-database-container {
+        padding: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .admin-database-card {
+        padding: 16px 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        border-left: none !important;
+        border-right: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .admin-database-header {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        padding-bottom: 16px;
+        margin-bottom: 24px;
+        text-align: center;
+    }
+
+    .admin-database-header h1 {
+        font-size: 0 !important;
+        line-height: 0;
+        text-align: center;
+        position: relative;
+        width: auto;
+        margin: 0 auto;
+        height: 1.4em;
+        overflow: hidden;
+    }
+
+    .admin-database-header h1::after {
+        content: '数据库';
+        font-size: 1.4rem;
+        line-height: 1.3;
+        display: block;
+        position: absolute;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+        white-space: nowrap;
+    }
+
+    .table-selector {
+        width: 100%;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .table-selector label {
+        font-size: 0.9rem;
+    }
+
+    .table-selector select {
+        width: 100%;
+        min-width: auto;
+        padding: 12px 14px;
+        font-size: 0.9rem;
+        min-height: 44px;
+        box-sizing: border-box;
+    }
+
+    .table-selector .btn {
+        width: 100%;
+        padding: 12px 16px;
+        font-size: 0.9rem;
+        min-height: 44px;
+        box-sizing: border-box;
+    }
+
+    .data-table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 -12px;
+        padding: 0 12px;
+        position: relative;
+    }
+
+    .data-table-wrapper::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 20px;
+        background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.8));
+        pointer-events: none;
+    }
+
+    .data-table {
+        font-size: 0.85rem;
+        min-width: 600px;
+    }
+
+    .data-table th {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+        position: sticky;
+        background: #f8f9fa;
+        z-index: 1;
+    }
+
+    .data-table th:first-child {
+        left: 0;
+        z-index: 2;
+    }
+
+    .data-table td {
+        padding: 10px 8px;
+        max-width: 200px;
+        word-break: break-word;
+        vertical-align: top;
+    }
+
+    .data-table td:first-child {
+        position: sticky;
+        left: 0;
+        background: #fff;
+        z-index: 1;
+    }
+
+    .data-table tr:hover td:first-child {
+        background: #f8f9fa;
+    }
+
+    .table-actions {
+        flex-direction: column;
+        gap: 6px;
+        min-width: 100px;
+    }
+
+    .table-actions .btn {
+        width: 100%;
+        padding: 8px 12px;
+        font-size: 0.8rem;
+        min-height: 36px;
+    }
+
+    .pagination {
+        gap: 6px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .pagination button {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        min-height: 36px;
+    }
+
+    .pagination .page-info {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        width: 100%;
+        text-align: center;
+    }
+
+    .modal {
+        padding: 0;
+    }
+
+    .modal-content {
+        padding: 20px 16px;
+        width: 100%;
+        max-width: 100%;
+        max-height: 100vh;
+        border-radius: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .modal-header {
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border, #e5e7eb);
+    }
+
+    .modal-header h2 {
+        font-size: 1.25rem;
+    }
+
+    .modal-close {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 16px;
+    }
+
+    .form-group label {
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 12px 14px;
+        font-size: 0.9rem;
+        min-height: 44px;
+    }
+
+    .form-group textarea {
+        min-height: 100px;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+        gap: 10px;
+        margin-top: 24px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border, #e5e7eb);
+    }
+
+    .form-actions .btn {
+        width: 100%;
+        padding: 14px;
+        font-size: 0.95rem;
+        min-height: 48px;
+    }
+
+    .message {
+        padding: 12px 14px;
+        font-size: 0.85rem;
+        margin-bottom: 14px;
+    }
+
+    .empty-state {
+        padding: 40px 20px;
+    }
+
+    .empty-state p {
+        font-size: 0.9rem;
+    }
+}
+
+/* 小屏移动设备进一步优化 */
+@media (max-width: 480px) {
+    .admin-database-container {
+        padding: 8px;
+    }
+
+    .admin-database-card {
+        padding: 12px 10px;
+    }
+
+    .admin-database-header h1 {
+        font-size: 1.25rem;
+    }
+
+    .table-selector select {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+
+    .table-selector .btn {
+        padding: 10px 14px;
+        font-size: 0.85rem;
+    }
+
+    .data-table {
+        font-size: 0.8rem;
+        min-width: 550px;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 8px 6px;
+    }
+
+    .data-table th {
+        font-size: 0.75rem;
+    }
+
+    .table-actions .btn {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+        min-height: 32px;
+    }
+
+    .pagination button {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        min-height: 32px;
+    }
+
+    .modal-content {
+        padding: 16px 12px;
+    }
+
+    .modal-header h2 {
+        font-size: 1.15rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+
+    .form-actions .btn {
+        padding: 12px;
+        font-size: 0.9rem;
+        min-height: 44px;
+    }
+}
+
