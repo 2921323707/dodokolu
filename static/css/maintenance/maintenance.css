@@ -1,0 +1,189 @@
+/* 维护页面样式 - Windows屏保风格 */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+/* 背景图片容器 - 全屏覆盖 */
+.maintenance-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
+    opacity: 0;
+    animation: fadeInBackground 1s ease-in forwards;
+}
+
+/* 内容容器 - 覆盖在背景上 */
+.maintenance-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    padding: 20px;
+}
+
+.maintenance-content {
+    text-align: center;
+    animation: fadeInContent 1.2s ease-out forwards;
+    opacity: 0;
+}
+
+.maintenance-title {
+    font-size: 5rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow:
+        0 0 20px rgba(0, 0, 0, 0.5),
+        0 2px 10px rgba(0, 0, 0, 0.8),
+        2px 2px 4px rgba(0, 0, 0, 0.9);
+    letter-spacing: 8px;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+}
+
+.maintenance-admin {
+    font-size: 1.5rem;
+    color: #ffffff;
+    text-shadow:
+        0 0 15px rgba(0, 0, 0, 0.5),
+        0 2px 8px rgba(0, 0, 0, 0.8),
+        1px 1px 3px rgba(0, 0, 0, 0.9);
+    letter-spacing: 2px;
+    opacity: 0.95;
+}
+
+/* 返回主页按钮 - 左上角 */
+.home-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 48px;
+    height: 48px;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    color: #ffffff;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.home-button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.home-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.home-button svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* 动画效果 */
+@keyframes fadeInBackground {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInContent {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .maintenance-title {
+        font-size: 3rem;
+        letter-spacing: 4px;
+        margin-bottom: 30px;
+    }
+
+    .maintenance-admin {
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+    }
+
+    .home-button {
+        width: 44px;
+        height: 44px;
+        top: 15px;
+        left: 15px;
+    }
+
+    .home-button svg {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .maintenance-title {
+        font-size: 2rem;
+        letter-spacing: 3px;
+        margin-bottom: 20px;
+    }
+
+    .maintenance-admin {
+        font-size: 1rem;
+        letter-spacing: 1px;
+    }
+
+    .home-button {
+        width: 40px;
+        height: 40px;
+        top: 12px;
+        left: 12px;
+        border-radius: 10px;
+    }
+
+    .home-button svg {
+        width: 20px;
+        height: 20px;
+    }
+}

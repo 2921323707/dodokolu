@@ -1,0 +1,93 @@
+# ==================== Python 相关 ====================
+# Python 缓存文件
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# 虚拟环境
+venv/
+env/
+ENV/
+.venv
+
+# 环境变量文件
+.env
+.env.local
+.env.*.local
+
+# ==================== 相册图片 ====================
+# 忽略相册目录下的所有图片文件
+static/imgs/album/**
+
+# ==================== 数据库文件 ====================
+*.db
+*.sqlite
+*.sqlite3
+database/app.db
+
+# ==================== 日志文件 ====================
+*.log
+*.log.*
+comic_recommend.log
+
+# ==================== IDE 和编辑器 ====================
+# VS Code
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# ==================== 操作系统文件 ====================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.directory
+
+# ==================== 临时文件和备份 ====================
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
+
+# ==================== 其他 ====================
+# 压缩文件（如果不需要版本控制）
+# *.zip
+# *.tar
+# *.tar.gz
+# *.rar
+
+# 测试覆盖率
+.coverage
+htmlcov/
+.pytest_cache/
+
+# 分发/打包
+dist/
+build/
+*.egg-info/
+

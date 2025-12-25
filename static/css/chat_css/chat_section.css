@@ -1,0 +1,78 @@
+/* 聊天区域容器 */
+.chat-section {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 120px);
+    min-height: 600px;
+}
+
+.chat-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-header h2 {
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.mode-toggle-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.mode-toggle-btn:hover {
+    background-color: var(--hover-color);
+    border-color: #ffb3d9;
+    color: #ffb3d9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 179, 217, 0.3);
+}
+
+.mode-toggle-btn.active {
+    background: linear-gradient(135deg, #ffb3d9, #ffc0cb);
+    border: none;
+    color: white;
+}
+
+.mode-toggle-btn.active:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 179, 217, 0.3);
+}
+
+.clear-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.clear-btn:hover {
+    background-color: var(--hover-color);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JY's Chat</title>
+    <!-- CSS 文件按功能模块拆分 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_section.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_messages.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_input.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_animations.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_scrollbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_responsive.css') }}">
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <span>JY's Chat</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="{{ url_for('login.pages.alert_page') }}">提醒</a></li>
+                <li><a href="{{ url_for('login.feedback.feedback_page') }}">反馈</a></li>
+                <li><a href="/#chat">对话</a></li>
+                <li><a id="authNavLink" href="{{ url_for('login.pages.login_page') }}">登录</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <main class="container" style="padding: 24px;">
+        <!-- 聊天区域 -->
+        <section class="chat-section" id="chatSection" style="min-height: 400px;">
+            <div class="chat-header">
+                <h2>Peach & JY</h2>
+                <div class="header-buttons">
+                    <button class="mode-toggle-btn active" id="modeToggleBtn" onclick="toggleMode()">
+                        <span id="modeText">normal</span>
+                    </button>
+                    <button class="clear-btn" onclick="clearHistory()">Clear</button>
+                </div>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message assistant">
+                    <div class="message-avatar">AI</div>
+                    <div class="message-content">
+                        <div class="message-text">期待你的输入ing...</div>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <div class="input-container">
+                    <textarea id="chatInput" class="chat-input" placeholder="点击输入" rows="1"
+                        onkeydown="handleKeyDown(event)"></textarea>
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">send</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- JavaScript 文件按功能模块拆分 -->
+    <script src="{{ url_for('static', filename='js/chat_js/chat_variables.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat_js/chat_location.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat_js/chat_messages.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat_js/chat_section.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat_js/chat_input.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat_js/chat_navbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat_js/chat_init.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,91 @@
+.account-container {
+    padding: 32px 24px;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.account-card {
+    background: var(--surface, #fff);
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+}
+
+.account-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.account-title {
+    font-size: 1.6rem;
+    margin: 0;
+}
+
+.status-pill {
+    padding: 6px 12px;
+    border-radius: 12px;
+    background: #e0f2fe;
+    color: #0369a1;
+    font-size: 0.95rem;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.btn {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border, #e5e7eb);
+    background: #ffc0cb;
+    /* 与导航 Logo 粉色同步 */
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.05s ease, opacity 0.1s ease;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.info-item {
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 12px;
+    padding: 14px 16px;
+    background: var(--surface, #fff);
+}
+
+.info-value {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.info-label {
+    margin-top: 6px;
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.placeholder {
+    color: #9ca3af;
+}

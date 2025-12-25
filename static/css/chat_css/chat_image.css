@@ -1,0 +1,88 @@
+/* 画图区域 */
+.image-section {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    height: calc(100vh - 120px);
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+.image-header {
+    margin-bottom: 1.5rem;
+}
+
+.image-header h2 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.image-input-area {
+    margin-bottom: 1.5rem;
+}
+
+.image-prompt-input {
+    width: 100%;
+    padding: 0.875rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+    margin-bottom: 0.75rem;
+}
+
+.image-prompt-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.generate-image-btn {
+    width: 100%;
+    padding: 0.875rem;
+    background: linear-gradient(135deg, var(--success-color), #059669);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.generate-image-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.generate-image-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.image-display {
+    flex: 1;
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-color);
+    min-height: 300px;
+}
+
+.image-placeholder {
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.image-placeholder svg {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+

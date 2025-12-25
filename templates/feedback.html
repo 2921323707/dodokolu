@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>反馈</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_section.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_scrollbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/feedback/feedback_layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/feedback/feedback_form.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/feedback/feedback_message.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/feedback/feedback_animations.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/feedback/feedback_responsive.css') }}">
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <span>JY's Chat</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="{{ url_for('login.pages.alert_page') }}">提醒</a></li>
+                <li><a href="{{ url_for('login.feedback.feedback_page') }}">反馈</a></li>
+                <li><a href="/#chat">对话</a></li>
+                <li><a id="authNavLink" href="{{ url_for('login.pages.login_page') }}">登录</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <main class="container feedback-container">
+        <section class="chat-section feedback-section">
+            <div class="chat-header">
+                <h2>反馈</h2>
+            </div>
+            <div class="chat-messages feedback-messages">
+                <!-- 第一步：输入反馈内容 -->
+                <div id="step1" class="feedback-step active">
+                    <form id="feedbackContentForm" class="feedback-form">
+                        <div class="form-group">
+                            <textarea id="feedbackContent" name="feedbackContent"
+                                class="form-textarea feedback-textarea-enhanced" rows="6" placeholder="请输入您的反馈内容..."
+                                required></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="submit-btn" id="nextBtn">
+                                <span class="btn-text">确定</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 第二步：输入联系方式 -->
+                <div id="step2" class="feedback-step">
+                    <div class="step-header">
+                        <button class="back-btn" id="backBtn">← 返回</button>
+                        <h3>填写联系方式（可选）</h3>
+                    </div>
+                    <form id="feedbackContactForm" class="feedback-form">
+                        <div class="form-group">
+                            <input type="text" id="feedbackContact" name="feedbackContact"
+                                class="form-input feedback-input-enhanced" placeholder="邮箱、QQ或微信等，方便我们与您联系">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="submit-btn" id="submitBtn">
+                                <span class="btn-text">提交反馈</span>
+                                <span class="btn-loading" style="display: none;">提交中...</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="feedbackMessage" class="feedback-message" style="display: none;"></div>
+            </div>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/chat_js/chat_navbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/feedback/feedback_variables.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/feedback/feedback_steps.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/feedback/feedback_message.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/feedback/feedback_animation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/feedback/feedback_api.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/feedback/feedback_init.js') }}"></script>
+</body>
+
+</html>

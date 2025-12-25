@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css/login.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/email_access/email_access.css') }}" />
+</head>
+
+<body>
+    <div class="wrapper">
+        <form action="#">
+            <h1>Email Verification</h1>
+            <div class="input-box verification-code-box">
+                <input id="verificationCodeInput" type="text" required />
+                <label>Verification Code</label>
+                <button type="button" id="getCodeBtn" class="get-code-btn" onclick="getVerificationCode()">Get
+                    Code</button>
+            </div>
+
+            <button type="button" onclick="verifyCode()" class="btn">Verify</button>
+
+            <div class="signup-link">
+                <p>Back to <a href="{{ url_for('login.pages.register_page') }}">Register</a> | <a href="{{ url_for('login.pages.login_page') }}">Login</a>
+                </p>
+            </div>
+        </form>
+    </div>
+    <script src="{{ url_for('static', filename='js/login.js/login.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/email_access/email_access.js') }}"></script>
+</body>
+
+</html>

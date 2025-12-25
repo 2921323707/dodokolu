@@ -1,0 +1,56 @@
+/* 验证码输入框特殊样式 */
+.verification-code-box {
+    position: relative;
+}
+
+.verification-code-box input {
+    padding-right: 110px;
+}
+
+.verification-code-box .icon {
+    z-index: 1;
+}
+
+.get-code-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8em;
+    transition: all 0.3s;
+    white-space: nowrap;
+    z-index: 2;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.get-code-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+.get-code-btn:disabled {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.5);
+    cursor: not-allowed;
+}
+
+.get-code-btn.countdown {
+    color: #ffd700;
+}
+
+/* 调整 wrapper 高度以适配内容 */
+.wrapper {
+    height: auto !important;
+    min-height: 420px;
+    padding: 30px 20px;
+}

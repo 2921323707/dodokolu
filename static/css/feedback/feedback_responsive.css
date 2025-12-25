@@ -1,0 +1,136 @@
+/* 反馈页面响应式样式 */
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .feedback-container {
+        padding: 12px;
+    }
+
+    .feedback-section .chat-header {
+        height: 60px;
+        min-height: 60px;
+        max-height: 60px;
+        padding: 1rem 1.25rem;
+    }
+
+    .feedback-messages {
+        padding: 16px;
+        min-height: 200px !important;
+        height: auto !important;
+        max-height: 350px !important;
+        overflow-y: visible !important;
+    }
+
+    .step-header h3 {
+        font-size: 16px;
+    }
+
+    .back-btn {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        font-size: 13px;
+    }
+
+    .form-input,
+    .form-textarea {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .form-textarea {
+        min-height: 120px;
+        max-height: 250px;
+    }
+
+    .feedback-textarea-enhanced {
+        min-height: 150px !important;
+        max-height: 200px !important;
+        width: 95% !important;
+        padding: 12px;
+    }
+
+    .feedback-input-enhanced {
+        width: 95% !important;
+        padding: 12px !important;
+        min-height: 50px;
+    }
+
+    .form-hint {
+        font-size: 11px;
+    }
+
+    .form-actions {
+        margin-top: 16px;
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: 14px 24px;
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .feedback-container {
+        padding: 8px;
+    }
+
+    .feedback-section .chat-header {
+        height: 55px;
+        min-height: 55px;
+        max-height: 55px;
+        padding: 0.875rem 1rem;
+    }
+
+    .feedback-messages {
+        padding: 12px;
+        min-height: 180px !important;
+        height: auto !important;
+        max-height: 320px !important;
+        overflow-y: visible !important;
+    }
+
+    .step-header h3 {
+        font-size: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 16px;
+    }
+
+    .form-input,
+    .form-textarea {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .form-textarea {
+        min-height: 100px;
+        max-height: 200px;
+    }
+
+    .feedback-textarea-enhanced {
+        min-height: 120px !important;
+        max-height: 180px !important;
+        width: 98% !important;
+        padding: 10px;
+    }
+
+    .feedback-input-enhanced {
+        width: 98% !important;
+        padding: 10px !important;
+        min-height: 48px;
+    }
+
+    .form-actions {
+        margin-top: 12px;
+    }
+}
+

@@ -1,0 +1,36 @@
+/* 节日区域样式 */
+
+.holiday-section {
+    padding: 0;
+}
+
+.holiday-line {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-primary);
+}
+
+.holiday-item-inline {
+    display: block;
+    color: var(--text-primary);
+    font-weight: 500;
+    line-height: 1.8;
+}
+
+.holiday-date-line {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.holiday-text-line {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+.comic-update-date {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin: 4px 0;
+}
+

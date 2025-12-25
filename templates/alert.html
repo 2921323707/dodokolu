@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>提醒</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/alert/alert_layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/alert/alert_comic.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/alert/alert_holiday.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/alert/alert_animation.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/alert/alert_cards.css') }}">
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <span>JY's Chat</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="{{ url_for('alert.alert_page') }}">提醒</a></li>
+                <li><a href="{{ url_for('login.feedback.feedback_page') }}">反馈</a></li>
+                <li><a href="/#chat">对话</a></li>
+                <li><a id="authNavLink" href="{{ url_for('login.pages.login_page') }}">登录</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <main class="container alert-container">
+        <!-- 左侧：节日 -->
+        <aside class="alert-sidebar">
+            <!-- 节日提醒 -->
+            <section class="holiday-section">
+                <div class="holiday-line" id="holidayList">
+                    <div class="loading-spinner"></div>
+                </div>
+            </section>
+        </aside>
+
+        <!-- 右侧：功能卡片区域 -->
+        <div class="alert-cards-container">
+
+            <!-- 待办事项 -->
+            <section class="todo-section card-box">
+                <div class="card-header">
+                    <h3 class="section-title">
+                        <span class="title-icon">✓</span>
+                        待办事项
+                    </h3>
+                </div>
+                <div class="card-content">
+                    <div class="placeholder-content">
+                        <p>内容待定义</p>
+                    </div>
+                </div>
+            </section>
+            <!-- 番剧推荐 -->
+            <section class="comic-section card-box">
+                <div class="comic-header">
+                    <h3 class="section-title">
+                        今日推荐番剧
+                    </h3>
+                </div>
+                <div class="comic-list-wrapper">
+                    <div class="comic-list" id="comicList">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 私人RSS定制 -->
+            <section class="rss-section card-box">
+                <div class="card-header">
+                    <h3 class="section-title">
+                        私人RSS定制
+                    </h3>
+                </div>
+                <div class="card-content">
+                    <div class="placeholder-content">
+                        <p>内容待定义</p>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- 画集展示框 -->
+            <section class="gallery-section card-box">
+                <div class="card-header">
+                    <h3 class="section-title">
+                        画集展示框
+                    </h3>
+                </div>
+                <div class="card-content">
+                    <div class="placeholder-content" id="galleryPlaceholder">
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/chat_js/chat_navbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/alert_js/alert_main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/alert_js/alert_holiday.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/alert_js/alert_comic.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/alert_js/alert_gallery.js') }}"></script>
+</body>
+
+</html>

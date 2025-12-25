@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css/login.css') }}" />
+</head>
+
+<body>
+    <div class="wrapper">
+        <form action="#">
+            <h1>Login</h1>
+            <div class="input-box">
+                <i class="fas fa-envelope icon"></i>
+                <input id="usernameInput" type="username" required />
+                <label>Username</label>
+            </div>
+            <div class="input-box">
+                <i class="fas fa-lock icon"></i>
+                <input id="passwordInput" type="password" required />
+                <label>Password</label>
+            </div>
+
+            <div class="row">
+                <a onclick="forgotman()">Forgot password?</a>
+            </div>
+
+            <button type="button" onclick="loginBrungle()" class="btn">Login</button>
+
+            <div class="signup-link">
+                <p>Don't have an account? <a href="{{ url_for('login.pages.register_page') }}">Create one.</a></p>
+            </div>
+        </form>
+    </div>
+    <script src="{{ url_for('static', filename='js/login.js/login.js') }}"></script>
+</body>
+
+</html>

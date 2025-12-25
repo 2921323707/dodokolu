@@ -1,0 +1,258 @@
+/* 番剧推荐样式 */
+
+/* 番剧推荐卡片 */
+.comic-section {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    transform-origin: center center;
+    transition: grid-column 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                grid-row 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s ease,
+                transform 0.2s ease;
+}
+
+.comic-section:hover:not(.expanded) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 192, 203, 0.3);
+}
+
+/* 展开状态 - 在原位置覆盖，不改变布局 */
+.comic-section.expanded {
+    position: fixed;
+    transform: translate(-50%, -50%) scale(0);
+    width: 800px !important;
+    max-width: 90vw;
+    height: 600px !important;
+    max-height: 90vh;
+    z-index: 1000;
+    box-shadow: 0 8px 24px rgba(255, 192, 203, 0.4);
+    cursor: default;
+    animation: expandFromCenter 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    /* 添加背景遮罩效果 */
+    background: linear-gradient(135deg, #ffe0e6 0%, #fff0f5 100%);
+}
+
+@keyframes expandFromCenter {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+.comic-section.expanded:hover {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+@media (max-width: 768px) {
+    .comic-section.expanded {
+        width: 95vw !important;
+        height: 80vh !important;
+    }
+}
+
+.comic-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.comic-header .section-title {
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.comic-section.expanded .comic-header .section-title {
+    font-size: 1rem;
+}
+
+.comic-list-wrapper {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    min-height: 0;
+    /* 动态适应内容高度，不留空白 */
+    height: auto;
+    max-height: none;
+}
+
+.comic-section.expanded .comic-list-wrapper {
+    max-height: 550px;
+    overflow-y: auto;
+}
+
+.comic-list {
+    display: block;
+    height: auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 4px;
+    position: relative;
+    scroll-behavior: auto;
+    /* 隐藏滚动条但保持滚动功能 */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.comic-section.expanded .comic-list {
+    /* 展开时显示滚动条 */
+    -ms-overflow-style: auto;
+    scrollbar-width: thin;
+}
+
+.comic-list::-webkit-scrollbar {
+    display: none;
+}
+
+.comic-list-wrapper-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    /* 动态适应内容，不留空白 */
+    min-height: 0;
+    height: auto;
+}
+
+/* 番剧卡片 */
+.comic-item {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    padding: 12px 14px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    animation: slideInRight 0.5s ease-out;
+    animation-fill-mode: both;
+    box-shadow: 0 2px 6px rgba(255, 192, 203, 0.15);
+}
+
+.comic-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.comic-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.comic-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.comic-item:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.comic-item:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.comic-item:nth-child(6) {
+    animation-delay: 0.6s;
+}
+
+.comic-item:nth-child(7) {
+    animation-delay: 0.7s;
+}
+
+.comic-item:nth-child(8) {
+    animation-delay: 0.8s;
+}
+
+.comic-item:hover {
+    transform: translateX(8px);
+    box-shadow: 0 4px 16px rgba(255, 192, 203, 0.3);
+}
+
+.comic-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 0;
+}
+
+.comic-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    flex: 1;
+    line-height: 1.4;
+}
+
+.comic-time {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.comic-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    cursor: pointer;
+}
+
+.comic-link:hover .comic-name {
+    background: linear-gradient(135deg, #ffb3d9, #ffc0cb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* 滚动条样式 */
+.comic-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.comic-list::-webkit-scrollbar-track {
+    background: rgba(255, 192, 203, 0.1);
+    border-radius: 3px;
+}
+
+.comic-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #ffb3d9, #ffc0cb);
+    border-radius: 3px;
+}
+
+.comic-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #ff9ec7, #ffb3d9);
+}
+
+/* 响应式设计 - 移动端 */
+@media (max-width: 768px) {
+    .comic-section {
+        width: 100%;
+        max-width: 100%;
+        max-height: 400px;
+    }
+
+    .comic-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .comic-list {
+        padding-right: 0;
+    }
+
+    .comic-item:hover {
+        transform: translateY(-2px);
+    }
+}
+

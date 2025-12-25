@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>相册 - JY's Chat</title>
+    <!-- CSS 文件按功能模块拆分 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/album/album_index/album_index_layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/album/album_index/album_index_gallery.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/album/album_index/album_index_category.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/album/album_index/album_index_responsive.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/album/album_index/album_index_admin.css') }}">
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <span>JY's Chat</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="{{ url_for('alert.alert_page') }}">提醒</a></li>
+                <li><a href="{{ url_for('login.feedback.feedback_page') }}">反馈</a></li>
+                <li><a href="/#chat">对话</a></li>
+                <li><a id="authNavLink" href="{{ url_for('login.pages.login_page') }}">登录</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <main class="container album-container">
+        <!-- 动漫分类 -->
+        <section class="category-section" data-category="anime" data-requires-login="true">
+            <div class="category-header">
+                <h2 class="category-title">
+                    动漫
+                </h2>
+                <div class="category-count" data-count="anime">加载中...</div>
+            </div>
+            <div class="gallery-wrapper">
+                <div class="gallery-grid" data-grid="anime">
+                    <div class="loading-spinner"></div>
+                </div>
+                <div class="login-overlay" data-overlay="anime">
+                    <div class="login-prompt">
+                        <h3 class="login-prompt-title">需要登录</h3>
+                        <a href="{{ url_for('login.pages.login_page') }}" class="login-prompt-button">立即登录</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 壁纸分类 -->
+        <section class="category-section" data-category="wallpaper">
+            <div class="category-header">
+                <h2 class="category-title">
+                    壁纸
+                </h2>
+                <div class="category-count" data-count="wallpaper">加载中...</div>
+            </div>
+            <div class="gallery-wrapper">
+                <div class="gallery-grid" data-grid="wallpaper">
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 写真分类 -->
+        <section class="category-section" data-category="photo" data-requires-login="true">
+            <div class="category-header">
+                <h2 class="category-title">
+                    写真
+                </h2>
+                <div class="category-count" data-count="photo">加载中...</div>
+            </div>
+            <div class="gallery-wrapper">
+                <div class="gallery-grid" data-grid="photo">
+                    <div class="loading-spinner"></div>
+                </div>
+                <div class="login-overlay" data-overlay="photo">
+                    <div class="login-prompt">
+                        <h3 class="login-prompt-title">需要登录</h3>
+                        <a href="{{ url_for('login.pages.login_page') }}" class="login-prompt-button">立即登录</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 风景分类 -->
+        <section class="category-section" data-category="scene">
+            <div class="category-header">
+                <h2 class="category-title">
+                    风景
+                </h2>
+                <div class="category-count" data-count="scene">加载中...</div>
+            </div>
+            <div class="gallery-wrapper">
+                <div class="gallery-grid" data-grid="scene">
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚（仅管理员可见） -->
+    <footer class="album-footer" id="albumFooter" style="display: none;">
+        <div class="footer-content">
+            <button class="admin-manage-btn" id="adminManageBtn">C端管理</button>
+        </div>
+    </footer>
+
+    <!-- 图片上传弹出框 -->
+    <div class="upload-modal" id="uploadModal">
+        <div class="upload-modal-content">
+            <div class="upload-modal-header">
+                <h3>上传图片</h3>
+                <button class="upload-modal-close" id="uploadModalClose">&times;</button>
+            </div>
+            <form class="upload-form" id="uploadForm">
+                <div class="upload-form-group">
+                    <label>选择分类：</label>
+                    <select class="upload-form-select" id="uploadCategory" required>
+                        <option value="">请选择分类</option>
+                        <option value="anime">动漫</option>
+                        <option value="wallpaper">壁纸</option>
+                        <option value="photo">写真</option>
+                        <option value="scene">风景</option>
+                    </select>
+                </div>
+                <div class="upload-form-group">
+                    <label>文件夹类型：</label>
+                    <div class="upload-form-radio-group">
+                        <label class="upload-form-radio">
+                            <input type="radio" name="folderType" value="normal" checked>
+                            <span>正常</span>
+                        </label>
+                        <label class="upload-form-radio">
+                            <input type="radio" name="folderType" value="abnormal">
+                            <span>18+</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="upload-form-group">
+                    <label>来源备注：</label>
+                    <input type="text" class="upload-form-input" id="uploadSource" placeholder="留空则默认为0" maxlength="50">
+                </div>
+                <div class="upload-form-group">
+                    <label>选择图片：</label>
+                    <div class="upload-form-file-wrapper">
+                        <input type="file" class="upload-form-file" id="uploadFile" accept="image/*" required>
+                        <label for="uploadFile" class="upload-form-file-label">
+                            <span class="upload-form-file-text">点击选择图片</span>
+                        </label>
+                    </div>
+                    <div class="upload-form-preview" id="uploadPreview"></div>
+                </div>
+                <div class="upload-form-actions">
+                    <button type="button" class="upload-form-btn upload-form-btn-cancel"
+                        id="uploadFormCancel">取消</button>
+                    <button type="submit" class="upload-form-btn upload-form-btn-submit">上传</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript 文件按功能模块拆分 -->
+    <script src="{{ url_for('static', filename='js/chat_js/chat_navbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/album/album_index/album_index_init.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/album/album_index/album_index_api.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/album/album_index/album_index_category.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/album/album_index/album_index_gallery.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/album/album_index/album_index_admin.js') }}"></script>
+</body>
+
+</html>

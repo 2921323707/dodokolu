@@ -1,0 +1,258 @@
+/* 反馈表单样式 */
+
+/* 表单样式 */
+.feedback-form {
+    margin-top: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    gap: 16px;
+}
+
+.form-group {
+    margin-bottom: 0;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 auto;
+    min-height: 0;
+    padding-top: 8px;
+}
+
+.form-group:last-of-type {
+    margin-bottom: 0;
+}
+
+.form-label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.label-text {
+    margin-right: 4px;
+}
+
+.label-required {
+    color: var(--error-color);
+    font-weight: bold;
+}
+
+.form-input,
+.form-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: var(--font-family);
+    color: var(--text-primary);
+    background: var(--card-bg);
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-textarea {
+    min-height: 180px;
+    flex: 1;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+/* 增强的 textarea 特效 */
+.feedback-textarea-enhanced {
+    min-height: 200px !important;
+    max-height: 250px !important;
+    width: 90% !important;
+    margin: 12px auto 0 auto;
+    padding: 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08),
+        0 1px 3px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.feedback-textarea-enhanced::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 192, 203, 0.1),
+            transparent);
+    transition: left 0.5s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.feedback-textarea-enhanced:hover {
+    border-color: #ffc0cb;
+    box-shadow:
+        0 4px 12px rgba(255, 192, 203, 0.15),
+        0 2px 6px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    transform: translateY(-1px);
+}
+
+.feedback-textarea-enhanced:hover::before {
+    left: 100%;
+}
+
+.feedback-textarea-enhanced:focus {
+    outline: none !important;
+    border-color: #ffc0cb !important;
+    background: linear-gradient(135deg, #ffffff 0%, #fff5f7 100%) !important;
+    box-shadow:
+        0 4px 16px rgba(255, 192, 203, 0.2),
+        0 0 0 4px rgba(255, 192, 203, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+    transform: translateY(-2px);
+}
+
+.feedback-textarea-enhanced::placeholder {
+    color: #cbd5e1;
+    font-style: italic;
+}
+
+/* 增强的 input 特效（第二步） */
+.feedback-input-enhanced {
+    width: 90% !important;
+    margin: 12px auto 0 auto;
+    padding: 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08),
+        0 1px 3px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    font-size: 14px;
+    height: auto;
+    min-height: 60px;
+    box-sizing: border-box;
+}
+
+.feedback-input-enhanced::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 192, 203, 0.1),
+            transparent);
+    transition: left 0.5s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.feedback-input-enhanced:hover {
+    border-color: #ffc0cb;
+    box-shadow:
+        0 4px 12px rgba(255, 192, 203, 0.15),
+        0 2px 6px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    transform: translateY(-1px);
+}
+
+.feedback-input-enhanced:hover::before {
+    left: 100%;
+}
+
+.feedback-input-enhanced:focus {
+    outline: none !important;
+    border-color: #ffc0cb !important;
+    background: linear-gradient(135deg, #ffffff 0%, #fff5f7 100%) !important;
+    box-shadow:
+        0 4px 16px rgba(255, 192, 203, 0.2),
+        0 0 0 4px rgba(255, 192, 203, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+    transform: translateY(-2px);
+}
+
+.feedback-input-enhanced::placeholder {
+    color: #cbd5e1;
+    font-style: italic;
+}
+
+.form-input:focus:not(.feedback-input-enhanced),
+.form-textarea:focus:not(.feedback-textarea-enhanced) {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: #94a3b8;
+}
+
+.form-hint {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+/* 提交按钮 */
+.form-actions {
+    margin-top: auto;
+    padding-top: 24px;
+    padding-bottom: 16px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.submit-btn {
+    padding: 10px 24px;
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 100px;
+    position: relative;
+}
+
+.submit-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #fff5f7 0%, #ffeef0 100%);
+    border-color: #ffc0cb;
+    color: #ff69b4;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(255, 192, 203, 0.2);
+}
+
+.submit-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-loading {
+    display: inline-block;
+}
+

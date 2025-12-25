@@ -1,0 +1,67 @@
+/* 响应式设计 */
+@media (max-width: 1024px) {
+    .container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .image-section {
+        height: auto;
+        min-height: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-content {
+        padding: 0.5rem 1rem;
+    }
+    
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: var(--card-bg);
+        flex-direction: column;
+        padding: 1rem;
+        border-top: 1px solid var(--border-color);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .nav-links.active {
+        display: flex;
+    }
+    
+    .mobile-menu-btn {
+        display: block;
+    }
+    
+    .container {
+        padding: 1rem 0.75rem;
+        gap: 1rem;
+    }
+    
+    .chat-section {
+        height: calc(100vh - 100px);
+        min-height: 500px;
+    }
+    
+    .message {
+        max-width: 85%;
+    }
+    
+    .chat-input-area {
+        padding: 1rem;
+    }
+    
+    .input-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .send-btn {
+        width: 100%;
+    }
+}
+

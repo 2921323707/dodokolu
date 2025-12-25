@@ -1,0 +1,40 @@
+/* 分类区块样式 */
+
+/* 分类区块之间的分隔效果 */
+.category-section {
+    scroll-margin-top: 80px; /* 用于锚点跳转时的偏移 */
+}
+
+/* 分类区块的动画效果 */
+.category-section {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 为不同分类区块添加延迟动画 */
+.category-section[data-category="anime"] {
+    animation-delay: 0s;
+}
+
+.category-section[data-category="wallpaper"] {
+    animation-delay: 0.1s;
+}
+
+.category-section[data-category="photo"] {
+    animation-delay: 0.2s;
+}
+
+.category-section[data-category="scene"] {
+    animation-delay: 0.3s;
+}
+

@@ -1,0 +1,144 @@
+/* 相册页面响应式样式 */
+
+/* 平板设备 */
+@media (max-width: 1024px) {
+    .album-container {
+        padding: 20px;
+        display: block !important;
+        grid-template-columns: none !important;
+    }
+
+    .category-section {
+        margin-bottom: 40px;
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        grid-auto-rows: 180px;
+        gap: 14px;
+    }
+
+    .category-title {
+        font-size: 1.5rem;
+    }
+
+    .category-title .category-icon {
+        font-size: 1.5rem;
+    }
+}
+
+/* 移动设备 */
+@media (max-width: 768px) {
+    .album-container {
+        padding: 12px;
+        display: block !important;
+        grid-template-columns: none !important;
+    }
+
+    .category-section {
+        margin-bottom: 32px;
+        padding: 0;
+        width: 100%;
+    }
+
+    .category-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 20px;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .category-title {
+        font-size: 1.3rem;
+    }
+
+    .category-title .category-icon {
+        font-size: 1.3rem;
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-auto-rows: 150px;
+        gap: 10px !important;
+        row-gap: 10px !important;
+        column-gap: 10px !important;
+        padding: 0;
+        width: 100%;
+        box-sizing: border-box;
+        margin: 0;
+    }
+    
+    .gallery-item {
+        margin: 0;
+        padding: 0;
+    }
+
+    /* 移动端简化尺寸分类 */
+    .gallery-item[data-size="large"] {
+        grid-row: span 2;
+        grid-column: span 1;
+    }
+
+    .gallery-item[data-size="wide"] {
+        grid-row: span 1;
+        grid-column: span 1;
+    }
+}
+
+/* 小屏移动设备 */
+@media (max-width: 480px) {
+    .album-container {
+        padding: 10px;
+        display: block !important;
+        grid-template-columns: none !important;
+    }
+
+    .category-section {
+        margin-bottom: 24px;
+        padding: 0;
+        width: 100%;
+    }
+
+    .category-header {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .category-title {
+        font-size: 1.2rem;
+    }
+
+    .category-title .category-icon {
+        font-size: 1.2rem;
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 130px;
+        gap: 8px !important;
+        row-gap: 8px !important;
+        column-gap: 8px !important;
+        padding: 0;
+        width: 100%;
+        box-sizing: border-box;
+        margin: 0;
+    }
+    
+    .gallery-item {
+        margin: 0;
+        padding: 0;
+    }
+
+    /* 小屏设备统一为单格 */
+    .gallery-item[data-size="small"],
+    .gallery-item[data-size="medium"],
+    .gallery-item[data-size="large"],
+    .gallery-item[data-size="wide"],
+    .gallery-item[data-size="tall"] {
+        grid-row: span 1;
+        grid-column: span 1;
+    }
+}
+

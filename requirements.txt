@@ -1,0 +1,75 @@
+# Python版本要求: >=3.10（建议开启虚拟环境）
+# 使用宽松的版本范围而非固定版本，最大化容错性和兼容性，避免依赖链冲突
+# 所有依赖包版本均经过Python 3.10+兼容性验证
+# 版本上限设置较为宽松，允许自动获取安全更新和bug修复
+# 容错策略：使用 >= 而非 ==，允许小版本自动更新，提高系统稳定性
+
+# 基础工具
+typing-extensions>=4.8.0  # 类型提示支持，兼容Python 3.10+，向后兼容
+
+# Web框架及其显式依赖（使用宽松版本范围增加容错性）
+Flask>=3.0.0,<6.0.0  # Web框架，宽松版本范围允许小版本更新
+Werkzeug>=3.0.0,<5.0.0  # Flask的核心依赖，放宽上限增加兼容性
+Jinja2>=3.1.2,<4.0.0  # 模板引擎，稳定版本范围
+itsdangerous>=2.1.2,<5.0.0  # 安全工具，放宽版本范围
+click>=8.1.7,<10.0.0  # 命令行工具，宽松版本范围
+blinker>=1.7.0,<4.0.0  # 信号库，放宽版本范围
+flask-cors>=4.0.0,<6.0.0  # CORS支持，宽松版本范围
+MarkupSafe>=2.1.0,<3.0.0  # Jinja2依赖，模板安全转义
+
+# OpenAI SDK (支持OpenRouter和DeepSeek API)
+openai>=1.12.0,<3.0.0  # OpenAI API客户端，放宽版本上限允许未来更新
+
+# HTTP客户端
+trio>=0.22.0  # 异步框架，OpenAI SDK可能需要，无上限限制
+httpx>=0.25.0,<2.0.0  # 异步HTTP客户端，放宽版本范围
+httpx-sse>=0.4.0  # SSE支持，OpenAI流式响应需要，无上限限制
+h11>=0.14.0  # HTTP/1.1协议实现，httpx依赖
+sniffio>=1.3.0  # 异步IO检测，trio依赖
+certifi>=2023.0.0  # SSL证书，HTTP请求容错
+urllib3>=2.0.0,<3.0.0  # HTTP库，requests依赖，放宽版本范围
+
+# 环境变量管理
+python-dotenv>=1.0.0,<3.0.0  # .env文件支持，放宽版本范围
+
+# HTTP请求库（用于天气和搜索API）
+requests>=2.31.0,<4.0.0  # 同步HTTP客户端，放宽版本范围增加容错性
+charset-normalizer>=3.3.0,<4.0.0  # 字符编码检测，requests依赖
+idna>=3.4,<4.0  # 国际化域名支持，requests依赖
+
+# RSS解析和定时任务
+feedparser>=6.0.0,<8.0.0  # RSS/Atom源解析，放宽版本范围
+schedule>=1.2.0,<3.0.0  # 定时任务调度，放宽版本范围
+
+# 容错和重试机制（增强系统稳定性）
+tenacity>=8.2.0  # 重试装饰器库，提供多种重试策略，增强容错性
+backoff>=2.2.0  # 指数退避重试库，HTTP请求容错备用方案
+
+# 异常处理和日志增强（提高容错性）
+exceptiongroup>=1.1.0  # 异常组支持，Python 3.11+兼容，向后兼容
+
+# 数据库支持（如果需要）
+# SQLAlchemy>=2.0.0,<3.0.0  # ORM框架
+# sqlite3  # Python标准库，无需单独安装
+
+# 开发依赖（可选）
+# pytest>=7.0.0,<8.0.0  # 测试框架
+# black>=23.0.0,<24.0.0  # 代码格式化
+# flake8>=6.0.0,<7.0.0  # 代码检查
+
+# 安装说明
+# 1. 确保Python版本 >=3.10
+# 2. 创建并激活虚拟环境：
+#    python -m venv venv
+#    venv\Scripts\activate  # Windows
+#    source venv/bin/activate  # Linux/Mac
+# 3. 更新pip：pip install --upgrade pip
+# 4. 安装依赖：pip install -r requirements.txt
+# 5. 运行应用：python app.py
+
+# 容错说明
+# - 所有依赖使用 >= 而非 ==，允许自动获取安全更新和bug修复
+# - 版本上限设置宽松，避免依赖链冲突
+# - 包含必要的间接依赖，提高安装成功率
+# - 支持Python 3.10, 3.11, 3.12, 3.13等版本
+

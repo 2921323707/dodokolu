@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+    <!-- 与 index.html 相同的 CSS 引用，保持字体和导航栏风格一致 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_section.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_messages.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_input.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_animations.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_scrollbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_responsive.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account.css/account.css') }}">
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <span>JY's Chat</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="{{ url_for('login.pages.alert_page') }}">提醒</a></li>
+                <li><a href="{{ url_for('login.feedback.feedback_page') }}">反馈</a></li>
+                <li><a href="/#chat">对话</a></li>
+                <li><a id="authNavLink" href="{{ url_for('login.pages.login_page') }}">登录</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <main class="container account-container">
+        <div class="account-card">
+            <div class="account-header">
+                <h1 class="account-title">账户信息</h1>
+                <span id="accountStatus" class="status-pill">加载中...</span>
+            </div>
+            <div class="actions">
+                <button id="applyCreatorBtn" class="btn" type="button">申请成为创作者</button>
+            </div>
+            <div id="accountInfo" class="info-grid" style="display:none;"></div>
+        </div>
+    </main>
+
+    <!-- 与 index.html 相同的 JS 引用，保证导航栏交互一致 -->
+    <script src="{{ url_for('static', filename='js/chat_js/chat_variables.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat_js/chat_location.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat_js/chat_messages.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat_js/chat_section.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat_js/chat_input.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat_js/chat_navbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat_js/chat_init.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/account.js/account.js') }}"></script>
+</body>
+
+</html>

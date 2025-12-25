@@ -1,0 +1,106 @@
+/* 反馈页面布局样式 */
+
+.feedback-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+.feedback-section {
+    width: 100%;
+    max-width: 600px;
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    height: auto !important;
+    min-height: auto !important;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 固定header高度 */
+.feedback-section .chat-header {
+    height: 69px;
+    min-height: 69px;
+    max-height: 69px;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.feedback-section .chat-header h2 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* 固定messages高度 */
+.feedback-messages {
+    padding: 24px;
+    min-height: 250px !important;
+    height: auto !important;
+    max-height: 383px !important;
+    flex: none !important;
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+    position: relative;
+}
+
+/* 分步表单 - 使用绝对定位确保尺寸不变 */
+.feedback-step {
+    display: none;
+    position: relative;
+    width: 100%;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.feedback-step.active {
+    display: block;
+}
+
+.step-header {
+    margin-bottom: 0;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    padding-bottom: 0;
+}
+
+.step-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--text-primary);
+    flex: 1;
+    font-weight: 500;
+}
+
+.back-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.back-btn:hover {
+    background-color: var(--hover-color);
+    border-color: #ffc0cb;
+    color: #ffc0cb;
+    box-shadow: 0 2px 6px rgba(255, 192, 203, 0.15);
+    transform: translateY(-1px);
+}
+

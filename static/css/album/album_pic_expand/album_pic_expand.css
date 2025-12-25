@@ -1,0 +1,233 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    background: #ffffff;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.pic-expand-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: #ffffff;
+}
+
+/* 主要内容区域 - 使用flex布局实现2/3和1/3的比例 */
+.main-content {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* 左侧图片详情区域 - 占2/3宽度 */
+.image-detail-section {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    width: 66.666%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* 右侧侧边栏 - 占1/3宽度 */
+.sidebar {
+    flex: 1;
+    width: 33.333%;
+    height: 100vh;
+    background: #f8f9fa;
+    border-left: 1px solid #e0e0e0;
+    overflow-y: auto;
+}
+
+/* 返回按钮 */
+.back-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 12px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.back-button:active {
+    transform: translateY(0);
+}
+
+.back-button svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* 图片容器 */
+.image-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px 20px;
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.expanded-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.5s ease-in-out;
+    cursor: zoom-in;
+    transition: transform 0.3s ease;
+}
+
+.expanded-image:hover {
+    transform: scale(1.02);
+}
+
+.expanded-image.zoomed {
+    cursor: zoom-out;
+    transform: scale(2);
+}
+
+/* 加载动画 */
+.loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+}
+
+.loading-spinner.active {
+    display: block;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-top-color: #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 图片信息栏 */
+.image-info {
+    background: #ffffff;
+    padding: 20px;
+    border-top: 1px solid #e0e0e0;
+    flex-shrink: 0;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #666;
+    font-size: 14px;
+}
+
+.info-value {
+    color: #333;
+    font-size: 14px;
+    flex: 1;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .back-button {
+        top: 10px;
+        left: 10px;
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+
+    .main-content {
+        flex-direction: column;
+    }
+
+    .image-detail-section {
+        width: 100%;
+        height: 60vh;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: 40vh;
+        border-left: none;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .image-wrapper {
+        padding: 60px 10px 20px;
+    }
+
+    .image-info {
+        padding: 15px;
+    }
+
+    .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}
+
+/* 图片加载错误样式 */
+.expanded-image.error {
+    border: 2px dashed #ff6b6b;
+    padding: 40px;
+    background: #f8f9fa;
+}

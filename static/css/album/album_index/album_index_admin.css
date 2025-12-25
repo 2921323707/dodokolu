@@ -1,0 +1,319 @@
+/* 相册管理功能样式 */
+
+/* 页脚 */
+.album-footer {
+    margin-top: 60px;
+    padding: 24px 32px;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+}
+
+.footer-content {
+    max-width: 1600px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 管理按钮 */
+.admin-manage-btn {
+    padding: 12px 32px;
+    background: #fffef0;
+    color: #333;
+    border: 1px solid #e8e0d0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.admin-manage-btn:hover {
+    background: #fff8dc;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.admin-manage-btn:active {
+    transform: translateY(0);
+}
+
+/* 上传弹出框遮罩 */
+.upload-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+}
+
+.upload-modal.active {
+    display: flex;
+}
+
+/* 弹出框内容 */
+.upload-modal-content {
+    background: linear-gradient(135deg, #fffef0 0%, #fff8dc 100%);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    animation: modalExpand 0.5s ease-out;
+}
+
+@keyframes modalExpand {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 弹出框头部 */
+.upload-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.upload-modal-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+}
+
+.upload-modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.upload-modal-close:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+/* 上传表单 */
+.upload-form {
+    padding: 24px;
+}
+
+.upload-form-group {
+    margin-bottom: 24px;
+}
+
+.upload-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.upload-form-select,
+.upload-form-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.upload-form-select:focus,
+.upload-form-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+}
+
+/* 单选框组 */
+.upload-form-radio-group {
+    display: flex;
+    gap: 24px;
+}
+
+.upload-form-radio {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.upload-form-radio:hover {
+    background: var(--bg-secondary);
+}
+
+.upload-form-radio input[type="radio"] {
+    margin: 0;
+    cursor: pointer;
+}
+
+.upload-form-radio input[type="radio"]:checked+span {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.upload-form-radio:has(input[type="radio"]:checked) {
+    border-color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.1);
+}
+
+/* 文件上传 */
+.upload-form-file-wrapper {
+    position: relative;
+}
+
+.upload-form-file {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.upload-form-file-label {
+    display: block;
+    padding: 16px;
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: var(--bg-secondary);
+}
+
+.upload-form-file-label:hover {
+    border-color: var(--primary-color);
+    background: rgba(var(--primary-rgb), 0.05);
+}
+
+.upload-form-file-text {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.upload-form-file:focus+.upload-form-file-label {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+}
+
+/* 图片预览 */
+.upload-form-preview {
+    margin-top: 16px;
+    display: none;
+}
+
+.upload-form-preview.has-image {
+    display: block;
+}
+
+.upload-form-preview img {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    object-fit: contain;
+}
+
+/* 表单操作按钮 */
+.upload-form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-color);
+}
+
+.upload-form-btn {
+    padding: 12px 32px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.upload-form-btn-cancel {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.upload-form-btn-cancel:hover {
+    background: var(--bg-tertiary);
+}
+
+.upload-form-btn-submit {
+    background: white;
+    color: #333;
+    border: 1px solid var(--border-color);
+}
+
+.upload-form-btn-submit:hover {
+    background: #f5f5f5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.upload-form-btn-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .upload-modal-content {
+        width: 95%;
+        margin: 20px;
+    }
+
+    .upload-form {
+        padding: 20px;
+    }
+
+    .upload-form-radio-group {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .upload-form-actions {
+        flex-direction: column;
+    }
+
+    .upload-form-btn {
+        width: 100%;
+    }
+}
