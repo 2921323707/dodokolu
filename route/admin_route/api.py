@@ -7,6 +7,7 @@ import os
 from flask import Blueprint, request, jsonify, session
 from pathlib import Path
 from database import get_db_connection
+from route.album_route.utils import CATEGORY_MAP, get_base_dir
 
 admin_api_bp = Blueprint('api', __name__, url_prefix='/api')
 
@@ -193,10 +194,13 @@ def get_table_data(table_name):
         # 获取分页数据
         cursor.execute(f"SELECT * FROM {table_name} LIMIT ? OFFSET ?", (per_page, offset))
         rows = []
+        from tools.time_tools import convert_row_datetime_fields
         for row in cursor.fetchall():
             row_dict = {}
             for key in row.keys():
                 row_dict[key] = row[key]
+            # 转换时间字段从UTC到本地时间（UTC+8）
+            row_dict = convert_row_datetime_fields(row_dict)
             rows.append(row_dict)
         
         # 获取列名

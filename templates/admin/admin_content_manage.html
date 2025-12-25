@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内容管理 - JY's Chat</title>
+    <!-- 与 index.html 相同的 CSS 引用，保持字体和导航栏风格一致 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin_content/admin_content.css') }}">
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <span>JY's Chat</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="{{ url_for('login.pages.alert_page') }}">提醒</a></li>
+                <li><a href="{{ url_for('login.feedback.feedback_page') }}">反馈</a></li>
+                <li><a href="/#chat">对话</a></li>
+                <li><a href="{{ url_for('login.account.account_page') }}">账户</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+    </nav>
+
+    <main class="container admin-content-container">
+        <div class="admin-content-card">
+            <div class="admin-content-header">
+                <h1>内容管理 - 相册管理</h1>
+                <a href="{{ url_for('admin.pages.admin_index') }}" class="btn btn-secondary">返回控制台</a>
+            </div>
+
+            <div id="contentMessage" class="message"></div>
+
+            <!-- 类别标签 -->
+            <div class="category-tabs" id="categoryTabs">
+                <!-- 动态加载 -->
+            </div>
+
+            <!-- 类别配置 -->
+            <div class="category-config">
+                <div class="category-config-header">
+                    <h3 class="category-config-title">类别配置</h3>
+                </div>
+                <div class="config-item">
+                    <label>显示名称：</label>
+                    <input type="text" id="categoryDisplayName" placeholder="请输入显示名称">
+                </div>
+                <div class="config-item">
+                    <label>是否显示：</label>
+                    <!-- 桌面端普通checkbox -->
+                    <label class="desktop-checkbox">
+                        <input type="checkbox" id="categoryVisibilityDesktop" checked>
+                        <span id="categoryVisibilityLabel" class="visibility-label">显示</span>
+                    </label>
+                    <!-- 移动端toggle switch -->
+                    <label class="toggle-switch mobile-only">
+                        <input type="checkbox" id="categoryVisibility" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span id="categoryVisibilityLabelMobile"
+                        style="margin-left: 12px; color: var(--text-secondary, #64748b);">显示</span>
+                </div>
+                <div class="config-item">
+                    <button class="btn btn-success" id="saveCategoryBtn">保存类别配置</button>
+                </div>
+            </div>
+
+            <!-- 图片列表 -->
+            <div id="imagesContainer">
+                <div class="empty-state">
+                    <p>请选择一个类别</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 图片编辑模态框 -->
+    <div class="modal" id="imageEditModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>编辑图片</h2>
+                <button class="modal-close">×</button>
+            </div>
+            <div id="imageEditForm"></div>
+            <div class="form-actions">
+                <button class="btn btn-secondary" onclick="contentManager.closeModal('imageEditModal')">取消</button>
+                <button class="btn btn-primary" onclick="contentManager.saveImageConfig()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 权限管理模态框 -->
+    <div class="modal" id="permissionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>管理权限</h2>
+                <button class="modal-close">×</button>
+            </div>
+            <div id="permissionList">
+                <div class="loading">加载中...</div>
+            </div>
+            <div id="permissionForm"></div>
+        </div>
+    </div>
+
+    <!-- 与 index.html 相同的 JS 引用，保证导航栏交互一致 -->
+    <script src="{{ url_for('static', filename='js/chat_js/chat_variables.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat_js/chat_navbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/admin/admin_content/admin_content.js') }}"></script>
+</body>
+
+</html>

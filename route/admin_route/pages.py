@@ -35,3 +35,12 @@ def admin_database():
     if result:
         return result
     return render_template('admin/admin_database.html')
+
+
+@admin_pages_bp.route('/content')
+def admin_content():
+    """内容管理页面（相册管理）"""
+    result = check_admin()
+    if result:
+        return result
+    return render_template('admin/admin_content_manage.html')

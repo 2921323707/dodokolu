@@ -66,6 +66,84 @@ def init_database():
             CREATE INDEX IF NOT EXISTS idx_email ON user_profile(email)
         ''')
         
+        # 创建相册类别配置表
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS album_category_config (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                category_key TEXT NOT NULL UNIQUE,
+                display_name TEXT NOT NULL,
+                is_visible INTEGER NOT NULL DEFAULT 1,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+        
+        # 创建相册图片配置表
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS album_image_config (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                category_key TEXT NOT NULL,
+                image_path TEXT NOT NULL,
+                display_name TEXT,
+                is_visible INTEGER NOT NULL DEFAULT 1,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE(category_key, image_path)
+            )
+        ''')
+        
+        # 创建相册用户权限表
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS album_user_permission (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                category_key TEXT NOT NULL,
+                image_path TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES user_profile(id) ON DELETE CASCADE,
+                UNIQUE(user_id, category_key, image_path)
+            )
+        ''')
+        
+        # 创建索引
+        cursor.execute('''
+            CREATE INDEX IF NOT EXISTS idx_album_category_key ON album_category_config(category_key)
+        ''')
+        cursor.execute('''
+            CREATE INDEX IF NOT EXISTS idx_album_image_category ON album_image_config(category_key)
+        ''')
+        cursor.execute('''
+            CREATE INDEX IF NOT EXISTS idx_album_image_path ON album_image_config(image_path)
+        ''')
+        cursor.execute('''
+            CREATE INDEX IF NOT EXISTS idx_album_permission_user ON album_user_permission(user_id)
+        ''')
+        cursor.execute('''
+            CREATE INDEX IF NOT EXISTS idx_album_permission_category ON album_user_permission(category_key)
+        ''')
+        
+        # 初始化默认类别配置（如果不存在）
+        default_categories = [
+            ('anime', '动漫', 1),
+            ('photo', '照片', 1),
+            ('wallpaper', '壁纸', 1),
+            ('scene', '场景', 1)
+        ]
+        
+        for category_key, display_name, is_visible in default_categories:
+            cursor.execute('''
+                INSERT OR IGNORE INTO album_category_config (category_key, display_name, is_visible)
+                VALUES (?, ?, ?)
+            ''', (category_key, display_name, is_visible))
+        
+        # 创建相册配置表的索引
+        cursor.execute('''
+            CREATE INDEX IF NOT EXISTS idx_album_category_visible ON album_category_config(is_visible)
+        ''')
+        cursor.execute('''
+            CREATE INDEX IF NOT EXISTS idx_album_image_visible ON album_image_config(is_visible)
+        ''')
+        
         conn.commit()
         
         if not db_exists:

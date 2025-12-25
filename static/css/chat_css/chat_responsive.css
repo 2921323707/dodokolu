@@ -4,7 +4,7 @@
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }
-    
+
     .image-section {
         height: auto;
         min-height: 400px;
@@ -15,7 +15,7 @@
     .navbar-content {
         padding: 0.5rem 1rem;
     }
-    
+
     .nav-links {
         display: none;
         position: absolute;
@@ -28,40 +28,59 @@
         border-top: 1px solid var(--border-color);
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    
+
     .nav-links.active {
         display: flex;
     }
-    
+
     .mobile-menu-btn {
         display: block;
     }
-    
+
     .container {
         padding: 1rem 0.75rem;
         gap: 1rem;
     }
-    
+
+    /* 管理员页面容器在移动端全屏 - 使用更具体的选择器 */
+    main.container.admin-container,
+    main.container.admin-content-container,
+    main.container.admin-database-container,
+    body .container.admin-container,
+    body .container.admin-content-container,
+    body .container.admin-database-container,
+    .container.admin-container,
+    .container.admin-content-container,
+    .container.admin-database-container {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        display: block !important;
+        grid-template-columns: none !important;
+        gap: 0 !important;
+    }
+
     .chat-section {
         height: calc(100vh - 100px);
         min-height: 500px;
     }
-    
+
     .message {
         max-width: 85%;
     }
-    
+
     .chat-input-area {
         padding: 1rem;
     }
-    
+
     .input-container {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     .send-btn {
         width: 100%;
     }
 }
-

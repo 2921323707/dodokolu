@@ -49,17 +49,18 @@
                     <div class="admin-menu">
                         <a href="{{ url_for('admin.pages.admin_database') }}" class="menu-item"
                             style="text-decoration: none; color: inherit;">
-                            <h4>数据库管理</h4>
+                            <h4>数据库</h4>
                             <p>查看和管理数据库表单</p>
                         </a>
                         <div class="menu-item">
                             <h4>用户管理</h4>
                             <p>查看和管理用户信息</p>
                         </div>
-                        <div class="menu-item">
+                        <a href="{{ url_for('admin.pages.admin_content') }}" class="menu-item"
+                            style="text-decoration: none; color: inherit;">
                             <h4>内容管理</h4>
                             <p>管理网站内容</p>
-                        </div>
+                        </a>
                     </div>
                 </div>
 
