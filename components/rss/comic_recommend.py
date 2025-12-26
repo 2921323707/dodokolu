@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 番剧推荐脚本
-每天早上8点自动执行，从RSS源获取最新番剧信息，使用大模型整理后保存
+每6小时自动执行（8:00, 14:00, 20:00, 2:00），从RSS源获取最新番剧信息，使用大模型整理后保存
 """
 import json
 import os
@@ -229,10 +229,13 @@ def run_recommendation():
 
 
 def schedule_job():
-    """调度任务：每天早上8点执行"""
-    # 每天8:00执行
+    """调度任务：每6小时执行一次（8:00, 14:00, 20:00, 2:00）"""
+    # 设置四个时间点执行
     schedule.every().day.at("08:00").do(run_recommendation)
-    logger.info("已设置定时任务：每天早上8:00执行番剧推荐")
+    schedule.every().day.at("14:00").do(run_recommendation)
+    schedule.every().day.at("20:00").do(run_recommendation)
+    schedule.every().day.at("02:00").do(run_recommendation)
+    logger.info("已设置定时任务：每6小时执行番剧推荐（8:00, 14:00, 20:00, 2:00）")
     
     # 保持程序运行
     while True:
@@ -245,8 +248,12 @@ def start_schedule_in_thread():
     import threading
     
     def run_schedule():
+        # 设置四个时间点执行
         schedule.every().day.at("08:00").do(run_recommendation)
-        logger.info("番剧推荐定时任务已在后台启动：每天早上8:00执行")
+        schedule.every().day.at("14:00").do(run_recommendation)
+        schedule.every().day.at("20:00").do(run_recommendation)
+        schedule.every().day.at("02:00").do(run_recommendation)
+        logger.info("番剧推荐定时任务已在后台启动：每6小时执行（8:00, 14:00, 20:00, 2:00）")
         
         while True:
             schedule.run_pending()

@@ -24,6 +24,11 @@ DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY', '')
 DEEPSEEK_BASE_URL = os.getenv('DEEPSEEK_BASE_URL', 'https://api.deepseek.com')
 DEEPSEEK_MODEL = os.getenv('DEEPSEEK_MODEL', 'deepseek-chat')
 
+# ==================== 豆包 Seed-1.6 API配置 ====================
+DOUBAO_API_KEY = os.getenv('DOUBAO_API_KEY', '') or os.getenv('ARK_API_KEY', '')  # 兼容官方文档中的 ARK_API_KEY
+DOUBAO_BASE_URL = os.getenv('DOUBAO_BASE_URL', 'https://ark.cn-beijing.volces.com/api/v3')
+DOUBAO_MODEL = os.getenv('DOUBAO_MODEL', 'doubao-seed-1-6-251015')
+
 # ==================== 通用配置 ====================
 DEFAULT_MODE = os.getenv('DEFAULT_MODE', 'unnormal')
 MAX_HISTORY_LENGTH = int(os.getenv('MAX_HISTORY_LENGTH', '50'))
@@ -32,5 +37,6 @@ TEMPERATURE = float(os.getenv('TEMPERATURE', '0.7'))
 __all__ = [
     'OPENROUTER_API_KEY', 'OPENROUTER_BASE_URL', 'OPENROUTER_MODEL',
     'DEEPSEEK_API_KEY', 'DEEPSEEK_BASE_URL', 'DEEPSEEK_MODEL',
+    'DOUBAO_API_KEY', 'DOUBAO_BASE_URL', 'DOUBAO_MODEL',
     'DEFAULT_MODE', 'MAX_HISTORY_LENGTH', 'TEMPERATURE'
 ]

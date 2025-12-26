@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // 初始化元素引用
     initElements();
 
+    // 初始化图片上传功能
+    initImageUpload();
+
     // 第一步：提交反馈内容
     if (elements.feedbackContentForm) {
         elements.feedbackContentForm.addEventListener('submit', function(event) {

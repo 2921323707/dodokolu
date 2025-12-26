@@ -1,8 +1,17 @@
 from flask import Blueprint, render_template, request, jsonify, session
 from components.email.email_sender import send_email
 from datetime import datetime
+import os
+from werkzeug.utils import secure_filename
 
 feedback_bp = Blueprint('feedback', __name__)
+
+# 允许的图片扩展名
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
+def allowed_file(filename):
+    """检查文件扩展名是否允许"""
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @feedback_bp.route('/feedback')
@@ -20,9 +29,9 @@ def feedback_api():
         if not user_id:
             return jsonify({'success': False, 'message': '请先登录', 'require_login': True}), 401
         
-        data = request.json
-        feedback_content = data.get('content', '').strip()
-        feedback_contact = data.get('contact', '').strip()
+        # 获取表单数据（支持文件上传，使用 request.form）
+        feedback_content = request.form.get('content', '').strip()
+        feedback_contact = request.form.get('contact', '').strip()
         
         if not feedback_content:
             return jsonify({'success': False, 'message': '反馈内容不能为空'}), 400
@@ -30,6 +39,39 @@ def feedback_api():
         # 获取用户信息
         username = session.get('username', '')
         user_email = session.get('email', '')
+        
+        # 处理图片上传（支持多张图片，最多3张）
+        image_paths = []
+        if 'images' in request.files:
+            image_files = request.files.getlist('images')
+            
+            # 限制最多3张图片
+            if len(image_files) > 3:
+                return jsonify({'success': False, 'message': '最多只能上传3张图片'}), 400
+            
+            # 确保目录存在
+            upload_dir = os.path.join('static', 'users', 'feed_back')
+            os.makedirs(upload_dir, exist_ok=True)
+            
+            # 处理每张图片
+            for idx, image_file in enumerate(image_files):
+                if image_file and image_file.filename and allowed_file(image_file.filename):
+                    # 根据用户邮箱确定文件扩展名
+                    file_ext = image_file.filename.rsplit('.', 1)[1].lower()
+                    # 使用用户邮箱作为文件名，添加序号以区分多张图片
+                    if user_email:
+                        # 将邮箱地址中的特殊字符替换为下划线，保留邮箱格式
+                        safe_email = user_email.replace('@', '_at_').replace('.', '_')
+                        # 进一步清理，确保文件名安全
+                        safe_email = secure_filename(safe_email)
+                        filename = f"{safe_email}_{idx + 1}.{file_ext}"
+                    else:
+                        # 如果没有邮箱，使用用户ID
+                        filename = f"user_{user_id}_{idx + 1}.{file_ext}"
+                    
+                    image_path = os.path.join(upload_dir, filename)
+                    image_file.save(image_path)
+                    image_paths.append(image_path)
         
         # 构建HTML邮件内容
         current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -150,7 +192,8 @@ def feedback_api():
         subject = f'用户反馈 - {username}'
         
         try:
-            send_email(recipient_email, subject, html_content, 'html')
+            # 如果有图片，将图片路径列表传递给邮件发送函数
+            send_email(recipient_email, subject, html_content, 'html', image_paths=image_paths if image_paths else None)
             return jsonify({'success': True, 'message': '反馈提交成功'})
         except Exception as e:
             return jsonify({'success': False, 'message': f'发送邮件失败: {str(e)}'}), 500

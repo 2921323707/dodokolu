@@ -48,6 +48,15 @@
                             <textarea id="feedbackContent" name="feedbackContent"
                                 class="form-textarea feedback-textarea-enhanced" rows="6" placeholder="请输入您的反馈内容..."
                                 required></textarea>
+                            <div class="upload-container">
+                                <input type="file" id="feedbackImageUpload" name="feedbackImage"
+                                    accept="image/jpeg,image/jpg,image/png" multiple style="display: none;">
+                                <label for="feedbackImageUpload" class="upload-btn" title="上传图片（最多3张）">
+                                    <img src="{{ url_for('static', filename='imgs/icon/upload.png') }}" alt="上传图片"
+                                        class="upload-icon">
+                                </label>
+                                <div id="imagePreviewContainer" class="image-preview-container"></div>
+                            </div>
                         </div>
                         <div class="form-actions">
                             <button type="submit" class="submit-btn" id="nextBtn">
@@ -87,6 +96,7 @@
     <script src="{{ url_for('static', filename='js/feedback/feedback_steps.js') }}"></script>
     <script src="{{ url_for('static', filename='js/feedback/feedback_message.js') }}"></script>
     <script src="{{ url_for('static', filename='js/feedback/feedback_animation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/feedback/feedback_upload.js') }}"></script>
     <script src="{{ url_for('static', filename='js/feedback/feedback_api.js') }}"></script>
     <script src="{{ url_for('static', filename='js/feedback/feedback_init.js') }}"></script>
 </body>

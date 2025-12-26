@@ -3,15 +3,23 @@
 // 提交反馈到后端
 async function submitFeedback(content, contact) {
     try {
+        const imageFiles = getSelectedImageFiles();
+        
+        // 使用 FormData 来支持文件上传
+        const formData = new FormData();
+        formData.append('content', content);
+        formData.append('contact', contact || '');
+        
+        // 添加所有图片文件
+        if (imageFiles && imageFiles.length > 0) {
+            imageFiles.forEach((file, index) => {
+                formData.append('images', file);
+            });
+        }
+
         const response = await fetch('/api/feedback', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                content: content,
-                contact: contact || ''
-            })
+            body: formData
         });
 
         const data = await response.json();
