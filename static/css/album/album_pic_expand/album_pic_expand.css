@@ -231,3 +231,78 @@ body {
     padding: 40px;
     background: #f8f9fa;
 }
+
+/* 前往视频页面 GIF 按钮 */
+.movies-gif-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.movies-gif-image {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.movies-gif-container:hover .movies-gif-image {
+    transform: scale(1.1);
+}
+
+.movies-gif-container:active .movies-gif-image {
+    transform: scale(0.95);
+}
+
+.movies-gif-hint {
+    background: rgba(255, 192, 203, 0.95);
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(255, 192, 203, 0.4);
+    backdrop-filter: blur(10px);
+    user-select: none;
+    -webkit-user-select: none;
+    pointer-events: none;
+}
+
+/* 提示文字动画 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+    .movies-gif-container {
+        bottom: 15px;
+        right: 15px;
+    }
+
+    .movies-gif-image {
+        width: 60px;
+        height: 60px;
+    }
+
+    .movies-gif-hint {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+}

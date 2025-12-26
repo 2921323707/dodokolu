@@ -7,6 +7,7 @@ from route.login_route import login_bp
 from route.alert.alert import alert_bp
 from route.album_route import album_bp
 from route.admin_route import admin_bp
+from route.heaven_route import heaven_bp
 from database import init_database
 from route.config.maintenance.maintenance import MAINTENANCE_PAGES
 
@@ -53,6 +54,7 @@ app.register_blueprint(login_bp)
 app.register_blueprint(alert_bp)
 app.register_blueprint(album_bp)
 app.register_blueprint(admin_bp)
+app.register_blueprint(heaven_bp)
 
 @app.route('/')
 def index():

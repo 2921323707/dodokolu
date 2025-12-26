@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频 - Heaven</title>
+    <!-- 引入主题变量和导航栏样式以保持一致 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/heaven/movies/movies_index.css') }}">
+</head>
+
+<body>
+    <div class="movies-container">
+        <!-- 返回按钮 -->
+        <button class="back-button" onclick="goBack()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            返回
+        </button>
+
+        <!-- 标题 -->
+        <div class="header">
+            <h1>视频列表</h1>
+        </div>
+
+        <!-- 视频列表容器 -->
+        <div class="videos-grid" id="videosGrid">
+            <!-- 视频项将通过 JS 动态加载 -->
+        </div>
+
+        <!-- 加载提示 -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>加载中...</p>
+        </div>
+
+        <!-- 空状态 -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <p>暂无视频</p>
+        </div>
+    </div>
+
+    <!-- 视频页面脚本，按功能模块拆分 -->
+    <script src="{{ url_for('static', filename='js/heaven/movies/movies_index_api.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/heaven/movies/movies_index_modal.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/heaven/movies/movies_index_video.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/heaven/movies/movies_index_render.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/heaven/movies/movies_index_init.js') }}"></script>
+</body>
+
+</html>

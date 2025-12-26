@@ -154,7 +154,8 @@ function handleImageClick(image, index) {
         image: image.url,  // URLSearchParams 会自动编码
         name: image.name || '未命名图片',
         category: getCurrentCategory() || '',
-        index: index.toString()
+        index: index.toString(),
+        type: image.type || ''  // 添加图片类型参数
     });
     
     window.location.href = `/album/pic_expand?${params.toString()}`;

@@ -3,7 +3,7 @@
 聊天相关路由
 """
 from flask import Blueprint, request, jsonify, Response, stream_with_context
-from route.config import get_conversation_history, save_message, llm_stream, conversation_history
+from route.config.llm import get_conversation_history, save_message, llm_stream, clear_history
 
 # 创建蓝图
 chat_bp = Blueprint('chat', __name__, url_prefix='/api')
@@ -47,9 +47,8 @@ def get_history(session_id):
 
 
 @chat_bp.route('/clear/<session_id>', methods=['POST'])
-def clear_history(session_id):
+def clear_history_route(session_id):
     """清空对话历史"""
-    if session_id in conversation_history:
-        conversation_history[session_id] = []
+    clear_history(session_id)
     return jsonify({'success': True})
 

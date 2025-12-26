@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-系统提示词管理
+提示词模板管理
+管理不同模型的提示词模板
 """
 from tools import get_time_info
 
-# ==================== 系统提示词定义 ====================
+# ==================== 提示词模板定义 ====================
 
-#Unnormal模式的系统提示词
+# Unnormal模式的系统提示词（OpenRouter模型使用）
 SYSTEM_PROMPT_BASE = """
 input:
 聊天历史记录:history
@@ -24,8 +25,7 @@ input:
 """
 
 
-
-# Normal模式的系统提示词（agent模式，支持工具调用）
+# Normal模式的系统提示词（DeepSeek模型使用，agent模式，支持工具调用）
 NORMAL_SYSTEM_PROMPT_BASE = """
 input:
 聊天历史记录:history
@@ -69,3 +69,9 @@ def get_system_prompt_with_time(base_prompt: str, location: dict = None) -> str:
     
     return base_prompt + time_context + location_context
 
+
+__all__ = [
+    'SYSTEM_PROMPT_BASE',
+    'NORMAL_SYSTEM_PROMPT_BASE',
+    'get_system_prompt_with_time'
+]

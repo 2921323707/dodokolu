@@ -1,0 +1,437 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif);
+    background: var(--bg-color, #f8fafc);
+    color: var(--text-primary, #1e293b);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.movies-container {
+    width: 100%;
+    min-height: 100vh;
+    padding: 20px;
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* 返回按钮 */
+.back-button {
+    position: relative;
+    z-index: 1000;
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 12px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary, #1e293b);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.back-button:hover {
+    background: var(--hover-color, #f1f5f9);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary-color, #2563eb);
+}
+
+.back-button:active {
+    transform: translateY(0);
+}
+
+.back-button svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* 标题 */
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text-primary, #1e293b);
+}
+
+/* 视频网格 */
+.videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+/* 视频项 */
+.video-item {
+    background: var(--card-bg, #ffffff);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color, #e2e8f0);
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.video-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary-color, #2563eb);
+}
+
+.video-item.active {
+    border-color: var(--primary-color, #2563eb);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2), 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* 视频容器 */
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    /* 16:9 宽高比 */
+    background: #000;
+    overflow: hidden;
+}
+
+.video-wrapper video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+/* 预览视频样式 - 隐藏控制栏 */
+.video-wrapper video.video-preview {
+    pointer-events: auto;
+}
+
+/* 隐藏预览视频的所有控制元素 */
+.video-wrapper video.video-preview::-webkit-media-controls {
+    display: none !important;
+}
+
+.video-wrapper video.video-preview::-webkit-media-controls-enclosure {
+    display: none !important;
+}
+
+.video-wrapper video.video-preview::-webkit-media-controls-panel {
+    display: none !important;
+}
+
+.video-wrapper video.video-preview::-webkit-media-controls-play-button {
+    display: none !important;
+}
+
+.video-wrapper video.video-preview::-webkit-media-controls-current-time-display {
+    display: none !important;
+}
+
+.video-wrapper video.video-preview::-webkit-media-controls-time-remaining-display {
+    display: none !important;
+}
+
+.video-wrapper video.video-preview::-webkit-media-controls-timeline {
+    display: none !important;
+}
+
+.video-wrapper video.video-preview::-webkit-media-controls-volume-slider {
+    display: none !important;
+}
+
+.video-wrapper video.video-preview::-webkit-media-controls-mute-button {
+    display: none !important;
+}
+
+.video-wrapper video.video-preview::-webkit-media-controls-fullscreen-button {
+    display: none !important;
+}
+
+/* 移动端也隐藏控制栏 */
+@media (max-width: 768px) {
+    .video-wrapper video.video-preview {
+        -webkit-touch-callout: none;
+    }
+}
+
+/* 视频详情模态框 */
+.video-detail-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.video-detail-modal.active {
+    opacity: 1;
+}
+
+.video-detail-modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    max-height: 90vh;
+    background: var(--card-bg, #ffffff);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.video-detail-modal.active .video-detail-modal-content {
+    transform: scale(1);
+}
+
+.video-detail-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: rgba(0, 0, 0, 0.6);
+    color: #ffffff;
+    font-size: 28px;
+    line-height: 1;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.video-detail-close:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: rotate(90deg);
+}
+
+.video-detail-container {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 宽高比 */
+    background: #000;
+    overflow: hidden;
+}
+
+.video-detail-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.video-detail-info {
+    padding: 20px;
+    background: var(--card-bg, #ffffff);
+}
+
+.video-detail-name {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary, #1e293b);
+    margin: 0 0 10px 0;
+}
+
+.video-detail-source {
+    font-size: 16px;
+    color: var(--text-secondary, #64748b);
+    margin: 0;
+}
+
+/* 视频信息 */
+.video-info {
+    padding: 16px;
+}
+
+.video-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary, #1e293b);
+    margin-bottom: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.video-source {
+    font-size: 14px;
+    color: var(--text-secondary, #64748b);
+}
+
+/* 加载状态 */
+.loading {
+    text-align: center;
+    padding: 60px 20px;
+    display: none;
+}
+
+.loading.active {
+    display: block;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid var(--border-color, #e2e8f0);
+    border-top-color: var(--primary-color, #2563eb);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading p {
+    color: var(--text-secondary, #64748b);
+    font-size: 16px;
+}
+
+/* 空状态 */
+.empty-state {
+    text-align: center;
+    padding: 100px 20px;
+    color: var(--text-secondary, #64748b);
+    font-size: 18px;
+}
+
+/* 视频预览层 */
+.video-preview-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+}
+
+.video-preview-overlay:hover {
+    opacity: 1;
+}
+
+.video-preview-overlay.hidden {
+    display: none;
+}
+
+.video-preview-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--primary-color, #2563eb);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .back-button {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+
+    .movies-container {
+        padding: 10px;
+    }
+
+    .header h1 {
+        font-size: 24px;
+    }
+
+    .videos-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 10px 0;
+    }
+
+    /* 移动端视频详情模态框优化 */
+    .video-detail-modal {
+        padding: 0;
+    }
+
+    .video-detail-modal-content {
+        max-height: 100vh;
+        border-radius: 0;
+        height: 100vh;
+    }
+
+    .video-detail-container {
+        flex: 1;
+        padding-top: 0;
+        height: calc(100vh - 120px);
+    }
+
+    .video-detail-player {
+        height: 100%;
+    }
+
+    .video-detail-close {
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        font-size: 24px;
+    }
+
+    .video-detail-info {
+        padding: 15px;
+        flex-shrink: 0;
+    }
+
+    .video-detail-name {
+        font-size: 20px;
+    }
+
+    .video-detail-source {
+        font-size: 14px;
+    }
+}

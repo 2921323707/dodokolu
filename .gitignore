@@ -21,6 +21,14 @@ ENV/
 # 忽略相册目录下的所有图片文件
 static/imgs/album/**
 
+# ==================== 视频资源 ====================
+# 忽略视频目录下的所有视频文件
+static/video/abnormal/fav/*.mp4
+static/video/abnormal/fav/*.webm
+static/video/abnormal/fav/*.ogg
+static/video/abnormal/fav/*.mov
+static/video/abnormal/fav/*.avi
+
 # ==================== 数据库文件 ====================
 *.db
 *.sqlite

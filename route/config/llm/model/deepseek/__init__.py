@@ -1,84 +1,50 @@
 # -*- coding: utf-8 -*-
 """
-LLM流式输出处理
+DeepSeek 模型配置和处理
+支持工具调用的 Agent 模式
 """
 import json
 from openai import OpenAI
-from route.config.settings import (
-    OPENROUTER_API_KEY, OPENROUTER_BASE_URL, OPENROUTER_MODEL,
-    DEEPSEEK_API_KEY, DEEPSEEK_BASE_URL, DEEPSEEK_MODEL,
-    TEMPERATURE
+from route.config.llm.setting import (
+    DEEPSEEK_API_KEY, DEEPSEEK_BASE_URL, DEEPSEEK_MODEL, TEMPERATURE
 )
-from route.config.prompts import get_system_prompt_with_time, SYSTEM_PROMPT_BASE, NORMAL_SYSTEM_PROMPT_BASE
-from route.config.history import save_message
+from route.config.llm.prompt import get_system_prompt_with_time, NORMAL_SYSTEM_PROMPT_BASE
+from route.config.llm.history import save_message
 from tools import TOOLS, execute_tool
 
 
-def llm_stream_unnormal(messages, session_id, location=None):
+def create_client():
     """
-    使用OpenAI SDK调用openrouter.ai API，实现流式输出（unnormal模式）
-    支持对话历史记忆
+    创建 DeepSeek API 客户端
     
-    Args:
-        messages: 消息列表
-        session_id: 会话ID
-        location: 用户位置信息（可选）
+    Returns:
+        OpenAI 客户端实例
+    
+    Raises:
+        ValueError: 如果 API Key 未配置
     """
-    if not OPENROUTER_API_KEY:
-        raise ValueError("OPENROUTER_API_KEY 未配置，请在 .env 文件中设置")
+    if not DEEPSEEK_API_KEY:
+        raise ValueError("DEEPSEEK_API_KEY 未配置，请在 .env 文件中设置")
     
-    client = OpenAI(
-        base_url=OPENROUTER_BASE_URL,
-        api_key=OPENROUTER_API_KEY,
+    return OpenAI(
+        base_url=DEEPSEEK_BASE_URL,
+        api_key=DEEPSEEK_API_KEY,
     )
 
-    # 构建完整的消息列表（系统提示词 + 历史对话 + 当前消息）
-    # 添加时间信息和位置信息到系统提示词
-    system_prompt = get_system_prompt_with_time(SYSTEM_PROMPT_BASE.strip(), location)
-    full_messages = [{"role": "system", "content": system_prompt}]
-    full_messages.extend(messages)
 
-    # 调用流式聊天接口
-    stream = client.chat.completions.create(
-        extra_headers={
-            "HTTP-Referer": "https://localhost",
-            "X-Title": "GF_Chat"
-        },
-        model=OPENROUTER_MODEL,
-        messages=full_messages,
-        stream=True,
-        temperature=TEMPERATURE
-    )
-
-    full_response = ""
-    for chunk in stream:
-        chunk_content = chunk.choices[0].delta.content or ""
-        if chunk_content:
-            full_response += chunk_content
-            yield f"data: {json.dumps({'content': chunk_content, 'done': False}, ensure_ascii=False)}\n\n"
-    
-    # 保存完整的响应到历史
-    save_message(session_id, "assistant", full_response)
-    yield f"data: {json.dumps({'content': '', 'done': True}, ensure_ascii=False)}\n\n"
-
-
-def llm_stream_normal(messages, session_id, location=None):
+def stream_completion(messages, session_id, location=None):
     """
-    使用DeepSeek API，实现流式输出（normal模式 - agent模式）
-    支持对话历史记忆和工具调用
+    使用 DeepSeek API 实现流式输出（支持工具调用）
     
     Args:
         messages: 消息列表
         session_id: 会话ID
         location: 用户位置信息（可选），用于自动获取用户当前位置的天气
-    """
-    if not DEEPSEEK_API_KEY:
-        raise ValueError("DEEPSEEK_API_KEY 未配置，请在 .env 文件中设置")
     
-    client = OpenAI(
-        base_url=DEEPSEEK_BASE_URL,
-        api_key=DEEPSEEK_API_KEY,
-    )
+    Yields:
+        str: SSE格式的流式响应数据
+    """
+    client = create_client()
 
     # 构建工具定义（OpenAI格式）
     tools = []
@@ -93,7 +59,6 @@ def llm_stream_normal(messages, session_id, location=None):
         })
 
     # 构建完整的消息列表（系统提示词 + 历史对话 + 当前消息）
-    # 添加时间信息和位置信息到系统提示词
     system_prompt = get_system_prompt_with_time(NORMAL_SYSTEM_PROMPT_BASE.strip(), location)
     full_messages = [{"role": "system", "content": system_prompt}]
     full_messages.extend(messages)
@@ -213,21 +178,7 @@ def llm_stream_normal(messages, session_id, location=None):
         yield f"data: {json.dumps({'content': '', 'done': True}, ensure_ascii=False)}\n\n"
 
 
-def llm_stream(messages, session_id, mode='unnormal', location=None):
-    """
-    根据模式选择不同的LLM流式输出函数
-    
-    Args:
-        messages: 消息列表
-        session_id: 会话ID
-        mode: 模式，'normal' 或 'unnormal'，默认为 'unnormal'
-        location: 用户位置信息（可选），包含latitude和longitude
-    
-    Returns:
-        生成器，产生流式响应
-    """
-    if mode == 'normal':
-        return llm_stream_normal(messages, session_id, location)
-    else:
-        return llm_stream_unnormal(messages, session_id, location)
-
+__all__ = [
+    'create_client',
+    'stream_completion'
+]
