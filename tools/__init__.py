@@ -5,6 +5,7 @@
 from tools.time_tools import get_current_time, get_time_info
 from tools.weather_tools import get_weather
 from tools.search_tools import search_web
+from tools.send_pics.send_pics import send_emoji, send_favorite_image
 from typing import Dict, Any
 
 # ==================== 工具函数映射 ====================
@@ -65,6 +66,48 @@ TOOLS = {
             },
             "required": ["query"]
         }
+    },
+    "send_emoji": {
+        "function": send_emoji,
+        "description": "根据AI自己的回复内容自动匹配并发送相关表情包。在你完成对用户的回复后，基于你自己的回复内容判断是否需要发送表情包。当检测到你的回复与表情包描述匹配时，按照90%的概率发送表情包。发送前会停留0.8秒，有50%概率对发送的表情包进行二次描述。这是一个增强对话趣味性的重要工具，应该经常使用。建议在你回复完用户后，评估你的回复内容是否适合发送表情包。",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "assistant_message": {
+                    "type": "string",
+                    "description": "AI的回复内容，用于匹配相关表情包。这是推荐使用的参数，应该传入你自己刚才的回复内容。"
+                },
+                "user_message": {
+                    "type": "string",
+                    "description": "用户的消息内容（向后兼容参数，不推荐使用）"
+                },
+                "probability": {
+                    "type": "number",
+                    "description": "发送表情包的概率，默认0.7（70%）",
+                    "default": 0.7
+                },
+                "delay": {
+                    "type": "number",
+                    "description": "发送前停留时间（秒），默认0.8",
+                    "default": 0.8
+                },
+                "describe_probability": {
+                    "type": "number",
+                    "description": "二次描述的概率，默认0.5（50%）",
+                    "default": 0.5
+                }
+            },
+            "required": []
+        }
+    },
+    "send_favorite_image": {
+        "function": send_favorite_image,
+        "description": "当用户询问AI最喜欢的图片、收藏的图片、你最喜欢的图片等类似问题时，从收藏图片目录中随机选择一张图片发送给用户。这个工具用于展示AI人格收藏的图片，增强对话的个性化。",
+        "parameters": {
+            "type": "object",
+            "properties": {},
+            "required": []
+        }
     }
 }
 
@@ -102,6 +145,8 @@ __all__ = [
     'get_time_info',
     'get_weather',
     'search_web',
+    'send_emoji',
+    'send_favorite_image',
     'TOOLS',
     'execute_tool'
 ]

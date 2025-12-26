@@ -25,7 +25,7 @@
             </div>
 
             <div class="row">
-                <a onclick="forgotman()">Forgot password?</a>
+                <a href="#" onclick="forgotman(); return false;">Forgot password?</a>
             </div>
 
             <button type="button" onclick="loginBrungle()" class="btn">Login</button>
@@ -35,6 +35,19 @@
             </div>
         </form>
     </div>
+
+    <!-- 忘记密码模态框 -->
+    <div id="forgotPasswordModal" class="forgot-modal">
+        <div class="forgot-modal-content">
+            <span class="forgot-modal-close" onclick="closeForgotModal()">&times;</span>
+            <h2>Forgot Password?</h2>
+            <p>Please email <a href="mailto:ssnigdhasiraz22@sirhenryfloyd.co.uk"
+                    style="color: #fff; text-decoration: underline;">2921323707@qq.com</a> to request a password reset.
+            </p>
+            <button class="btn" onclick="closeForgotModal()">OK</button>
+        </div>
+    </div>
+
     <script src="{{ url_for('static', filename='js/login.js/login.js') }}"></script>
 </body>
 

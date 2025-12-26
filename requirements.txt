@@ -54,7 +54,11 @@ backoff>=2.2.0,<3.0.0  # 指数退避重试库，HTTP请求容错备用方案
 retry>=0.9.2,<1.0.0  # 简单重试装饰器，轻量级容错方案
 
 # ==================== 异常处理和日志增强 ====================
-exceptiongroup>=1.1.0,<2.0.0  # 异常组支持，Python 3.11+兼容，向后兼容
+exceptiongroup>=1.1.0,<2.0.0  # 异常组支持，Python 3.11+兼容，向后兼容（Python 3.10需要此包）
+
+# ==================== 邮件发送支持（可选）====================
+# 如果需要邮件功能，确保已配置SMTP服务器
+# email  # Python标准库，无需单独安装
 
 # ==================== 数据验证和类型检查（可选，增强容错） ====================
 # pydantic>=2.0.0,<3.0.0  # 数据验证库，可选，用于API参数验证
@@ -62,6 +66,7 @@ exceptiongroup>=1.1.0,<2.0.0  # 异常组支持，Python 3.11+兼容，向后兼
 # ==================== 工具库（提高系统稳定性） ====================
 packaging>=23.0,<25.0  # 版本解析工具，pip依赖，显式声明提高容错
 setuptools>=68.0.0  # 包管理工具，pip依赖，显式声明
+wheel>=0.40.0  # 构建工具，pip依赖，显式声明提高容错
 tqdm>=4.65.0,<5.0.0  # 进度条显示库，用于显示下载进度
 
 # ==================== 数据库支持（如果需要） ====================
@@ -75,35 +80,68 @@ tqdm>=4.65.0,<5.0.0  # 进度条显示库，用于显示下载进度
 # mypy>=1.0.0,<2.0.0  # 类型检查
 
 # ==================== 安装说明 ====================
-# 1. 确保Python版本 >=3.10
-# 2. 创建并激活虚拟环境：
+# 1. 确保Python版本 >=3.10（推荐使用 Python 3.10, 3.11, 3.12 或 3.13）
+#    检查版本：python --version 或 python3 --version
+# 2. 创建并激活虚拟环境（强烈推荐）：
 #    python -m venv venv
-#    venv\Scripts\activate  # Windows
-#    source venv/bin/activate  # Linux/Mac
-# 3. 更新pip：pip install --upgrade pip setuptools wheel
-# 4. 安装依赖：pip install -r requirements.txt
-#    如果遇到依赖冲突，可以尝试：
-#    pip install --upgrade pip
-#    pip install -r requirements.txt --no-cache-dir
-# 5. 运行应用：python app.py
+#    # Windows (PowerShell):
+#    venv\Scripts\Activate.ps1
+#    # Windows (CMD):
+#    venv\Scripts\activate.bat
+#    # Linux/Mac:
+#    source venv/bin/activate
+# 3. 更新pip和构建工具（提高容错性）：
+#    python -m pip install --upgrade pip setuptools wheel
+# 4. 安装依赖：
+#    pip install -r requirements.txt
+#    如果遇到依赖冲突或安装失败，可以尝试：
+#    - 升级pip: pip install --upgrade pip
+#    - 清理缓存: pip cache purge
+#    - 无缓存安装: pip install -r requirements.txt --no-cache-dir
+#    - 使用国内镜像（如需要）:
+#      pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+# 5. 配置环境变量：
+#    复制 env.example 为 .env 并填入必要的API密钥
+# 6. 初始化数据库（如果需要）：
+#    python database/db_init.py
+# 7. 运行应用：
+#    python app.py
 
 # ==================== 容错说明 ====================
-# - Python版本要求: py3.10+ (Python >= 3.10)
+# - Python版本要求: py3.10+ (Python >= 3.10)，推荐 3.10, 3.11, 3.12, 3.13
 # - 所有依赖使用 >= 而非 ==，允许自动获取安全更新和bug修复
 # - 版本上限设置宽松，避免依赖链冲突，提高容错性
 # - 包含必要的间接依赖，提高安装成功率
 # - 支持Python 3.10, 3.11, 3.12, 3.13等版本
 # - 添加了多个重试库（tenacity, backoff, retry），提供多种容错策略
-# - 显式声明了pip依赖（packaging, setuptools），提高安装稳定性
+# - 显式声明了pip依赖（packaging, setuptools, wheel），提高安装稳定性
 # - 所有版本范围都经过Python 3.10+兼容性验证
 # - 使用宽松的版本范围格式（>=下限,<上限），最大化容错性
+# - exceptiongroup 包确保 Python 3.10 也能使用异常组功能（Python 3.11+原生支持）
+# - 所有依赖都支持向后兼容，确保在不同Python 3.10+版本间平滑迁移
 
 # ==================== 故障排除 ====================
-# 如果安装失败，尝试以下步骤：
-# 1. 升级pip: python -m pip install --upgrade pip
-# 2. 清理缓存: pip cache purge
-# 3. 使用国内镜像源（如需要）:
+# 如果安装失败，尝试以下步骤（按顺序尝试）：
+# 1. 检查Python版本: python --version (需要 >= 3.10)
+#    如果版本过低，请升级Python或使用pyenv等工具管理多版本
+# 2. 升级pip和构建工具:
+#    python -m pip install --upgrade pip setuptools wheel
+# 3. 清理pip缓存:
+#    pip cache purge
+# 4. 使用国内镜像源（如需要，提高下载速度）:
 #    pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
-# 4. 分步安装: 先安装基础依赖，再安装其他依赖
-# 5. 检查Python版本: python --version (需要 >= 3.10)
+#    或使用阿里云镜像: -i https://mirrors.aliyun.com/pypi/simple/
+# 5. 无缓存安装（避免使用损坏的缓存）:
+#    pip install -r requirements.txt --no-cache-dir
+# 6. 分步安装（定位问题依赖）:
+#    先安装基础依赖: pip install Flask flask-cors python-dotenv
+#    再安装其他依赖: pip install -r requirements.txt
+# 7. 检查虚拟环境（确保在正确的环境中安装）:
+#    which python  # Linux/Mac
+#    where python  # Windows
+# 8. 如果仍有问题，尝试使用更宽松的版本约束:
+#    临时修改requirements.txt，移除版本上限（不推荐，仅用于测试）
+# 9. 查看详细错误信息:
+#    pip install -r requirements.txt -v  # 详细输出
+#    pip install -r requirements.txt --log install.log  # 保存日志
 

@@ -22,7 +22,8 @@ init_database()
 try:
     from components.rss.comic_recommend import start_schedule_in_thread
     start_schedule_in_thread()
-    print("番剧推荐定时任务已启动（每天早上8:00执行）")
+    print("(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ 番剧推荐小助手已经启动啦！")
+    print("   会在每天的 8:00、14:00、20:00 和 2:00 准时为你推荐好看的番剧哦~")
 except Exception as e:
     print(f"启动番剧推荐定时任务失败: {e}")
     # 不影响主应用启动

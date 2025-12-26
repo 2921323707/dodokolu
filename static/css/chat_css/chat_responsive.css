@@ -113,4 +113,10 @@
     .send-btn {
         width: 100%;
     }
+
+    /* 移动端装饰图标缩小 */
+    .chat-messages-deco {
+        max-width: 50%;
+        max-height: 50%;
+    }
 }

@@ -25,6 +25,11 @@ chat_bp = Blueprint('chat', __name__, url_prefix='/api')
 @chat_bp.route('/chat', methods=['POST'])
 def chat():
     """处理聊天请求"""
+    # 检查是否登录
+    user_email = session.get('email')
+    if not user_email:
+        return jsonify({'error': '登录了吗，就想榨干我的Token(￣へ￣)'}), 401
+    
     data = request.json
     user_message = data.get('message', '')
     session_id = data.get('session_id', 'default')
@@ -73,7 +78,7 @@ def upload_image():
         # 检查是否登录
         user_email = session.get('email')
         if not user_email:
-            return jsonify({'error': '请先登录'}), 401
+            return jsonify({'error': '登录了吗，就想榨干我的Token(￣へ￣)'}), 401
         
         # 检查文件是否存在
         if 'image' not in request.files:

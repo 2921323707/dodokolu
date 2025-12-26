@@ -36,16 +36,32 @@
     list-style: none;
 }
 
+.nav-links li {
+    transition: outline 0.2s;
+}
+
+.nav-links li:focus-within {
+    outline: 2px solid #ffc0cb;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
 .nav-links a {
     text-decoration: none;
     color: var(--text-secondary);
     font-weight: 500;
-    transition: color 0.2s;
+    transition: color 0.2s, outline 0.2s;
     cursor: pointer;
 }
 
 .nav-links a:hover {
-    color: var(--primary-color);
+    color: #ff69b4;
+}
+
+.nav-links a:focus {
+    outline: 2px solid #ffc0cb;
+    outline-offset: 2px;
+    border-radius: 4px;
 }
 
 .mobile-menu-btn {

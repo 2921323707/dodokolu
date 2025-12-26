@@ -2,6 +2,20 @@
 
 // 发送消息
 async function sendMessage() {
+    // 检查登录状态
+    try {
+        const authResponse = await fetch('/api/auth-status');
+        const authData = await authResponse.json();
+        if (!authData.logged_in) {
+            promptLoginRequired();
+            return;
+        }
+    } catch (error) {
+        console.error('检查登录状态失败:', error);
+        promptLoginRequired();
+        return;
+    }
+
     const chatInput = document.getElementById('chatInput');
     const sendBtn = document.getElementById('sendBtn');
     const message = chatInput.value.trim();
@@ -12,6 +26,8 @@ async function sendMessage() {
 
     // 添加用户消息到界面（如果有图片，显示图片预览）
     let userMessageContent = message;
+    // 保存图片文件引用（在重置前保存）
+    const imageFileToUpload = hasImage ? currentImageFile : null;
     if (hasImage && currentImageUrl) {
         userMessageContent = message || '[图片]';
         // 保存图片URL用于显示预览
@@ -24,13 +40,18 @@ async function sendMessage() {
         addMessage('user', userMessageContent);
     }
 
+    // 立即重置对话框（清空输入框和图片预览）
+    chatInput.value = '';
+    chatInput.style.height = 'auto';
+    removeImage();
+
     // 如果有图片，先上传图片并识别
     let imageDescription = null;
-    if (hasImage) {
+    if (hasImage && imageFileToUpload) {
         try {
             // 上传图片
             const formData = new FormData();
-            formData.append('image', currentImageFile);
+            formData.append('image', imageFileToUpload);
 
             const uploadResponse = await fetch('/api/chat/upload-image', {
                 method: 'POST',
@@ -39,19 +60,32 @@ async function sendMessage() {
 
             if (!uploadResponse.ok) {
                 const errorData = await uploadResponse.json().catch(() => ({}));
-                throw new Error(errorData.error || '图片上传失败');
+                const errorMessage = errorData.error || '图片上传失败';
+                // 如果是未登录错误，调用登录提示函数
+                if (errorMessage.includes('登录了吗') || errorMessage.includes('Token') || uploadResponse.status === 401) {
+                    promptLoginRequired();
+                    return;
+                }
+                throw new Error(errorMessage);
             }
 
             const uploadData = await uploadResponse.json();
             if (!uploadData.success) {
-                throw new Error(uploadData.error || '图片上传失败');
+                const errorMessage = uploadData.error || '图片上传失败';
+                // 如果是未登录错误，调用登录提示函数
+                if (errorMessage.includes('登录了吗') || errorMessage.includes('Token')) {
+                    promptLoginRequired();
+                    return;
+                }
+                throw new Error(errorMessage);
             }
             imageDescription = uploadData.description;
-
-            // 移除图片预览
-            removeImage();
         } catch (error) {
             console.error('图片上传/识别错误:', error);
+            // 如果是未登录错误，已经在上面的处理中跳转了，这里不需要再处理
+            if (error.message && (error.message.includes('登录了吗') || error.message.includes('Token'))) {
+                return;
+            }
             addMessage('assistant', '抱歉，图片处理失败。请稍后重试。');
             isStreaming = false;
             sendBtn.disabled = false;
@@ -59,8 +93,6 @@ async function sendMessage() {
         }
     }
 
-    chatInput.value = '';
-    chatInput.style.height = 'auto';
     sendBtn.disabled = true;
     isStreaming = true;
 
@@ -126,6 +158,13 @@ async function sendMessage() {
         });
 
         if (!response.ok) {
+            // 如果是未登录错误，调用登录提示函数
+            if (response.status === 401) {
+                promptLoginRequired();
+                isStreaming = false;
+                sendBtn.disabled = false;
+                return;
+            }
             throw new Error('请求失败');
         }
 
@@ -147,6 +186,37 @@ async function sendMessage() {
                 if (line.startsWith('data: ')) {
                     try {
                         const data = JSON.parse(line.slice(6));
+                        
+                        // 处理表情包事件
+                        if (data.type === 'emoji' && data.emoji_url) {
+                            console.log('🎭 [前端] 收到表情包事件:', data);
+                            // 创建表情包消息
+                            addMessage('assistant', '', {
+                                imageUrl: data.emoji_url,
+                                imagePreview: true
+                            });
+                            // 如果有二次描述，也显示出来
+                            if (data.secondary_description) {
+                                addMessage('assistant', data.secondary_description);
+                            }
+                            continue;
+                        }
+                        
+                        // 处理收藏图片事件
+                        if (data.type === 'favorite_image' && data.image_url) {
+                            console.log('🖼️ [前端] 收到收藏图片事件:', data);
+                            // 创建收藏图片消息
+                            addMessage('assistant', '', {
+                                imageUrl: data.image_url,
+                                imagePreview: true
+                            });
+                            // 如果有描述，也显示出来
+                            if (data.description) {
+                                addMessage('assistant', data.description);
+                            }
+                            continue;
+                        }
+                        
                         if (data.content) {
                             // 如果是图片响应且首次收到内容，显示"响应成功!"然后消失
                             if (isImageResponse && !firstContentReceived) {
@@ -201,6 +271,10 @@ async function sendMessage() {
         }
     } catch (error) {
         console.error('发送消息错误:', error);
+        // 如果是未登录错误，已经在上面的处理中跳转了，这里不需要再处理
+        if (error.message && (error.message.includes('登录了吗') || error.message.includes('Token'))) {
+            return;
+        }
         addMessage('assistant', '抱歉，发生了错误。请稍后重试。');
         isStreaming = false;
         sendBtn.disabled = false;
@@ -247,7 +321,7 @@ async function clearHistory() {
 
 // 未登录提示封装
 function promptLoginRequired() {
-    alert('请先登录');
+    alert('登录了吗，就想榨干我的Token(￣へ￣)');
     window.location.href = '/login';
 }
 

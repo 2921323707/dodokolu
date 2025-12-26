@@ -72,7 +72,12 @@
 
 .clear-btn:hover {
     background-color: var(--hover-color);
-    border-color: var(--primary-color);
-    color: var(--primary-color);
+    border-color: #ffd700;
+    color: #ffd700;
+}
+
+.clear-btn:focus {
+    outline: none;
+    border-color: #ffd700;
 }
 

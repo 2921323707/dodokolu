@@ -1,12 +1,9 @@
 // 随机加载背景图片
 function loadRandomBackground() {
-    // 5张背景图片
+    // 背景图片（login_back_x.jpg格式）
     const backgroundImages = [
-        '/static/login_back_imgs/bg1.jpg',
-        // '/static/login_back_imgs/bg2.jpg',
-        // '/static/login_back_imgs/bg3.jpg',
-        // '/static/login_back_imgs/bg4.jpg',
-        // '/static/login_back_imgs/bg5.jpg'
+        '/static/imgs/deco/login/login_back_1.jpg',
+        '/static/imgs/deco/login/login_back_2.jpg'
     ];
 
     // 随机选择一张
@@ -29,8 +26,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // 忘记密码功能
 function forgotman() {
-    alert('Please email ssnigdhasiraz22@sirhenryfloyd.co.uk to request a password reset');
+    const modal = document.getElementById('forgotPasswordModal');
+    if (modal) {
+        modal.classList.add('active');
+    }
+    return false;
 }
+
+// 关闭忘记密码模态框
+function closeForgotModal() {
+    const modal = document.getElementById('forgotPasswordModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
+// 点击模态框外部关闭
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('forgotPasswordModal');
+    if (event.target === modal) {
+        closeForgotModal();
+    }
+});
 
 // 用户密码和配置
 // Admin

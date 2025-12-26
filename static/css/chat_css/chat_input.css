@@ -31,7 +31,7 @@
 
 .chat-input:focus {
     outline: none;
-    border-color: var(--primary-color);
+    border-color: #ff69b4;
 }
 
 .send-btn {
@@ -73,7 +73,13 @@
 
 .upload-btn:hover {
     background: var(--bg-secondary);
-    border-color: var(--primary-color);
+    border-color: #ff69b4;
+}
+
+.upload-btn:focus {
+    outline: 2px solid #ffc0cb;
+    outline-offset: 2px;
+    border-color: #ff69b4;
 }
 
 .upload-btn img {

@@ -253,7 +253,8 @@ def start_schedule_in_thread():
         schedule.every().day.at("14:00").do(run_recommendation)
         schedule.every().day.at("20:00").do(run_recommendation)
         schedule.every().day.at("02:00").do(run_recommendation)
-        logger.info("番剧推荐定时任务已在后台启动：每6小时执行（8:00, 14:00, 20:00, 2:00）")
+        logger.info("(◕‿◕) 番剧推荐小助手已经在后台悄悄启动啦~")
+        logger.info("   会在每天的 8:00、14:00、20:00 和 2:00 准时为你推荐好看的番剧哦 (｡◕‿◕｡)")
         
         while True:
             schedule.run_pending()
@@ -261,7 +262,7 @@ def start_schedule_in_thread():
     
     thread = threading.Thread(target=run_schedule, daemon=True)
     thread.start()
-    logger.info("番剧推荐定时任务线程已启动")
+    logger.info("(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ 番剧推荐小助手的守护线程已经启动，正在默默工作呢~")
     return thread
 
 

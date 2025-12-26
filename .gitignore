@@ -1,21 +1,63 @@
 # ==================== Python 相关 ====================
-# Python 缓存文件
+# Python 缓存文件（Python 3.10+ 兼容）
 __pycache__/
+**/__pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+build/
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# 虚拟环境
+# Python 类型检查缓存（Python 3.10+）
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+
+# Python 虚拟环境
 venv/
 env/
 ENV/
-.venv
+env.bak/
+venv.bak/
+.venv/
+.ENV/
 
-# 环境变量文件
+# Python 环境变量文件
 .env
 .env.local
 .env.*.local
+.env.*
+!.env.example
+
+# ==================== 用户上传文件 ====================
+# 用户上传的聊天图片
+static/users/chat_upload/**
+!static/users/chat_upload/.gitkeep
+
+# 用户反馈图片
+static/users/feed_back/**
+!static/users/feed_back/.gitkeep
+
+# 数据库头像文件
+database/avator/**
+!database/avator/.gitkeep
 
 # ==================== 相册图片 ====================
 # 忽略相册目录下的所有图片文件
@@ -29,52 +71,111 @@ static/video/abnormal/fav/*.webm
 static/video/abnormal/fav/*.ogg
 static/video/abnormal/fav/*.mov
 static/video/abnormal/fav/*.avi
+static/video/abnormal/fav/*.mkv
+static/video/abnormal/fav/*.flv
 
 # ==================== 数据库文件 ====================
 *.db
 *.sqlite
 *.sqlite3
+*.db-shm
+*.db-wal
 database/app.db
+database/*.db
+database/*.sqlite
+database/*.sqlite3
 
 # ==================== 日志文件 ====================
 *.log
 *.log.*
+*.log.*.*
 comic_recommend.log
+**/*.log
+logs/
+*.logs
 
 # ==================== IDE 和编辑器 ====================
 # VS Code
 .vscode/
 *.code-workspace
+.vscode-test
 
-# PyCharm
+# PyCharm / IntelliJ IDEA
 .idea/
 *.iml
+*.iws
+*.ipr
+out/
 
 # Sublime Text
 *.sublime-project
 *.sublime-workspace
 
-# Vim
+# Vim / Neovim
 *.swp
 *.swo
 *~
+.vim/
+*.swp
+*.swo
+*.un~
+Session.vim
+.netrwhist
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
 
 # ==================== 操作系统文件 ====================
 # Windows
 Thumbs.db
+Thumbs.db:encryptable
 ehthumbs.db
-Desktop.ini
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
 $RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
 
 # macOS
 .DS_Store
 .AppleDouble
 .LSOverride
+Icon
 ._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
 
 # Linux
 *~
 .directory
+.Trash-*
+.nfs*
 
 # ==================== 临时文件和备份 ====================
 *.tmp
@@ -82,21 +183,78 @@ $RECYCLE.BIN/
 *.bak
 *.backup
 *.old
+*.orig
+*.save
+*.swp
+*.swo
+*~
+.#*
+\#*#
 
-# ==================== 其他 ====================
-# 压缩文件（如果不需要版本控制）
-# *.zip
-# *.tar
-# *.tar.gz
-# *.rar
-
-# 测试覆盖率
+# ==================== 测试和覆盖率 ====================
 .coverage
+.coverage.*
 htmlcov/
+.tox/
+.nox/
 .pytest_cache/
+.hypothesis/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+test-results/
+junit.xml
 
-# 分发/打包
+# ==================== 分发/打包 ====================
 dist/
 build/
 *.egg-info/
+*.egg
+*.whl
+*.tar.gz
+*.zip
+*.rar
+*.7z
+
+# ==================== 安全相关 ====================
+# 密钥文件
+*.key
+*.pem
+*.cert
+*.crt
+secrets/
+.secrets/
+
+# ==================== 其他 ====================
+# 压缩文件（如果不需要版本控制）
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.gz
+
+# 缓存目录
+.cache/
+*.cache
+.pip-cache/
+
+# 性能分析
+*.prof
+*.lprof
+*.pstats
+
+# 文档生成
+docs/_build/
+site/
+
+# 本地配置文件（保留示例文件）
+config.local.*
+settings.local.*
+!config.example.*
+!settings.example.*
 

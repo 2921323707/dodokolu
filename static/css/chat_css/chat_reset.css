@@ -7,9 +7,28 @@
 
 body {
     font-family: var(--font-family);
-    background-color: var(--bg-color);
+    background: linear-gradient(135deg,
+        hsl(340, 60%, 97%) 0%,
+        hsl(270, 40%, 95%) 50%,
+        hsl(150, 40%, 95%) 100%);
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(circle at 70% 20%, hsla(40, 85%, 70%, 0.4) 0%, transparent 35%),
+        radial-gradient(circle at 20% 80%, hsla(342, 65%, 69%, 0.4) 0%, transparent 35%);
+    z-index: -1;
+    pointer-events: none;
 }
 

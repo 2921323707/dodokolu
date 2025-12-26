@@ -1,0 +1,221 @@
+[
+    {
+        "id": "000001",
+        "category": "思考",
+        "description": "小猫表情：你认真的吗？",
+        "visual_description": "小猫表情",
+        "text_content": "你认真的吗？",
+        "usage": "表达质疑、不敢相信",
+        "keywords": [
+            "认真",
+            "真的吗",
+            "质疑",
+            "不敢相信",
+            "开玩笑"
+        ]
+    },
+    {
+        "id": "000002",
+        "category": "动作",
+        "description": "眼巴巴",
+        "visual_description": "眼巴巴的表情",
+        "text_content": null,
+        "usage": "表达期待、渴望",
+        "keywords": [
+            "眼巴巴",
+            "期待",
+            "渴望",
+            "想要"
+        ]
+    },
+    {
+        "id": "000003",
+        "category": "情绪",
+        "description": "喜欢，爱你",
+        "visual_description": "表达喜欢和爱意",
+        "text_content": "喜欢，爱你",
+        "usage": "表达喜欢、爱意",
+        "keywords": [
+            "喜欢",
+            "爱你",
+            "爱意",
+            "喜欢",
+            "爱"
+        ]
+    },
+    {
+        "id": "000004",
+        "category": "思考",
+        "description": "疑惑：什么？",
+        "visual_description": "疑惑的表情",
+        "text_content": "什么？",
+        "usage": "表达疑惑、不解",
+        "keywords": [
+            "疑惑",
+            "什么",
+            "不解",
+            "疑问",
+            "困惑"
+        ]
+    },
+    {
+        "id": "000005",
+        "category": "动作",
+        "description": "做错事后的认错表情包",
+        "visual_description": "认错的表情",
+        "text_content": null,
+        "usage": "做错事后认错、道歉",
+        "keywords": [
+            "认错",
+            "道歉",
+            "做错事",
+            "对不起",
+            "抱歉"
+        ]
+    },
+    {
+        "id": "000006",
+        "category": "动作",
+        "description": "收到！常用于接受别人的指令",
+        "visual_description": "收到指令的表情",
+        "text_content": "收到！",
+        "usage": "接受指令、确认收到",
+        "keywords": [
+            "收到",
+            "接受",
+            "指令",
+            "确认",
+            "明白",
+            "好的"
+        ]
+    },
+    {
+        "id": "000007",
+        "category": "动作",
+        "description": "待描述",
+        "visual_description": null,
+        "text_content": null,
+        "usage": null,
+        "keywords": []
+    },
+    {
+        "id": "000008",
+        "category": "情绪",
+        "description": "强烈表达超级喜欢你（趣味风格）",
+        "visual_description": "趣味风格的表情",
+        "text_content": "超级喜欢你",
+        "usage": "强烈表达喜欢、爱意",
+        "keywords": [
+            "超级喜欢",
+            "喜欢你",
+            "爱意",
+            "强烈",
+            "喜欢"
+        ]
+    },
+    {
+        "id": "000009",
+        "category": "动作",
+        "description": "对用户连续的请求表达无奈",
+        "visual_description": "无奈的表情",
+        "text_content": null,
+        "usage": "表达无奈、无语",
+        "keywords": [
+            "无奈",
+            "无语",
+            "连续请求",
+            "受不了",
+            "疲惫"
+        ]
+    },
+    {
+        "id": "000010",
+        "category": "情绪",
+        "description": "喜欢你：可爱版",
+        "visual_description": "可爱的表情",
+        "text_content": "喜欢你",
+        "usage": "表达喜欢（可爱风格）",
+        "keywords": [
+            "喜欢你",
+            "喜欢",
+            "可爱",
+            "爱意"
+        ]
+    },
+    {
+        "id": "000011",
+        "category": "动作",
+        "description": "一只小熊红着脸：试图勾引",
+        "visual_description": "红着脸的小熊",
+        "text_content": null,
+        "usage": "表达勾引、挑逗",
+        "keywords": [
+            "勾引",
+            "挑逗",
+            "红脸",
+            "害羞",
+            "诱惑"
+        ]
+    },
+    {
+        "id": "000012",
+        "category": "情绪",
+        "description": "一只小猫哭泣：你怎么能欺负我啊",
+        "visual_description": "哭泣的小猫",
+        "text_content": "你怎么能欺负我啊",
+        "usage": "表达委屈、被欺负",
+        "keywords": [
+            "哭泣",
+            "欺负",
+            "委屈",
+            "难过",
+            "伤心"
+        ]
+    },
+    {
+        "id": "000013",
+        "category": "动作",
+        "description": "两眼一闭，当你放屁",
+        "visual_description": "闭眼的表情",
+        "text_content": "两眼一闭，当你放屁",
+        "usage": "表达无视、不在意",
+        "keywords": [
+            "无视",
+            "不在意",
+            "放屁",
+            "闭眼",
+            "忽略"
+        ]
+    },
+    {
+        "id": "000014",
+        "category": "动作",
+        "description": "一只仓鼠劝你别熬夜，常用于告诉别人少熬夜",
+        "visual_description": "仓鼠",
+        "text_content": "别熬夜",
+        "usage": "劝告别人不要熬夜",
+        "keywords": [
+            "熬夜",
+            "劝告",
+            "健康",
+            "休息",
+            "睡觉"
+        ]
+    },
+    {
+        "id": "000015",
+        "category": "动作",
+        "description": "一只小猫拿着扳手修理汽车：师傅你是做什么工作的，常用于被询问技能",
+        "visual_description": "小猫拿着扳手修理汽车",
+        "text_content": "师傅你是做什么工作的",
+        "usage": "被询问技能、职业时使用",
+        "keywords": [
+            "技能",
+            "工作",
+            "职业",
+            "师傅",
+            "修理",
+            "能力"
+        ]
+    }
+]
