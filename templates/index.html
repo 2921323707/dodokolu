@@ -56,9 +56,19 @@
                 </div>
             </div>
             <div class="chat-input-area">
+                <div id="imagePreview" class="image-preview" style="display: none;">
+                    <img id="previewImg" src="" alt="预览">
+                    <button class="remove-image-btn" onclick="removeImage()">×</button>
+                </div>
                 <div class="input-container">
-                    <textarea id="chatInput" class="chat-input" placeholder="点击输入" rows="1"
-                        onkeydown="handleKeyDown(event)"></textarea>
+                    <div class="input-wrapper">
+                        <textarea id="chatInput" class="chat-input" placeholder="点击输入" rows="1"
+                            onkeydown="handleKeyDown(event)"></textarea>
+                        <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                        <button class="upload-btn" id="uploadBtn" onclick="document.getElementById('imageUpload').click()" title="上传图片">
+                            <img src="{{ url_for('static', filename='imgs/icon/upload.png') }}" alt="上传">
+                        </button>
+                    </div>
                     <button class="send-btn" id="sendBtn" onclick="sendMessage()">send</button>
                 </div>
             </div>

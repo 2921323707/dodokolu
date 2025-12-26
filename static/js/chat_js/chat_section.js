@@ -5,23 +5,109 @@ async function sendMessage() {
     const chatInput = document.getElementById('chatInput');
     const sendBtn = document.getElementById('sendBtn');
     const message = chatInput.value.trim();
+    const hasImage = currentImageFile !== null;
 
-    if (!message || isStreaming) return;
+    // 如果没有消息也没有图片，则不发送
+    if ((!message && !hasImage) || isStreaming) return;
 
-    // 添加用户消息到界面
-    addMessage('user', message);
+    // 添加用户消息到界面（如果有图片，显示图片预览）
+    let userMessageContent = message;
+    if (hasImage && currentImageUrl) {
+        userMessageContent = message || '[图片]';
+        // 保存图片URL用于显示预览
+        const imageUrlForPreview = currentImageUrl;
+        addMessage('user', userMessageContent, {
+            imagePreview: true,
+            imageUrl: imageUrlForPreview
+        });
+    } else {
+        addMessage('user', userMessageContent);
+    }
+
+    // 如果有图片，先上传图片并识别
+    let imageDescription = null;
+    if (hasImage) {
+        try {
+            // 上传图片
+            const formData = new FormData();
+            formData.append('image', currentImageFile);
+
+            const uploadResponse = await fetch('/api/chat/upload-image', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!uploadResponse.ok) {
+                const errorData = await uploadResponse.json().catch(() => ({}));
+                throw new Error(errorData.error || '图片上传失败');
+            }
+
+            const uploadData = await uploadResponse.json();
+            if (!uploadData.success) {
+                throw new Error(uploadData.error || '图片上传失败');
+            }
+            imageDescription = uploadData.description;
+
+            // 移除图片预览
+            removeImage();
+        } catch (error) {
+            console.error('图片上传/识别错误:', error);
+            addMessage('assistant', '抱歉，图片处理失败。请稍后重试。');
+            isStreaming = false;
+            sendBtn.disabled = false;
+            return;
+        }
+    }
+
     chatInput.value = '';
     chatInput.style.height = 'auto';
     sendBtn.disabled = true;
     isStreaming = true;
 
     try {
-        // 创建AI消息占位符，等待流式内容时显示加载动画
-        const assistantMessageId = addMessage('assistant', '', { loading: true });
+        // 如果有图片，先显示识别提示
+        let assistantMessageId;
+        let isImageResponse = false;
+        if (hasImage && imageDescription) {
+            isImageResponse = true;
+            // 立即显示提示信息
+            assistantMessageId = addMessage('assistant', '[检测到图片，给我点时间，让我看看]', { loading: false });
+            // 等待一小段时间让用户看到提示
+            await new Promise(resolve => setTimeout(resolve, 800));
+
+            // 更新为等待动画
+            const messageDiv = document.getElementById(assistantMessageId);
+            if (messageDiv) {
+                const messageContent = messageDiv.querySelector('.message-content');
+                const messageText = messageDiv.querySelector('.message-text');
+                if (messageContent && messageText) {
+                    messageText.textContent = '';
+                    const loadingWrap = document.createElement('div');
+                    loadingWrap.className = 'message-loading';
+                    loadingWrap.innerHTML = `
+                        <span class="loader-dot"></span>
+                        <span class="loader-dot"></span>
+                        <span class="loader-dot"></span>
+                    `;
+                    messageContent.appendChild(loadingWrap);
+                    messageDiv.dataset.loading = 'true';
+                }
+            }
+        } else {
+            assistantMessageId = addMessage('assistant', '', { loading: true });
+        }
 
         // 检查是否需要包含位置信息（如果消息与天气相关）
         const locationContext = isWeatherRelated(message) ? getLocationContext() : null;
-        
+
+        // 构建最终消息（包含图片描述）
+        let finalMessage = message;
+        if (imageDescription) {
+            finalMessage = message
+                ? `${message}\n\n[图片内容：${imageDescription}]`
+                : `[图片内容：${imageDescription}]`;
+        }
+
         // 发送请求到后端
         const response = await fetch('/api/chat', {
             method: 'POST',
@@ -29,7 +115,7 @@ async function sendMessage() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                message: message,
+                message: finalMessage,
                 session_id: sessionId,
                 mode: currentMode,
                 location: userLocation ? {
@@ -47,6 +133,7 @@ async function sendMessage() {
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         let buffer = '';
+        let firstContentReceived = false;
 
         while (true) {
             const { done, value } = await reader.read();
@@ -61,7 +148,46 @@ async function sendMessage() {
                     try {
                         const data = JSON.parse(line.slice(6));
                         if (data.content) {
-                            appendToMessage(assistantMessageId, data.content);
+                            // 如果是图片响应且首次收到内容，显示"响应成功!"然后消失
+                            if (isImageResponse && !firstContentReceived) {
+                                firstContentReceived = true;
+                                const messageDiv = document.getElementById(assistantMessageId);
+                                if (messageDiv) {
+                                    const messageContent = messageDiv.querySelector('.message-content');
+                                    const loadingWrap = messageDiv.querySelector('.message-loading');
+                                    const messageText = messageDiv.querySelector('.message-text');
+
+                                    if (messageContent && loadingWrap && messageText) {
+                                        // 移除加载动画
+                                        loadingWrap.remove();
+                                        // 显示"响应成功!"
+                                        messageText.textContent = '响应成功!';
+                                        messageText.style.display = '';
+                                        messageText.classList.add('response-success');
+
+                                        // 等待显示一段时间后缓慢消失
+                                        await new Promise(resolve => setTimeout(resolve, 1000));
+
+                                        // 添加淡出动画
+                                        messageText.style.transition = 'opacity 0.5s ease-out';
+                                        messageText.style.opacity = '0';
+
+                                        await new Promise(resolve => setTimeout(resolve, 500));
+
+                                        // 清空内容，准备流式输出
+                                        messageText.textContent = '';
+                                        messageText.style.opacity = '1';
+                                        messageText.style.transition = '';
+                                        messageText.classList.remove('response-success');
+                                        delete messageDiv.dataset.loading;
+                                    }
+                                }
+                                // 第一次内容也要输出（从头开始）
+                                appendToMessage(assistantMessageId, data.content);
+                            } else {
+                                // 追加内容（流式输出）
+                                appendToMessage(assistantMessageId, data.content);
+                            }
                         }
                         if (data.done) {
                             isStreaming = false;
@@ -169,7 +295,7 @@ async function toggleMode() {
     if (modeText) {
         modeText.textContent = currentMode;
     }
-    
+
     // 更新按钮样式
     if (modeToggleBtn) {
         if (currentMode === 'normal') {

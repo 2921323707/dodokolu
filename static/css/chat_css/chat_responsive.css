@@ -80,6 +80,36 @@
         align-items: stretch;
     }
 
+    .input-wrapper {
+        position: relative;
+        flex: 1;
+        display: block;
+    }
+
+    .chat-input {
+        padding-right: 3.5rem; /* 为上传按钮留出空间 */
+    }
+
+    .upload-btn {
+        position: absolute;
+        right: 0.75rem;
+        top: calc(50% - 2px);
+        transform: translateY(-50%) translateX(-2px);
+        width: 36px;
+        height: 36px;
+        border: none;
+        background: transparent;
+    }
+
+    .upload-btn img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .upload-btn:hover {
+        background: var(--bg-secondary);
+    }
+
     .send-btn {
         width: 100%;
     }

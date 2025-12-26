@@ -2,7 +2,7 @@
 
 // 添加消息到界面
 function addMessage(role, content = '', options = {}) {
-    const { loading = false } = options;
+    const { loading = false, imageUrl = null, imagePreview = false } = options;
     const chatMessages = document.getElementById('chatMessages');
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${role}`;
@@ -15,6 +15,21 @@ function addMessage(role, content = '', options = {}) {
 
     const messageContent = document.createElement('div');
     messageContent.className = 'message-content';
+
+    // 如果有图片预览，在气泡左上角显示
+    if (imagePreview && imageUrl && role === 'user') {
+        const imagePreviewDiv = document.createElement('div');
+        imagePreviewDiv.className = 'message-image-preview';
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        img.alt = '图片预览';
+        imagePreviewDiv.appendChild(img);
+        messageContent.appendChild(imagePreviewDiv);
+        messageContent.classList.add('with-image-preview');
+        
+        // 从内容中移除 [图片] 标记
+        content = content.replace(/\n?\[图片\]/g, '').trim();
+    }
 
     const messageText = document.createElement('div');
     messageText.className = 'message-text';

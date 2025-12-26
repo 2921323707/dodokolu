@@ -22,8 +22,9 @@ ENV/
 static/imgs/album/**
 
 # ==================== 视频资源 ====================
-# 忽略视频目录下的所有视频文件
-static/video/abnormal/fav/*.mp4
+# 忽略所有 mp4 文件
+*.mp4
+# 忽略视频目录下的其他视频文件
 static/video/abnormal/fav/*.webm
 static/video/abnormal/fav/*.ogg
 static/video/abnormal/fav/*.mov
