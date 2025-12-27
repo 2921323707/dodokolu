@@ -7,6 +7,8 @@
     top: 0;
     z-index: 100;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .navbar-content {
@@ -41,16 +43,14 @@
 }
 
 .nav-links li:focus-within {
-    outline: 2px solid #ffc0cb;
-    outline-offset: 2px;
-    border-radius: 4px;
+    outline: none;
 }
 
 .nav-links a {
     text-decoration: none;
     color: var(--text-secondary);
     font-weight: 500;
-    transition: color 0.2s, outline 0.2s;
+    transition: color 0.2s;
     cursor: pointer;
 }
 
@@ -58,10 +58,9 @@
     color: #ff69b4;
 }
 
-.nav-links a:focus {
-    outline: 2px solid #ffc0cb;
-    outline-offset: 2px;
-    border-radius: 4px;
+.nav-links a:focus,
+.nav-links a:active {
+    outline: none;
 }
 
 .mobile-menu-btn {
@@ -72,4 +71,3 @@
     cursor: pointer;
     color: var(--text-primary);
 }
-

@@ -12,8 +12,18 @@
 }
 
 @media (max-width: 768px) {
+    .navbar {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 1rem;
+        box-sizing: border-box;
+    }
+
     .navbar-content {
         padding: 0.5rem 1rem;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     .nav-links {
@@ -38,8 +48,14 @@
     }
 
     .container {
-        padding: 1rem 0.75rem;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 1rem 0.75rem !important;
         gap: 1rem;
+        margin: 0 auto !important;
+        box-sizing: border-box;
+        display: block !important;
+        grid-template-columns: none !important;
     }
 
     /* 管理员页面容器在移动端全屏 - 使用更具体的选择器 */
@@ -63,8 +79,12 @@
     }
 
     .chat-section {
+        width: 100% !important;
+        max-width: 100% !important;
         height: calc(100vh - 100px);
         min-height: 500px;
+        margin: 0 auto;
+        box-sizing: border-box;
     }
 
     .message {
@@ -73,17 +93,24 @@
 
     .chat-input-area {
         padding: 1rem;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .input-container {
         flex-direction: column;
         align-items: stretch;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .input-wrapper {
         position: relative;
         flex: 1;
         display: block;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
     }
 
     .chat-input {

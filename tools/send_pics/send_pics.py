@@ -27,14 +27,13 @@ def send_emoji(
     
     根据AI的回复内容匹配相关表情包，按照指定概率发送。
     如果匹配到表情包，会停留指定时间后返回表情包信息。
-    有50%概率对发送的表情包进行二次描述。
     
     Args:
         assistant_message: AI的回复内容，用于匹配相关表情包（优先使用）
         user_message: 用户消息内容（向后兼容，不推荐使用）
         probability: 发送表情包的概率（默认0.9，即90%）
         delay: 停留时间（秒，默认0.8）
-        describe_probability: 二次描述的概率（默认0.5，即50%）
+        describe_probability: 二次描述的概率（已废弃，保留以兼容旧代码）
     
     Returns:
         dict: 包含表情包信息的字典，如果没有发送则返回空字典
@@ -122,17 +121,6 @@ def send_emoji(
         "matched_score": matched_score,
         "delay": delay
     }
-    
-    # 50%概率进行二次描述
-    describe_random = random.random()
-    print(f"🎲 二次描述随机值: {describe_random:.3f} (阈值: {describe_probability:.3f})")
-    
-    if describe_random <= describe_probability:
-        result["secondary_description"] = f"发送了表情包：{selected.get('description', '无描述')}"
-        print(f"💬 将进行二次描述: {result['secondary_description']}")
-    else:
-        result["secondary_description"] = None
-        print("💬 不进行二次描述")
     
     print(f"\n✅ 表情包发送成功！")
     print("="*60 + "\n")

@@ -195,10 +195,6 @@ async function sendMessage() {
                                 imageUrl: data.emoji_url,
                                 imagePreview: true
                             });
-                            // 如果有二次描述，也显示出来
-                            if (data.secondary_description) {
-                                addMessage('assistant', data.secondary_description);
-                            }
                             continue;
                         }
                         

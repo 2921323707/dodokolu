@@ -66,6 +66,7 @@ def stream_completion(messages, session_id, location=None):
     max_tool_calls = 5
     tool_call_count = 0
     pending_favorite_image = None  # 保存待发送的收藏图片信息（跨循环）
+    pending_emoji = None  # 保存待发送的表情包信息（跨循环）
     accumulated_content = ""  # 累积已输出的内容，用于在工具调用后避免重复
     
     # 初始化消息列表（不包含系统提示词，系统提示词会在每次循环中动态更新）
@@ -197,20 +198,17 @@ def stream_completion(messages, session_id, location=None):
                 # 执行工具
                 tool_result = execute_tool(tool_name, arguments)
                 
-                # 特殊处理 send_emoji 工具：如果发送了表情包，需要特殊格式返回
+                # 特殊处理 send_emoji 工具：保存表情包信息，等待流式输出完成后发送
                 if tool_name == "send_emoji" and isinstance(tool_result, dict) and tool_result.get("sent"):
-                    print(f"📤 [后端] 准备发送表情包事件到前端")
-                    # 发送表情包事件给前端
-                    emoji_data = {
+                    print(f"📤 [后端] 检测到表情包工具调用，将延迟到流式输出完成后发送")
+                    # 保存表情包信息到全局变量，稍后发送
+                    pending_emoji = {
                         "type": "emoji",
                         "emoji_id": tool_result.get("emoji_id"),
                         "emoji_url": tool_result.get("emoji_url"),
                         "category": tool_result.get("category"),
-                        "description": tool_result.get("description"),
-                        "secondary_description": tool_result.get("secondary_description")
+                        "description": tool_result.get("description")
                     }
-                    print(f"📤 [后端] 表情包事件数据: {json.dumps(emoji_data, ensure_ascii=False)}")
-                    yield f"data: {json.dumps(emoji_data, ensure_ascii=False)}\n\n"
                 
                 # 特殊处理 send_favorite_image 工具：保存图片信息，等待流式输出完成后发送
                 if tool_name == "send_favorite_image" and isinstance(tool_result, dict) and tool_result.get("sent"):
@@ -248,6 +246,12 @@ def stream_completion(messages, session_id, location=None):
             # 发送完成标记
             yield f"data: {json.dumps({'content': '', 'done': True}, ensure_ascii=False)}\n\n"
             
+            # 如果有待发送的表情包，在流式输出完成后发送
+            if pending_emoji:
+                print(f"📤 [后端] 流式输出完成，准备发送表情包事件到前端")
+                print(f"📤 [后端] 表情包事件数据: {json.dumps(pending_emoji, ensure_ascii=False)}")
+                yield f"data: {json.dumps(pending_emoji, ensure_ascii=False)}\n\n"
+            
             # 如果有待发送的收藏图片，在流式输出完成后停顿1秒再发送
             if pending_favorite_image:
                 print(f"⏳ [后端] 流式输出完成，等待1秒后发送收藏图片...")
@@ -267,6 +271,12 @@ def stream_completion(messages, session_id, location=None):
         
         # 发送完成标记
         yield f"data: {json.dumps({'content': '', 'done': True}, ensure_ascii=False)}\n\n"
+        
+        # 如果有待发送的表情包，在流式输出完成后发送
+        if pending_emoji:
+            print(f"📤 [后端] 流式输出完成，准备发送表情包事件到前端")
+            print(f"📤 [后端] 表情包事件数据: {json.dumps(pending_emoji, ensure_ascii=False)}")
+            yield f"data: {json.dumps(pending_emoji, ensure_ascii=False)}\n\n"
         
         # 如果有待发送的收藏图片，在流式输出完成后停顿1秒再发送
         if pending_favorite_image:
