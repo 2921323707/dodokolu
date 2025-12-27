@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify, session
 from database import get_db_connection
+from route.config.llm.history import create_history_file
 import sqlite3
 
 auth_bp = Blueprint('auth', __name__)
@@ -90,6 +91,13 @@ def register_api():
                 VALUES (?, ?, ?, ?)
             ''', (username, password, email, 0))
             conn.commit()
+            
+            # 创建用户的历史记录文件
+            try:
+                create_history_file(email)
+            except Exception as e:
+                print(f'创建历史记录文件失败: {e}')
+                # 不影响注册流程，仅记录错误
             
             return jsonify({'success': True, 'message': '注册成功'})
         except sqlite3.IntegrityError:

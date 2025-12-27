@@ -16,10 +16,12 @@ from route.config.llm.prompt import (
 )
 
 from route.config.llm.history import (
-    conversation_history,
     get_conversation_history,
     save_message,
-    clear_history
+    clear_history,
+    create_history_file,
+    set_current_file,
+    get_current_file
 )
 
 from route.config.llm.integration import (
@@ -34,7 +36,7 @@ from route.config.llm.model import (
 )
 
 # 为了向后兼容，提供旧的函数接口
-def llm_stream(messages, session_id, mode='unnormal', location=None):
+def llm_stream(messages, session_id, mode='unnormal', location=None, email=None):
     """
     根据模式选择不同的LLM流式输出函数（向后兼容接口）
     
@@ -43,11 +45,12 @@ def llm_stream(messages, session_id, mode='unnormal', location=None):
         session_id: 会话ID
         mode: 模式，'normal' 或 'unnormal'，默认为 'unnormal'
         location: 用户位置信息（可选），包含latitude和longitude
+        email: 用户邮箱（用于历史记录存储）
     
     Returns:
         生成器，产生流式响应
     """
-    return stream_llm_response(messages, session_id, model_name=mode, location=location)
+    return stream_llm_response(messages, session_id, model_name=mode, location=location, email=email)
 
 
 def llm_stream_normal(messages, session_id, location=None):
@@ -72,7 +75,8 @@ __all__ = [
     # 提示词
     'SYSTEM_PROMPT_BASE', 'NORMAL_SYSTEM_PROMPT_BASE', 'get_system_prompt_with_time',
     # 历史管理
-    'conversation_history', 'get_conversation_history', 'save_message', 'clear_history',
+    'get_conversation_history', 'save_message', 'clear_history', 'create_history_file',
+    'set_current_file', 'get_current_file',
     # 集成接口
     'stream_llm_response', 'get_available_models', 'switch_model',
     # 模型管理

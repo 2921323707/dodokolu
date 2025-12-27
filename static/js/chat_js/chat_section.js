@@ -186,7 +186,7 @@ async function sendMessage() {
                 if (line.startsWith('data: ')) {
                     try {
                         const data = JSON.parse(line.slice(6));
-                        
+
                         // 处理表情包事件
                         if (data.type === 'emoji' && data.emoji_url) {
                             console.log('🎭 [前端] 收到表情包事件:', data);
@@ -197,7 +197,7 @@ async function sendMessage() {
                             });
                             continue;
                         }
-                        
+
                         // 处理收藏图片事件
                         if (data.type === 'favorite_image' && data.image_url) {
                             console.log('🖼️ [前端] 收到收藏图片事件:', data);
@@ -212,7 +212,22 @@ async function sendMessage() {
                             }
                             continue;
                         }
-                        
+
+                        // 处理视频消息事件
+                        if (data.type === 'video' && data.video_url) {
+                            console.log('🎬 [前端] 收到视频消息事件:', data);
+                            // 创建视频消息
+                            addMessage('assistant', '', {
+                                videoUrl: data.video_url,
+                                videoPreview: true
+                            });
+                            // 如果有描述，也显示出来
+                            if (data.description) {
+                                addMessage('assistant', data.description);
+                            }
+                            continue;
+                        }
+
                         if (data.content) {
                             // 如果是图片响应且首次收到内容，显示"响应成功!"然后消失
                             if (isImageResponse && !firstContentReceived) {
@@ -285,7 +300,7 @@ async function loadHistory() {
 
         if (data.history && data.history.length > 0) {
             const chatMessages = document.getElementById('chatMessages');
-            
+
             // 移除消息元素和备注框，保留装饰图片
             const messages = chatMessages.querySelectorAll('.message');
             messages.forEach(msg => msg.remove());
@@ -382,6 +397,8 @@ async function toggleMode() {
 
     // 切换模式时重置会话：新 sessionId + 清空历史
     sessionId = createSessionId();
+    // 重置时重新随机选择头像
+    currentAvatarIndex = Math.floor(Math.random() * 5) + 1;
     try {
         await fetch(`/api/clear/${previousSessionId}`, { method: 'POST' });
     } catch (error) {

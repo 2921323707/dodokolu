@@ -8,7 +8,7 @@ from route.config.llm.model import get_model_handler
 from route.config.llm.setting import DEFAULT_MODE
 
 
-def stream_llm_response(messages, session_id, model_name=None, location=None):
+def stream_llm_response(messages, session_id, model_name=None, location=None, email=None):
     """
     统一的 LLM 流式输出接口
     
@@ -18,6 +18,7 @@ def stream_llm_response(messages, session_id, model_name=None, location=None):
         model_name: 模型名称，如果为None则使用默认模型
                    可选值: 'openrouter', 'deepseek', 'unnormal', 'normal'
         location: 用户位置信息（可选），包含latitude和longitude
+        email: 用户邮箱（用于历史记录存储）
     
     Yields:
         str: SSE格式的流式响应数据
@@ -38,8 +39,8 @@ def stream_llm_response(messages, session_id, model_name=None, location=None):
     # 获取对应的模型处理器
     handler = get_model_handler(model_name)
     
-    # 调用模型处理器
-    yield from handler(messages, session_id, location)
+    # 调用模型处理器，传递用户邮箱
+    yield from handler(messages, session_id, location, email)
 
 
 def get_available_models():

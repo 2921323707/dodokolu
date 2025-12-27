@@ -12,7 +12,7 @@ from route.config.llm import (
     # 提示词
     SYSTEM_PROMPT_BASE, NORMAL_SYSTEM_PROMPT_BASE, get_system_prompt_with_time,
     # 历史管理
-    conversation_history, get_conversation_history, save_message, clear_history,
+    get_conversation_history, save_message, clear_history, create_history_file,
     # LLM处理
     llm_stream, llm_stream_normal, llm_stream_unnormal,
     # 集成接口
@@ -29,7 +29,7 @@ __all__ = [
     # 提示词
     'SYSTEM_PROMPT_BASE', 'NORMAL_SYSTEM_PROMPT_BASE', 'get_system_prompt_with_time',
     # 历史管理
-    'conversation_history', 'get_conversation_history', 'save_message', 'clear_history',
+    'get_conversation_history', 'save_message', 'clear_history', 'create_history_file',
     # LLM处理
     'llm_stream', 'llm_stream_normal', 'llm_stream_unnormal',
     # 集成接口

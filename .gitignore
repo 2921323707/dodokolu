@@ -74,6 +74,29 @@ static/video/abnormal/fav/*.avi
 static/video/abnormal/fav/*.mkv
 static/video/abnormal/fav/*.flv
 
+# ==================== 3D模型和素材文件 ====================
+# 3D模型文件
+*.fbx
+*.max
+*.pmx
+*.pmd
+*.x
+*.obj
+*.dae
+*.blend
+*.blend1
+# 纹理和材质文件
+*.tif
+*.tiff
+*.hdr
+*.exr
+*.dds
+# 其他3D相关文件
+*.ma
+*.mb
+*.3ds
+*.3dm
+
 # ==================== 数据库文件 ====================
 *.db
 *.sqlite
@@ -257,4 +280,23 @@ config.local.*
 settings.local.*
 !config.example.*
 !settings.example.*
+
+# ==================== 历史记录和聊天数据 ====================
+# 用户聊天历史记录（完全屏蔽所有聊天记录文件和目录）
+# 忽略整个聊天历史目录下的所有内容（包括所有子目录和文件）
+database/history/chat_history/**
+# 但保留 .gitkeep 文件（如果需要保留目录结构）
+!database/history/chat_history/.gitkeep
+!database/history/.gitkeep
+
+# RSS数据文件（保留目录结构）
+components/rss/data/*.txt
+components/rss/data/json/*.json
+!components/rss/data/.gitkeep
+!components/rss/data/json/.gitkeep
+
+# ==================== 素材中转站 ====================
+# 忽略素材中转目录下的所有文件（保留目录结构）
+static/imgs/素材中转/**
+!static/imgs/素材中转/.gitkeep
 

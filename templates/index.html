@@ -50,8 +50,8 @@
             <div class="chat-messages" id="chatMessages">
                 <img src="{{ url_for('static', filename='imgs/deco/chat_index/chat_index_deco3.png') }}" alt="装饰"
                     class="chat-messages-deco">
-                <div class="message assistant">
-                    <div class="message-avatar">AI</div>
+                <div class="message assistant" id="initialMessage">
+                    <div class="message-avatar" id="initialAvatar">AI</div>
                     <div class="message-content">
                         <div class="message-text">期待你的输入ing...</div>
                     </div>
@@ -78,6 +78,22 @@
         </section>
 
     </main>
+
+    <!-- 图片查看模态框 -->
+    <div id="imageModal" class="image-modal" onclick="closeImageModal(event)">
+        <div class="image-modal-content">
+            <button class="image-modal-close" onclick="closeImageModal(event)">×</button>
+            <img id="modalImage" src="" alt="图片详情">
+        </div>
+    </div>
+
+    <!-- 视频查看模态框 -->
+    <div id="videoModal" class="video-modal" onclick="closeVideoModal(event)">
+        <div class="video-modal-content">
+            <button class="video-modal-close" onclick="closeVideoModal(event)">×</button>
+            <video id="modalVideo" src="" controls></video>
+        </div>
+    </div>
 
     <!-- JavaScript 文件按功能模块拆分 -->
     <script src="{{ url_for('static', filename='js/chat_js/chat_variables.js') }}"></script>

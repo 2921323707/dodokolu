@@ -2,7 +2,7 @@
 
 // 添加消息到界面
 function addMessage(role, content = '', options = {}) {
-    const { loading = false, imageUrl = null, imagePreview = false } = options;
+    const { loading = false, imageUrl = null, imagePreview = false, videoUrl = null, videoPreview = false } = options;
     const chatMessages = document.getElementById('chatMessages');
 
     // 如果有图片预览，创建图片消息（支持用户和AI）
@@ -16,9 +16,14 @@ function addMessage(role, content = '', options = {}) {
         const imageMessageId = 'msg_' + Date.now() + '_' + Math.random();
         imageMessageDiv.id = imageMessageId;
 
-        const imageAvatar = document.createElement('div');
-        imageAvatar.className = 'message-avatar';
-        imageAvatar.textContent = role === 'user' ? '我' : 'AI';
+        const imageAvatar = role === 'user'
+            ? (() => {
+                const avatar = document.createElement('div');
+                avatar.className = 'message-avatar';
+                avatar.textContent = '我';
+                return avatar;
+            })()
+            : createAIAvatarElement();
 
         const imageMessageContent = document.createElement('div');
         imageMessageContent.className = 'message-content message-image-content';
@@ -28,6 +33,11 @@ function addMessage(role, content = '', options = {}) {
         const img = document.createElement('img');
         img.src = imageUrl;
         img.alt = '图片';
+        // 为图片添加点击事件，打开模态框
+        img.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openImageModal(imageUrl);
+        });
         imagePreviewDiv.appendChild(img);
         imageMessageContent.appendChild(imagePreviewDiv);
 
@@ -43,9 +53,14 @@ function addMessage(role, content = '', options = {}) {
             textMessageId = 'msg_' + Date.now() + '_' + Math.random();
             textMessageDiv.id = textMessageId;
 
-            const textAvatar = document.createElement('div');
-            textAvatar.className = 'message-avatar';
-            textAvatar.textContent = role === 'user' ? '我' : 'AI';
+            const textAvatar = role === 'user'
+                ? (() => {
+                    const avatar = document.createElement('div');
+                    avatar.className = 'message-avatar';
+                    avatar.textContent = '我';
+                    return avatar;
+                })()
+                : createAIAvatarElement();
 
             const textMessageContent = document.createElement('div');
             textMessageContent.className = 'message-content';
@@ -67,15 +82,101 @@ function addMessage(role, content = '', options = {}) {
         return textMessageId || imageMessageId;
     }
 
-    // 正常消息处理（没有图片预览）
+    // 如果有视频预览，创建视频消息（支持AI发送）
+    if (videoPreview && videoUrl) {
+        // 从内容中移除 [视频] 标记
+        const textContent = content.replace(/\n?\[视频\]/g, '').trim();
+
+        // 创建视频消息（只显示视频）
+        const videoMessageDiv = document.createElement('div');
+        videoMessageDiv.className = `message ${role} message-video-only`;
+        const videoMessageId = 'msg_' + Date.now() + '_' + Math.random();
+        videoMessageDiv.id = videoMessageId;
+
+        const videoAvatar = role === 'user'
+            ? (() => {
+                const avatar = document.createElement('div');
+                avatar.className = 'message-avatar';
+                avatar.textContent = '我';
+                return avatar;
+            })()
+            : createAIAvatarElement();
+
+        const videoMessageContent = document.createElement('div');
+        videoMessageContent.className = 'message-content message-video-content';
+
+        const videoPreviewDiv = document.createElement('div');
+        videoPreviewDiv.className = 'message-video-preview-full';
+        const video = document.createElement('video');
+        video.src = videoUrl;
+        video.controls = true;
+        video.style.maxWidth = '100%';
+        video.style.maxHeight = '400px';
+        video.style.borderRadius = '8px';
+        video.style.cursor = 'pointer';
+        // 为视频添加点击事件，打开模态框
+        video.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openVideoModal(videoUrl);
+        });
+        videoPreviewDiv.appendChild(video);
+        videoMessageContent.appendChild(videoPreviewDiv);
+
+        videoMessageDiv.appendChild(videoAvatar);
+        videoMessageDiv.appendChild(videoMessageContent);
+        chatMessages.appendChild(videoMessageDiv);
+
+        // 如果有文本内容，创建文本消息（只显示文本）
+        let textMessageId = null;
+        if (textContent) {
+            const textMessageDiv = document.createElement('div');
+            textMessageDiv.className = `message ${role}`;
+            textMessageId = 'msg_' + Date.now() + '_' + Math.random();
+            textMessageDiv.id = textMessageId;
+
+            const textAvatar = role === 'user'
+                ? (() => {
+                    const avatar = document.createElement('div');
+                    avatar.className = 'message-avatar';
+                    avatar.textContent = '我';
+                    return avatar;
+                })()
+                : createAIAvatarElement();
+
+            const textMessageContent = document.createElement('div');
+            textMessageContent.className = 'message-content';
+
+            const messageText = document.createElement('div');
+            messageText.className = 'message-text';
+            messageText.textContent = textContent;
+
+            textMessageContent.appendChild(messageText);
+            textMessageDiv.appendChild(textAvatar);
+            textMessageDiv.appendChild(textMessageContent);
+            chatMessages.appendChild(textMessageDiv);
+        }
+
+        // 滚动到底部
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        // 返回文本消息的 ID（如果有），否则返回视频消息的 ID
+        return textMessageId || videoMessageId;
+    }
+
+    // 正常消息处理（没有图片或视频预览）
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${role}`;
     const messageId = 'msg_' + Date.now() + '_' + Math.random();
     messageDiv.id = messageId;
 
-    const avatar = document.createElement('div');
-    avatar.className = 'message-avatar';
-    avatar.textContent = role === 'user' ? '我' : 'AI';
+    const avatar = role === 'user'
+        ? (() => {
+            const av = document.createElement('div');
+            av.className = 'message-avatar';
+            av.textContent = '我';
+            return av;
+        })()
+        : createAIAvatarElement();
 
     const messageContent = document.createElement('div');
     messageContent.className = 'message-content';
@@ -159,12 +260,15 @@ function resetMessages() {
         const initialMessage = document.createElement('div');
         initialMessage.className = 'message assistant';
         initialMessage.id = messageId;
-        initialMessage.innerHTML = `
-            <div class="message-avatar">AI</div>
-            <div class="message-content">
-                <div class="message-text">期待你的输入ing...</div>
-            </div>
-        `;
+        const avatar = createAIAvatarElement();
+        initialMessage.appendChild(avatar);
+        const messageContent = document.createElement('div');
+        messageContent.className = 'message-content';
+        const messageText = document.createElement('div');
+        messageText.className = 'message-text';
+        messageText.textContent = '期待你的输入ing...';
+        messageContent.appendChild(messageText);
+        initialMessage.appendChild(messageContent);
         chatMessages.appendChild(initialMessage);
 
         // 滚动到底部
@@ -300,13 +404,14 @@ function addMessageNote(messageElement, options = {}) {
 function createSkillsNote(role = 'assistant', messageId = null) {
     const skills = [
         '获取天气信息：告诉我城市名称或位置，我可以为你查询天气',
-        '联网搜索：使用Tavily搜索最新信息，帮你获取实时资讯',
-        '发送表情包：我会根据对话内容自动发送相关表情包',
-        '收藏图片：问我最喜欢的图片，我会分享收藏的图片给你'
+        '联网搜索：搜索最新信息，帮你获取实时资讯',
+        '发送表情包：我会根据对话内容自动发送相关表情包,你懂概率的',
+        '收藏图片：问我最喜欢的图片，我会分享收藏的图片给你,站主收藏款请勿外传',
+        '(人家可以看懂你发送的图片哦)'
     ];
 
     return createMessageNote(role, {
-        title: '💡 我的技能',
+        title: '这是我的技能ovo',
         content: skills,
         messageId: messageId
     });
@@ -319,15 +424,137 @@ function createSkillsNote(role = 'assistant', messageId = null) {
 function showSkillsNote(messageElement) {
     const skills = [
         '获取天气信息：告诉我城市名称或位置，我可以为你查询天气',
-        '联网搜索：使用Tavily搜索最新信息，帮你获取实时资讯',
-        '发送表情包：我会根据对话内容自动发送相关表情包',
-        '收藏图片：问我最喜欢的图片，我会分享收藏的图片给你'
+        '联网搜索：搜索最新信息，帮你获取实时资讯',
+        '发送表情包：我会根据对话内容自动发送相关表情包,你懂概率的',
+        '收藏图片：问我最喜欢的图片，我会分享收藏的图片给你,站主收藏款请勿外传',
+        '(人家可以看懂你发送的图片哦)'
+
     ];
 
     addMessageNote(messageElement, {
-        title: '💡 我的技能',
+        title: '这是我的技能ovo',
         content: skills,
         type: 'skills'
     });
+}
+
+// 全局 ESC 键事件处理器（避免重复添加监听器）
+let imageModalEscHandler = null;
+let videoModalEscHandler = null;
+
+/**
+ * 打开图片模态框
+ * @param {string} imageUrl - 图片URL
+ */
+function openImageModal(imageUrl) {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+
+    if (modal && modalImage) {
+        modalImage.src = imageUrl;
+        modal.classList.add('active');
+        // 防止背景滚动
+        document.body.style.overflow = 'hidden';
+
+        // 如果还没有添加 ESC 键监听器，则添加
+        if (!imageModalEscHandler) {
+            imageModalEscHandler = (e) => {
+                if (e.key === 'Escape') {
+                    const modal = document.getElementById('imageModal');
+                    if (modal && modal.classList.contains('active')) {
+                        closeImageModal();
+                    }
+                }
+            };
+            document.addEventListener('keydown', imageModalEscHandler);
+        }
+    }
+}
+
+/**
+ * 关闭图片模态框
+ * @param {Event} event - 事件对象（可选，用于判断点击位置）
+ */
+function closeImageModal(event) {
+    // 如果传入了事件对象，检查点击位置
+    if (event && event.target) {
+        // 如果点击的是图片内容区域（但不是关闭按钮），则不关闭
+        const isCloseButton = event.target.classList.contains('image-modal-close');
+        const isBackground = event.target.id === 'imageModal';
+        const isContentArea = event.target.closest('.image-modal-content');
+
+        // 只有当点击的是关闭按钮或背景时才关闭
+        if (!isCloseButton && !isBackground) {
+            return;
+        }
+    }
+
+    const modal = document.getElementById('imageModal');
+    if (modal && modal.classList.contains('active')) {
+        modal.classList.remove('active');
+        // 恢复背景滚动
+        document.body.style.overflow = '';
+    }
+}
+
+/**
+ * 打开视频模态框
+ * @param {string} videoUrl - 视频URL
+ */
+function openVideoModal(videoUrl) {
+    const modal = document.getElementById('videoModal');
+    const modalVideo = document.getElementById('modalVideo');
+
+    if (modal && modalVideo) {
+        modalVideo.src = videoUrl;
+        modal.classList.add('active');
+        // 防止背景滚动
+        document.body.style.overflow = 'hidden';
+
+        // 如果还没有添加 ESC 键监听器，则添加
+        if (!videoModalEscHandler) {
+            videoModalEscHandler = (e) => {
+                if (e.key === 'Escape') {
+                    const modal = document.getElementById('videoModal');
+                    if (modal && modal.classList.contains('active')) {
+                        closeVideoModal();
+                    }
+                }
+            };
+            document.addEventListener('keydown', videoModalEscHandler);
+        }
+    }
+}
+
+/**
+ * 关闭视频模态框
+ * @param {Event} event - 事件对象（可选，用于判断点击位置）
+ */
+function closeVideoModal(event) {
+    // 如果传入了事件对象，检查点击位置
+    if (event && event.target) {
+        // 如果点击的是视频内容区域（但不是关闭按钮），则不关闭
+        const isCloseButton = event.target.classList.contains('video-modal-close');
+        const isBackground = event.target.id === 'videoModal';
+        const isContentArea = event.target.closest('.video-modal-content');
+
+        // 只有当点击的是关闭按钮或背景时才关闭
+        if (!isCloseButton && !isBackground) {
+            return;
+        }
+    }
+
+    const modal = document.getElementById('videoModal');
+    if (modal && modal.classList.contains('active')) {
+        modal.classList.remove('active');
+        // 停止视频播放
+        const modalVideo = document.getElementById('modalVideo');
+        if (modalVideo) {
+            modalVideo.pause();
+            modalVideo.src = '';
+        }
+        // 恢复背景滚动
+        document.body.style.overflow = '';
+    }
 }
 

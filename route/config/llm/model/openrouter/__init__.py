@@ -32,7 +32,7 @@ def create_client():
     )
 
 
-def stream_completion(messages, session_id, location=None):
+def stream_completion(messages, session_id, location=None, email=None):
     """
     使用 OpenRouter API 实现流式输出
     
@@ -40,6 +40,7 @@ def stream_completion(messages, session_id, location=None):
         messages: 消息列表
         session_id: 会话ID
         location: 用户位置信息（可选）
+        email: 用户邮箱（用于历史记录存储）
     
     Yields:
         str: SSE格式的流式响应数据
@@ -109,8 +110,8 @@ def stream_completion(messages, session_id, location=None):
             full_response += chunk_content
             yield f"data: {json.dumps({'content': chunk_content, 'done': False}, ensure_ascii=False)}\n\n"
     
-    # 保存完整的响应到历史
-    save_message(session_id, "assistant", full_response)
+    # 保存完整的响应到历史（使用用户邮箱作为标识）
+    save_message(email, "assistant", full_response, session_id)
     yield f"data: {json.dumps({'content': '', 'done': True}, ensure_ascii=False)}\n\n"
 
 

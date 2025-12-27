@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for
 from components.email.email_sender import send_verification_code, send_email
 from database import get_db_connection
+from route.config.llm.history import create_history_file
 import random
 import string
 import time
@@ -395,6 +396,13 @@ def register_api():
                 VALUES (?, ?, ?, ?)
             ''', (username, password, email, 0))
             conn.commit()
+            
+            # 创建用户的历史记录文件
+            try:
+                create_history_file(email)
+            except Exception as e:
+                print(f'创建历史记录文件失败: {e}')
+                # 不影响注册流程，仅记录错误
             
             return jsonify({'success': True, 'message': '注册成功'})
         except sqlite3.IntegrityError:

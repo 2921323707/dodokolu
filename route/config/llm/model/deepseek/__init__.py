@@ -33,7 +33,7 @@ def create_client():
     )
 
 
-def stream_completion(messages, session_id, location=None):
+def stream_completion(messages, session_id, location=None, email=None):
     """
     使用 DeepSeek API 实现流式输出（支持工具调用）
     
@@ -41,6 +41,7 @@ def stream_completion(messages, session_id, location=None):
         messages: 消息列表
         session_id: 会话ID
         location: 用户位置信息（可选），用于自动获取用户当前位置的天气
+        email: 用户邮箱（用于历史记录存储）
     
     Yields:
         str: SSE格式的流式响应数据
@@ -243,7 +244,7 @@ def stream_completion(messages, session_id, location=None):
                 if accumulated_content or content_before_tool_call:
                     final_response = accumulated_content + content_before_tool_call
                     if final_response:
-                        save_message(session_id, "assistant", final_response)
+                        save_message(email, "assistant", final_response, session_id)
                 
                 # 发送完成标记
                 yield f"data: {json.dumps({'content': '', 'done': True}, ensure_ascii=False)}\n\n"
@@ -264,7 +265,7 @@ def stream_completion(messages, session_id, location=None):
             # 合并所有累积的内容（包括工具调用前的内容和当前响应）
             final_response = accumulated_content + full_response
             if final_response:
-                save_message(session_id, "assistant", final_response)
+                save_message(email, "assistant", final_response, session_id)
             # 重置累积内容（准备下一轮对话）
             accumulated_content = ""
             
@@ -292,7 +293,7 @@ def stream_completion(messages, session_id, location=None):
         # 合并所有累积的内容
         final_response = accumulated_content + full_response
         if final_response:
-            save_message(session_id, "assistant", final_response)
+            save_message(email, "assistant", final_response, session_id)
         
         # 发送完成标记
         yield f"data: {json.dumps({'content': '', 'done': True}, ensure_ascii=False)}\n\n"

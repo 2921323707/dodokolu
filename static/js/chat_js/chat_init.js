@@ -28,6 +28,20 @@ function updateDecoPosition() {
 
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', function () {
+    // 替换初始头像为图片
+    const initialAvatar = document.getElementById('initialAvatar');
+    if (initialAvatar) {
+        const avatarImg = document.createElement('img');
+        avatarImg.src = getAvatarImagePath();
+        avatarImg.alt = 'AI';
+        avatarImg.style.width = '100%';
+        avatarImg.style.height = '100%';
+        avatarImg.style.objectFit = 'cover';
+        avatarImg.style.borderRadius = '50%';
+        initialAvatar.textContent = '';
+        initialAvatar.appendChild(avatarImg);
+    }
+
     // 初始化输入框
     initInput();
 
@@ -68,12 +82,15 @@ document.addEventListener('DOMContentLoaded', function () {
                         const newInitialMessage = document.createElement('div');
                         newInitialMessage.className = 'message assistant';
                         newInitialMessage.id = messageId;
-                        newInitialMessage.innerHTML = `
-                            <div class="message-avatar">AI</div>
-                            <div class="message-content">
-                                <div class="message-text">期待你的输入ing...</div>
-                            </div>
-                        `;
+                        const avatar = createAIAvatarElement();
+                        newInitialMessage.appendChild(avatar);
+                        const messageContent = document.createElement('div');
+                        messageContent.className = 'message-content';
+                        const messageText = document.createElement('div');
+                        messageText.className = 'message-text';
+                        messageText.textContent = '期待你的输入ing...';
+                        messageContent.appendChild(messageText);
+                        newInitialMessage.appendChild(messageContent);
                         chatMessages.appendChild(newInitialMessage);
                         // 滚动到底部
                         chatMessages.scrollTop = chatMessages.scrollHeight;

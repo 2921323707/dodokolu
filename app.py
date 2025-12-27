@@ -27,6 +27,15 @@ try:
 except Exception as e:
     print(f"启动番剧推荐定时任务失败: {e}")
 
+# 启动历史记录清理定时任务（在后台线程中运行）
+try:
+    from route.config.llm.history.cleanup import start_cleanup_schedule
+    start_cleanup_schedule()
+    print("历史记录清理任务已经启动")
+    print("会在每天的 0:00 自动清理空的 JSON 文件")
+except Exception as e:
+    print(f"启动历史记录清理定时任务失败: {e}")
+
 # 维护模式检查中间件
 @app.before_request
 def check_maintenance_mode():
