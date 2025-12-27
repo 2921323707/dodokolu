@@ -95,6 +95,7 @@ def stream_completion(messages, session_id, location=None):
         current_tool_call = None
         content_before_tool_call = ""  # 工具调用前已输出的内容
         is_tool_call_detected = False  # 标记是否已检测到工具调用
+        is_send_emoji_detected = False  # 标记是否检测到send_emoji工具调用
         
         for chunk in stream:
             # 处理工具调用（先检查工具调用，因为工具调用可能在内容之前）
@@ -115,6 +116,9 @@ def stream_completion(messages, session_id, location=None):
                             current_tool_call["id"] = tool_call_delta.id
                         if tool_call_delta.function.name:
                             current_tool_call["function"]["name"] = tool_call_delta.function.name
+                            # 如果检测到send_emoji工具调用，标记为不输出后续内容
+                            if tool_call_delta.function.name == "send_emoji":
+                                is_send_emoji_detected = True
                         if tool_call_delta.function.arguments:
                             current_tool_call["function"]["arguments"] += tool_call_delta.function.arguments
             
@@ -126,9 +130,11 @@ def stream_completion(messages, session_id, location=None):
                 if not is_tool_call_detected:
                     content_before_tool_call += chunk_content
                     yield f"data: {json.dumps({'content': chunk_content, 'done': False}, ensure_ascii=False)}\n\n"
-                # 如果已经检测到工具调用，说明这是工具调用后的新内容，直接输出
+                # 如果已经检测到工具调用，检查是否是send_emoji，如果不是才输出
                 else:
-                    yield f"data: {json.dumps({'content': chunk_content, 'done': False}, ensure_ascii=False)}\n\n"
+                    # 如果检测到send_emoji工具调用，不输出工具调用后的内容
+                    if not is_send_emoji_detected:
+                        yield f"data: {json.dumps({'content': chunk_content, 'done': False}, ensure_ascii=False)}\n\n"
         
         # 如果有工具调用，执行工具
         if tool_calls and any(tc.get("function", {}).get("name") for tc in tool_calls):
@@ -230,6 +236,25 @@ def stream_completion(messages, session_id, location=None):
             
             # 将工具结果添加到消息历史
             full_messages.extend(tool_results)
+            
+            # 特殊处理：如果调用了send_emoji工具且成功发送了表情包，则不再继续输出，直接结束
+            if pending_emoji:
+                # 保存工具调用前已输出的内容（如果有）
+                if accumulated_content or content_before_tool_call:
+                    final_response = accumulated_content + content_before_tool_call
+                    if final_response:
+                        save_message(session_id, "assistant", final_response)
+                
+                # 发送完成标记
+                yield f"data: {json.dumps({'content': '', 'done': True}, ensure_ascii=False)}\n\n"
+                
+                # 发送表情包事件
+                print(f"📤 [后端] 流式输出完成，准备发送表情包事件到前端")
+                print(f"📤 [后端] 表情包事件数据: {json.dumps(pending_emoji, ensure_ascii=False)}")
+                yield f"data: {json.dumps(pending_emoji, ensure_ascii=False)}\n\n"
+                
+                # 直接结束，不再继续输出
+                break
             
             # 继续下一轮对话（工具调用后需要模型再次响应）
             # 如果有待发送的收藏图片，会在流式输出完成后发送

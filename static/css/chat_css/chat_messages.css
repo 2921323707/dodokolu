@@ -155,6 +155,12 @@
     background: white;
 }
 
+/* 用户发送的图片放大1.5倍 */
+.message.user .message-image-preview-full {
+    max-width: 225px;
+    max-height: 225px;
+}
+
 .message-image-preview-full img {
     width: 100%;
     height: 100%;

@@ -2,7 +2,6 @@
 """
 工具模块统一导出
 """
-from tools.time_tools import get_current_time, get_time_info
 from tools.weather_tools import get_weather
 from tools.search_tools import search_web
 from tools.send_pics.send_pics import send_emoji, send_favorite_image
@@ -11,22 +10,6 @@ from typing import Dict, Any
 # ==================== 工具函数映射 ====================
 
 TOOLS = {
-    "get_current_time": {
-        "function": get_current_time,
-        "description": "获取当前时间，返回格式化的时间字符串",
-        "parameters": {
-            "type": "object",
-            "properties": {}
-        }
-    },
-    "get_time_info": {
-        "function": get_time_info,
-        "description": "获取详细的时间信息，包括日期、时间、星期等",
-        "parameters": {
-            "type": "object",
-            "properties": {}
-        }
-    },
     "get_weather": {
         "function": get_weather,
         "description": "获取指定位置的天气信息，可以使用城市名称或经纬度",
@@ -69,7 +52,7 @@ TOOLS = {
     },
     "send_emoji": {
         "function": send_emoji,
-        "description": "根据AI自己的回复内容自动匹配并发送相关表情包。在你完成对用户的回复后，基于你自己的回复内容判断是否需要发送表情包。当检测到你的回复与表情包描述匹配时，按照90%的概率发送表情包。发送前会停留0.8秒，有50%概率对发送的表情包进行二次描述。这是一个增强对话趣味性的重要工具，应该经常使用。建议在你回复完用户后，评估你的回复内容是否适合发送表情包。",
+        "description": "根据AI自己的回复内容自动匹配并发送相关表情包。在你完成对用户的回复后，基于你自己的回复内容判断是否需要发送表情包。当检测到你的回复与表情包描述匹配时，按照90%的概率发送表情包。表情包会在流式输出完成后自动发送。",
         "parameters": {
             "type": "object",
             "properties": {
@@ -83,8 +66,8 @@ TOOLS = {
                 },
                 "probability": {
                     "type": "number",
-                    "description": "发送表情包的概率，默认0.7（70%）",
-                    "default": 0.7
+                    "description": "发送表情包的概率，默认0.9（90%）",
+                    "default": 0.9
                 },
                 "delay": {
                     "type": "number",
@@ -93,7 +76,7 @@ TOOLS = {
                 },
                 "describe_probability": {
                     "type": "number",
-                    "description": "二次描述的概率，默认0.5（50%）",
+                    "description": "二次描述的概率（已废弃，保留以兼容旧代码）",
                     "default": 0.5
                 }
             },
@@ -141,8 +124,6 @@ def execute_tool(tool_name: str, arguments: Dict[str, Any] = None) -> Any:
 
 # 导出所有工具函数和映射
 __all__ = [
-    'get_current_time',
-    'get_time_info',
     'get_weather',
     'search_web',
     'send_emoji',
