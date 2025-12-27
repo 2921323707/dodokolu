@@ -285,7 +285,12 @@ async function loadHistory() {
 
         if (data.history && data.history.length > 0) {
             const chatMessages = document.getElementById('chatMessages');
-            chatMessages.innerHTML = ''; // 清空初始消息
+            
+            // 移除消息元素和备注框，保留装饰图片
+            const messages = chatMessages.querySelectorAll('.message');
+            messages.forEach(msg => msg.remove());
+            const notes = chatMessages.querySelectorAll('.message-note');
+            notes.forEach(note => note.remove());
 
             data.history.forEach(msg => {
                 if (msg.role !== 'system') {
@@ -363,7 +368,7 @@ async function toggleMode() {
     }
 
     if (modeText) {
-        modeText.textContent = currentMode;
+        modeText.textContent = getModeDisplayText(currentMode);
     }
 
     // 更新按钮样式

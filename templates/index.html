@@ -42,15 +42,14 @@
                 <h2>Peach & JY</h2>
                 <div class="header-buttons">
                     <button class="mode-toggle-btn active" id="modeToggleBtn" onclick="toggleMode()">
-                        <span id="modeText">normal</span>
+                        <span id="modeText">标准版</span>
                     </button>
                     <button class="clear-btn" onclick="clearHistory()">Clear</button>
                 </div>
             </div>
             <div class="chat-messages" id="chatMessages">
-                <img src="{{ url_for('static', filename='imgs/deco/chat_index/chat_index_deco3.png') }}" 
-                     alt="装饰" 
-                     class="chat-messages-deco">
+                <img src="{{ url_for('static', filename='imgs/deco/chat_index/chat_index_deco3.png') }}" alt="装饰"
+                    class="chat-messages-deco">
                 <div class="message assistant">
                     <div class="message-avatar">AI</div>
                     <div class="message-content">
@@ -68,7 +67,8 @@
                         <textarea id="chatInput" class="chat-input" placeholder="点击输入" rows="1"
                             onkeydown="handleKeyDown(event)"></textarea>
                         <input type="file" id="imageUpload" accept="image/*" style="display: none;">
-                        <button class="upload-btn" id="uploadBtn" onclick="document.getElementById('imageUpload').click()" title="上传图片">
+                        <button class="upload-btn" id="uploadBtn"
+                            onclick="document.getElementById('imageUpload').click()" title="上传图片">
                             <img src="{{ url_for('static', filename='imgs/icon/upload.png') }}" alt="上传">
                         </button>
                     </div>

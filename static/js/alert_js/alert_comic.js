@@ -165,7 +165,7 @@ function setupComicSectionExpand() {
         `;
         document.body.appendChild(overlay);
         // 点击遮罩层关闭
-        overlay.addEventListener('click', function() {
+        overlay.addEventListener('click', function () {
             closeExpand();
         });
         return overlay;
@@ -176,6 +176,7 @@ function setupComicSectionExpand() {
         isExpanded = false;
         comicSection.classList.remove('expanded');
         // 清除自定义样式
+        comicSection.style.position = '';
         comicSection.style.top = '';
         comicSection.style.left = '';
         if (overlay) {
@@ -204,29 +205,35 @@ function setupComicSectionExpand() {
             // 获取屏幕中心位置
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight / 2;
-            
-            isExpanded = true;
-            comicSection.classList.add('expanded');
-            
-            // 设置展开后的位置（从屏幕中心展开）
+
+            // 先设置 position: fixed 和位置，确保元素在正确的位置
+            // 这样可以避免在添加 expanded 类时出现位置闪烁
+            comicSection.style.position = 'fixed';
             comicSection.style.top = `${centerY}px`;
             comicSection.style.left = `${centerX}px`;
-            
-            // 显示遮罩层
-            const overlayEl = createOverlay();
-            setTimeout(() => {
-                overlayEl.style.opacity = '1';
-            }, 10);
-            
-            // 重新渲染列表
-            if (allAnimesData && allAnimesData.animes) {
-                renderComicList(allAnimesData.animes, true);
-            }
+
+            // 使用 requestAnimationFrame 确保位置设置生效后再添加类
+            // 让CSS动画从正确的位置开始
+            requestAnimationFrame(() => {
+                isExpanded = true;
+                comicSection.classList.add('expanded');
+
+                // 显示遮罩层
+                const overlayEl = createOverlay();
+                requestAnimationFrame(() => {
+                    overlayEl.style.opacity = '1';
+                });
+
+                // 重新渲染列表
+                if (allAnimesData && allAnimesData.animes) {
+                    renderComicList(allAnimesData.animes, true);
+                }
+            });
         }
     });
 
     // ESC键关闭
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && isExpanded) {
             closeExpand();
         }
