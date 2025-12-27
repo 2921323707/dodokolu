@@ -3,6 +3,7 @@
 // 全局变量：当前选中的图片
 let currentImageFile = null;
 let currentImageUrl = null;
+// 指令模态框是否已显示（在chat_command.js中定义）
 
 // 处理键盘事件
 function handleKeyDown(event) {
@@ -19,6 +20,8 @@ function initInput() {
         chatInput.addEventListener('input', function () {
             this.style.height = 'auto';
             this.style.height = Math.min(this.scrollHeight, 150) + 'px';
+
+            // 移除了指令模态框的自动显示功能
         });
     }
 

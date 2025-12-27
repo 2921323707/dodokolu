@@ -23,21 +23,43 @@ async function sendMessage() {
 
     // 如果没有消息也没有图片，则不发送
     if ((!message && !hasImage) || isStreaming) return;
+    
+    // 检测指令模式：如果消息以 /image 或 /video 开头，触发指令流程
+    // 但如果消息包含 [已成功生成] 标记，说明这是自动触发的AI响应消息，应该跳过指令处理
+    if ((message.startsWith('/image ') || message.startsWith('/video ')) && !message.includes('[已成功生成]')) {
+        // 拦截消息发送，触发指令流程
+        const commandType = message.startsWith('/image ') ? 'image' : 'video';
+        window.selectedCommandType = commandType;
+        // 直接处理指令，无需密钥验证
+        if (typeof processCommand === 'function') {
+            processCommand(commandType);
+        }
+        // 清空输入框
+        chatInput.value = '';
+        chatInput.style.height = 'auto';
+        return;
+    }
 
+    // 检查消息是否包含[已成功生成]标记，如果有则不显示消息框
+    const isSuccessMessage = message.includes('[已成功生成]');
+    
     // 添加用户消息到界面（如果有图片，显示图片预览）
-    let userMessageContent = message;
-    // 保存图片文件引用（在重置前保存）
-    const imageFileToUpload = hasImage ? currentImageFile : null;
-    if (hasImage && currentImageUrl) {
-        userMessageContent = message || '[图片]';
-        // 保存图片URL用于显示预览
-        const imageUrlForPreview = currentImageUrl;
-        addMessage('user', userMessageContent, {
-            imagePreview: true,
-            imageUrl: imageUrlForPreview
-        });
-    } else {
-        addMessage('user', userMessageContent);
+    // 注意：如果消息包含[已成功生成]标记，不显示消息框
+    if (!isSuccessMessage) {
+        let userMessageContent = message;
+        // 保存图片文件引用（在重置前保存）
+        const imageFileToUpload = hasImage ? currentImageFile : null;
+        if (hasImage && currentImageUrl) {
+            userMessageContent = message || '[图片]';
+            // 保存图片URL用于显示预览
+            const imageUrlForPreview = currentImageUrl;
+            addMessage('user', userMessageContent, {
+                imagePreview: true,
+                imageUrl: imageUrlForPreview
+            });
+        } else {
+            addMessage('user', userMessageContent);
+        }
     }
 
     // 立即重置对话框（清空输入框和图片预览）
@@ -47,6 +69,7 @@ async function sendMessage() {
 
     // 如果有图片，先上传图片并识别
     let imageDescription = null;
+    let imageFilename = null;
     if (hasImage && imageFileToUpload) {
         try {
             // 上传图片
@@ -80,6 +103,7 @@ async function sendMessage() {
                 throw new Error(errorMessage);
             }
             imageDescription = uploadData.description;
+            imageFilename = uploadData.filename;
         } catch (error) {
             console.error('图片上传/识别错误:', error);
             // 如果是未登录错误，已经在上面的处理中跳转了，这里不需要再处理
@@ -153,7 +177,8 @@ async function sendMessage() {
                 location: userLocation ? {
                     latitude: userLocation.latitude,
                     longitude: userLocation.longitude
-                } : null
+                } : null,
+                image_filename: imageFilename  // 发送图片文件名
             })
         });
 
@@ -308,8 +333,28 @@ async function loadHistory() {
             notes.forEach(note => note.remove());
 
             data.history.forEach(msg => {
-                if (msg.role !== 'system') {
-                    addMessage(msg.role, msg.content);
+                // 跳过 system 和 tool 角色的消息（已在后端过滤，这里双重保险）
+                if (msg.role === 'system' || msg.role === 'tool') {
+                    return;
+                }
+                
+                // 检查是否有图片URL（用户上传的图片或指令生成的图片）
+                if (msg.image_url) {
+                    addMessage(msg.role, msg.content || '', {
+                        imageUrl: msg.image_url,
+                        imagePreview: true
+                    });
+                }
+                // 检查是否有视频URL（指令生成的视频）
+                else if (msg.video_url) {
+                    addMessage(msg.role, msg.content || '', {
+                        videoUrl: msg.video_url,
+                        videoPreview: true
+                    });
+                }
+                // 普通文本消息
+                else {
+                    addMessage(msg.role, msg.content || '');
                 }
             });
         }
@@ -320,6 +365,20 @@ async function loadHistory() {
 
 // 清空历史
 async function clearHistory() {
+    // 检查登录状态
+    try {
+        const authResponse = await fetch('/api/auth-status');
+        const authData = await authResponse.json();
+        if (!authData.logged_in) {
+            promptLoginRequired();
+            return;
+        }
+    } catch (error) {
+        console.error('检查登录状态失败:', error);
+        promptLoginRequired();
+        return;
+    }
+
     if (!confirm('确定要清空对话历史吗？')) return;
 
     try {

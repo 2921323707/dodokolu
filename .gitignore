@@ -60,19 +60,27 @@ database/avator/**
 !database/avator/.gitkeep
 
 # ==================== 相册图片 ====================
-# 忽略相册目录下的所有图片文件
+# 忽略相册目录下的所有图片文件（保留目录结构）
 static/imgs/album/**
+!static/imgs/album/.gitkeep
 
 # ==================== 视频资源 ====================
-# 忽略所有 mp4 文件
+# 忽略所有视频文件（根目录和子目录）
 *.mp4
-# 忽略视频目录下的其他视频文件
-static/video/abnormal/fav/*.webm
-static/video/abnormal/fav/*.ogg
-static/video/abnormal/fav/*.mov
-static/video/abnormal/fav/*.avi
-static/video/abnormal/fav/*.mkv
-static/video/abnormal/fav/*.flv
+*.webm
+*.ogg
+*.mov
+*.avi
+*.mkv
+*.flv
+*.wmv
+*.mpg
+*.mpeg
+*.m4v
+*.3gp
+# 特定视频目录（如果需要保留某些视频，可以单独配置）
+static/video/**/*
+!static/video/**/.gitkeep
 
 # ==================== 3D模型和素材文件 ====================
 # 3D模型文件
@@ -109,13 +117,16 @@ database/*.sqlite
 database/*.sqlite3
 
 # ==================== 日志文件 ====================
+# 忽略所有日志文件（包括根目录和子目录）
 *.log
 *.log.*
 *.log.*.*
-comic_recommend.log
-**/*.log
-logs/
 *.logs
+logs/
+**/*.log
+# 特定日志文件
+comic_recommend.log
+components/rss/comic_recommend.log
 
 # ==================== IDE 和编辑器 ====================
 # VS Code
@@ -265,6 +276,7 @@ secrets/
 .cache/
 *.cache
 .pip-cache/
+.pip/
 
 # 性能分析
 *.prof
@@ -280,6 +292,15 @@ config.local.*
 settings.local.*
 !config.example.*
 !settings.example.*
+
+# Node.js相关（如果有前端构建工具）
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+.pnpm-debug.log*
 
 # ==================== 历史记录和聊天数据 ====================
 # 用户聊天历史记录（完全屏蔽所有聊天记录文件和目录）

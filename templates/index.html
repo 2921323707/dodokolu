@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_animations.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_scrollbar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_responsive.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_command.css') }}">
 </head>
 
 <body>
@@ -62,6 +63,14 @@
                     <img id="previewImg" src="" alt="预览">
                     <button class="remove-image-btn" onclick="removeImage()">×</button>
                 </div>
+                <div class="command-buttons">
+                    <button class="command-btn-image" onclick="insertCommand('image')" title="图像生成">
+                        图像生成(Beta)
+                    </button>
+                    <button class="command-btn-video" onclick="insertCommand('video')" title="视频生成">
+                        视频生成(Beta)
+                    </button>
+                </div>
                 <div class="input-container">
                     <div class="input-wrapper">
                         <textarea id="chatInput" class="chat-input" placeholder="点击输入" rows="1"
@@ -101,6 +110,7 @@
     <script src="{{ url_for('static', filename='js/chat_js/chat_messages.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chat_js/chat_section.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chat_js/chat_input.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat_js/chat_command.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chat_js/chat_navbar.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chat_js/chat_init.js') }}"></script>
 </body>

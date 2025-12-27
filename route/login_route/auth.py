@@ -42,6 +42,9 @@ def login_api():
             session['username'] = user['username']
             session['email'] = user['email']
             session['role'] = user['role']
+            # 清除旧的会话文件，让系统自动加载最新的历史记录
+            if 'current_history_file' in session:
+                del session['current_history_file']
             
             return jsonify({
                 'success': True, 

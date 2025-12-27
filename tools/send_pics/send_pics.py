@@ -128,6 +128,51 @@ def send_emoji(
     return result
 
 
+def auto_match_emoji(
+    assistant_message: str,
+    probability: float = 0.9
+) -> Optional[Dict[str, Any]]:
+    """
+    自动匹配表情包（不包含delay，用于流式输出完成后自动匹配）
+    
+    根据AI的回复内容匹配相关表情包，按照指定概率判断是否发送。
+    
+    Args:
+        assistant_message: AI的回复内容，用于匹配相关表情包
+        probability: 发送表情包的概率（默认0.9，即90%）
+    
+    Returns:
+        dict: 包含表情包信息的字典，如果不发送则返回None
+    """
+    if not assistant_message:
+        return None
+    
+    # 检查是否应该发送表情包
+    random_value = random.random()
+    if random_value > probability:
+        return None
+    
+    # 查找匹配的表情包
+    matches = find_matching_emojis(assistant_message)
+    
+    if not matches:
+        return None
+    
+    # 选择匹配度最高的表情包
+    selected = matches[0]['emoji']
+    emoji_id = selected['id']
+    
+    # 构建返回结果
+    return {
+        "type": "emoji",
+        "emoji_id": emoji_id,
+        "emoji_url": get_emoji_url(emoji_id),
+        "category": selected.get('category', '未知'),
+        "description": selected.get('description', ''),
+        "matched_score": matches[0]['score']
+    }
+
+
 def send_emoji_by_id(emoji_id: str) -> Dict[str, Any]:
     """
     根据ID直接发送表情包

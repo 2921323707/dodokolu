@@ -6,6 +6,60 @@
     box-sizing: border-box;
 }
 
+/* 指令按钮容器 */
+.command-buttons {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    align-items: center;
+}
+
+/* 指令按钮通用样式 */
+.command-btn-image,
+.command-btn-video {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 8px;
+    background: var(--bg-color, #ffffff);
+    color: var(--text-primary, #1e293b);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.command-btn-image:hover,
+.command-btn-video:hover {
+    color: white;
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.command-btn-image:hover {
+    background: linear-gradient(135deg, #ffb3d9, #ffc0cb);
+}
+
+.command-btn-video:hover {
+    background: linear-gradient(135deg, #b3d9ff, #c0cbff);
+}
+
+.command-btn-image:active,
+.command-btn-video:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.command-btn-image:focus,
+.command-btn-video:focus {
+    outline: 2px solid rgba(255, 179, 217, 0.5);
+    outline-offset: 2px;
+}
+
 .input-container {
     display: flex;
     gap: 0.75rem;

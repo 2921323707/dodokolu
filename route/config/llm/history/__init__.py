@@ -58,8 +58,30 @@ def _get_latest_history_file(email):
     if not json_files:
         return None
     
-    # 按修改时间排序，返回最新的
-    latest_file = max(json_files, key=lambda p: p.stat().st_mtime)
+    # 按文件名的时间戳排序（文件名格式：YYYYMMDD_HHMMSS.json）
+    # 优先使用文件名排序，因为更可靠；如果文件名格式不正确，则使用修改时间作为备选
+    def get_file_sort_key(file_path):
+        try:
+            # 尝试从文件名提取时间戳（格式：YYYYMMDD_HHMMSS.json）
+            filename = file_path.stem  # 获取不带扩展名的文件名
+            # 检查文件名格式：应该是15个字符（8位日期_6位时间，例如：20251227_200104）
+            if len(filename) == 15 and '_' in filename:
+                parts = filename.split('_')
+                if len(parts) == 2 and len(parts[0]) == 8 and len(parts[1]) == 6:
+                    if parts[0].isdigit() and parts[1].isdigit():
+                        # 文件名格式正确，使用文件名排序（字符串排序即可，因为格式是YYYYMMDD_HHMMSS）
+                        return filename
+            # 文件名格式不正确，使用修改时间（转换为字符串以便排序）
+            return str(file_path.stat().st_mtime)
+        except:
+            # 如果出错，使用修改时间
+            try:
+                return str(file_path.stat().st_mtime)
+            except:
+                return '0'  # 如果连修改时间都获取不到，返回最小值
+    
+    # 按排序键排序，返回最新的
+    latest_file = max(json_files, key=get_file_sort_key)
     return latest_file
 
 
@@ -172,16 +194,21 @@ def get_current_file(email):
     return None
 
 
-def save_message(email, role, content, session_id=None, current_file=None):
+def save_message(email, role, content, session_id=None, current_file=None, tool_calls=None, command_info=None, image_filename=None, tool_call_id=None, tool_name=None):
     """
     保存消息到历史
     
     Args:
         email: 用户邮箱（如果为None，则使用session_id作为向后兼容）
-        role: 角色（user/assistant/system）
+        role: 角色（user/assistant/system/tool）
         content: 消息内容
         session_id: 会话ID（保留参数以兼容现有代码）
         current_file: 当前会话文件名（如果提供，则保存到该文件；否则从线程本地存储获取，或使用最新的文件或创建新的）
+        tool_calls: 工具调用信息（可选），格式: [{"id": "...", "type": "function", "function": {"name": "...", "arguments": "..."}}]
+        command_info: 指令调用信息（可选），格式: {"type": "image/video", "prompt": "...", "result": {...}, "success": True/False}
+        image_filename: 图片文件名（可选），用于匹配用户上传的图片
+        tool_call_id: 工具调用ID（可选），用于 tool 角色的消息
+        tool_name: 工具名称（可选），用于 tool 角色的消息
     
     Returns:
         str: 当前会话文件名
@@ -229,12 +256,34 @@ def save_message(email, role, content, session_id=None, current_file=None):
     except (json.JSONDecodeError, IOError):
         history = []
     
-    # 添加新消息
-    history.append({
+    # 构建消息对象
+    message = {
         "role": role,
         "content": content,
         "timestamp": datetime.now().isoformat()
-    })
+    }
+    
+    # 如果有工具调用信息，添加到消息中
+    if tool_calls:
+        message["tool_calls"] = tool_calls
+    
+    # 如果有指令调用信息，添加到消息中
+    if command_info:
+        message["command_info"] = command_info
+    
+    # 如果有图片文件名，添加到消息中
+    if image_filename:
+        message["image_filename"] = image_filename
+    
+    # 如果是 tool 角色的消息，添加 tool_call_id 和 name 字段
+    if role == "tool":
+        if tool_call_id:
+            message["tool_call_id"] = tool_call_id
+        if tool_name:
+            message["name"] = tool_name
+    
+    # 添加新消息
+    history.append(message)
     
     # 限制历史记录长度，避免过长
     if len(history) > MAX_HISTORY_LENGTH:
@@ -300,5 +349,6 @@ __all__ = [
     'clear_history',
     'create_history_file',
     'set_current_file',
-    'get_current_file'
+    'get_current_file',
+    'HISTORY_DIR'
 ]
