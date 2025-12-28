@@ -27,6 +27,26 @@ function createAIAvatarElement() {
     img.style.height = '100%';
     img.style.objectFit = 'cover';
     img.style.borderRadius = '50%';
+    img.style.cursor = 'pointer';
+    img.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
+
+    // 添加点击事件，打开AI信息模态框
+    img.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openAIInfoModal(getAvatarImagePath());
+    });
+
+    // 添加悬停效果
+    img.addEventListener('mouseenter', () => {
+        img.style.transform = 'scale(1.1)';
+        img.style.opacity = '0.9';
+    });
+
+    img.addEventListener('mouseleave', () => {
+        img.style.transform = 'scale(1)';
+        img.style.opacity = '1';
+    });
+
     avatar.appendChild(img);
     return avatar;
 }

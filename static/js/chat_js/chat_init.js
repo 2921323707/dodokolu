@@ -38,6 +38,26 @@ document.addEventListener('DOMContentLoaded', function () {
         avatarImg.style.height = '100%';
         avatarImg.style.objectFit = 'cover';
         avatarImg.style.borderRadius = '50%';
+        avatarImg.style.cursor = 'pointer';
+        avatarImg.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
+        
+        // 添加点击事件，打开AI信息模态框
+        avatarImg.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openAIInfoModal(getAvatarImagePath());
+        });
+        
+        // 添加悬停效果
+        avatarImg.addEventListener('mouseenter', () => {
+            avatarImg.style.transform = 'scale(1.1)';
+            avatarImg.style.opacity = '0.9';
+        });
+        
+        avatarImg.addEventListener('mouseleave', () => {
+            avatarImg.style.transform = 'scale(1)';
+            avatarImg.style.opacity = '1';
+        });
+        
         initialAvatar.textContent = '';
         initialAvatar.appendChild(avatarImg);
     }

@@ -1,0 +1,323 @@
+/* AI信息模态框样式 */
+
+/* 模态框背景层 */
+.ai-info-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    animation: aiModalFadeIn 0.3s ease-out;
+}
+
+.ai-info-modal.active {
+    display: flex;
+}
+
+/* 模态框内容容器 - 长方形布局 */
+.ai-info-modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    max-height: 90vh;
+    background: var(--bg-color, #ffffff);
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: aiModalContentSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: center;
+}
+
+/* 关闭按钮 */
+.ai-info-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(0, 0, 0, 0.1);
+    color: var(--text-primary, #333);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.ai-info-modal-close:hover {
+    background: rgba(0, 0, 0, 0.15);
+    transform: scale(1.1) rotate(90deg);
+}
+
+.ai-info-modal-close:active {
+    transform: scale(0.95) rotate(90deg);
+}
+
+/* 内容容器 - 左右分栏 */
+.ai-info-container {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    min-height: 400px;
+}
+
+/* 左侧AI基本信息区域 */
+.ai-info-left {
+    flex: 0 0 280px;
+    background: linear-gradient(135deg, #ffb3d9 0%, #ffc0cb 100%);
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    color: white;
+    position: relative;
+    overflow-y: auto;
+}
+
+/* 头像容器 */
+.ai-info-avatar-wrapper {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    margin-bottom: 24px;
+    animation: avatarPulse 2s ease-in-out infinite;
+}
+
+.ai-info-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* AI名称 */
+.ai-info-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    text-align: center;
+}
+
+/* AI描述 */
+.ai-info-description {
+    font-size: 0.9375rem;
+    opacity: 0.9;
+    margin: 0 0 32px 0;
+    text-align: center;
+}
+
+/* 统计信息 */
+.ai-info-stats {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ai-info-stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    opacity: 0.9;
+}
+
+.stat-value {
+    font-size: 0.9375rem;
+    font-weight: 600;
+}
+
+.stat-value.online {
+    color: #4ade80;
+    position: relative;
+    padding-left: 12px;
+}
+
+.stat-value.online::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background: #4ade80;
+    border-radius: 50%;
+    animation: onlinePulse 2s ease-in-out infinite;
+}
+
+/* 右侧用户自定义区域 */
+.ai-info-right {
+    flex: 1;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    background: var(--bg-color, #ffffff);
+}
+
+.ai-info-custom-area {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-placeholder {
+    color: var(--text-secondary, #999);
+    font-size: 0.9375rem;
+    text-align: center;
+    margin: 0;
+}
+
+/* 动画效果 */
+@keyframes aiModalFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes aiModalContentSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes avatarPulse {
+    0%, 100% {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+    50% {
+        box-shadow: 0 8px 32px rgba(255, 255, 255, 0.3);
+    }
+}
+
+@keyframes onlinePulse {
+    0%, 100% {
+        opacity: 1;
+        transform: translateY(-50%) scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: translateY(-50%) scale(1.2);
+    }
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .ai-info-modal {
+        padding: 10px;
+    }
+
+    .ai-info-modal-content {
+        max-width: 100%;
+        max-height: 95vh;
+        border-radius: 12px;
+    }
+
+    .ai-info-container {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    .ai-info-left {
+        flex: 0 0 auto;
+        padding: 30px 20px;
+        min-height: 280px;
+    }
+
+    .ai-info-avatar-wrapper {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 20px;
+    }
+
+    .ai-info-name {
+        font-size: 1.25rem;
+    }
+
+    .ai-info-description {
+        font-size: 0.875rem;
+        margin-bottom: 24px;
+    }
+
+    .ai-info-stats {
+        gap: 12px;
+    }
+
+    .ai-info-stat-item {
+        padding: 10px 14px;
+    }
+
+    .ai-info-right {
+        padding: 30px 20px;
+        min-height: 200px;
+    }
+
+    .ai-info-modal-close {
+        top: 12px;
+        right: 12px;
+        width: 32px;
+        height: 32px;
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ai-info-left {
+        padding: 24px 16px;
+        min-height: 240px;
+    }
+
+    .ai-info-avatar-wrapper {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 16px;
+    }
+
+    .ai-info-name {
+        font-size: 1.125rem;
+    }
+
+    .ai-info-right {
+        padding: 24px 16px;
+        min-height: 180px;
+    }
+}
+

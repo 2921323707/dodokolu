@@ -71,19 +71,38 @@ function addMessage(role, content = '', options = {}) {
 
             textMessageContent.appendChild(messageText);
 
-            // 为 assistant 文本消息添加小喇叭按钮
+            // 为 assistant 文本消息添加播放和复制按钮（在 message-content 外部）
             if (role === 'assistant' && textContent && textContent.trim()) {
-                const ttsButton = document.createElement('button');
-                ttsButton.className = 'message-tts-btn';
-                ttsButton.innerHTML = '<img src="/static/imgs/icon/小喇叭.png" alt="语音播放">';
-                ttsButton.title = '播放语音';
-                ttsButton.dataset.messageId = textMessageId;
-                ttsButton.dataset.text = textContent;
-                ttsButton.onclick = (e) => {
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'message-action-buttons';
+
+                // 播放按钮
+                const playButton = document.createElement('button');
+                playButton.className = 'message-action-btn message-play-btn';
+                playButton.innerHTML = '<img src="/static/imgs/icon/小喇叭.png" alt="播放">';
+                playButton.title = '播放语音';
+                playButton.dataset.messageId = textMessageId;
+                playButton.dataset.text = textContent;
+                playButton.onclick = (e) => {
                     e.stopPropagation();
-                    playTTS(textContent, ttsButton, textMessageId);
+                    playTTS(textContent, playButton, textMessageId);
                 };
-                textMessageContent.appendChild(ttsButton);
+
+                // 复制按钮
+                const copyButton = document.createElement('button');
+                copyButton.className = 'message-action-btn message-copy-btn';
+                copyButton.innerHTML = '<img src="/static/imgs/icon/复制.png" alt="复制">';
+                copyButton.title = '复制文本';
+                copyButton.dataset.messageId = textMessageId;
+                copyButton.dataset.text = textContent;
+                copyButton.onclick = (e) => {
+                    e.stopPropagation();
+                    copyText(textContent, copyButton);
+                };
+
+                buttonContainer.appendChild(playButton);
+                buttonContainer.appendChild(copyButton);
+                textMessageDiv.appendChild(buttonContainer);
             }
 
             textMessageDiv.appendChild(textAvatar);
@@ -168,19 +187,38 @@ function addMessage(role, content = '', options = {}) {
 
             textMessageContent.appendChild(messageText);
 
-            // 为 assistant 文本消息添加小喇叭按钮
+            // 为 assistant 文本消息添加播放和复制按钮（在 message-content 外部）
             if (role === 'assistant' && textContent && textContent.trim()) {
-                const ttsButton = document.createElement('button');
-                ttsButton.className = 'message-tts-btn';
-                ttsButton.innerHTML = '<img src="/static/imgs/icon/小喇叭.png" alt="语音播放">';
-                ttsButton.title = '播放语音';
-                ttsButton.dataset.messageId = textMessageId;
-                ttsButton.dataset.text = textContent;
-                ttsButton.onclick = (e) => {
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'message-action-buttons';
+
+                // 播放按钮
+                const playButton = document.createElement('button');
+                playButton.className = 'message-action-btn message-play-btn';
+                playButton.innerHTML = '<img src="/static/imgs/icon/小喇叭.png" alt="播放">';
+                playButton.title = '播放语音';
+                playButton.dataset.messageId = textMessageId;
+                playButton.dataset.text = textContent;
+                playButton.onclick = (e) => {
                     e.stopPropagation();
-                    playTTS(textContent, ttsButton, textMessageId);
+                    playTTS(textContent, playButton, textMessageId);
                 };
-                textMessageContent.appendChild(ttsButton);
+
+                // 复制按钮
+                const copyButton = document.createElement('button');
+                copyButton.className = 'message-action-btn message-copy-btn';
+                copyButton.innerHTML = '<img src="/static/imgs/icon/复制.png" alt="复制">';
+                copyButton.title = '复制文本';
+                copyButton.dataset.messageId = textMessageId;
+                copyButton.dataset.text = textContent;
+                copyButton.onclick = (e) => {
+                    e.stopPropagation();
+                    copyText(textContent, copyButton);
+                };
+
+                buttonContainer.appendChild(playButton);
+                buttonContainer.appendChild(copyButton);
+                textMessageDiv.appendChild(buttonContainer);
             }
 
             textMessageDiv.appendChild(textAvatar);
@@ -233,20 +271,38 @@ function addMessage(role, content = '', options = {}) {
 
     messageContent.appendChild(messageText);
 
-    // 为 assistant 消息添加小喇叭按钮
+    // 为 assistant 消息添加播放和复制按钮（在 message-content 外部）
     if (role === 'assistant' && content && content.trim()) {
-        const ttsButton = document.createElement('button');
-        ttsButton.className = 'message-tts-btn';
-        ttsButton.innerHTML = '<img src="/static/imgs/icon/小喇叭.png" alt="语音播放">';
-        ttsButton.title = '播放语音';
-        // 存储消息ID和文本内容到按钮
-        ttsButton.dataset.messageId = messageId;
-        ttsButton.dataset.text = content;
-        ttsButton.onclick = (e) => {
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'message-action-buttons';
+
+        // 播放按钮
+        const playButton = document.createElement('button');
+        playButton.className = 'message-action-btn message-play-btn';
+        playButton.innerHTML = '<img src="/static/imgs/icon/小喇叭.png" alt="播放">';
+        playButton.title = '播放语音';
+        playButton.dataset.messageId = messageId;
+        playButton.dataset.text = content;
+        playButton.onclick = (e) => {
             e.stopPropagation();
-            playTTS(content, ttsButton, messageId);
+            playTTS(content, playButton, messageId);
         };
-        messageContent.appendChild(ttsButton);
+
+        // 复制按钮
+        const copyButton = document.createElement('button');
+        copyButton.className = 'message-action-btn message-copy-btn';
+        copyButton.innerHTML = '<img src="/static/imgs/icon/复制.png" alt="复制">';
+        copyButton.title = '复制文本';
+        copyButton.dataset.messageId = messageId;
+        copyButton.dataset.text = content;
+        copyButton.onclick = (e) => {
+            e.stopPropagation();
+            copyText(content, copyButton);
+        };
+
+        buttonContainer.appendChild(playButton);
+        buttonContainer.appendChild(copyButton);
+        messageDiv.appendChild(buttonContainer);
     }
 
     messageDiv.appendChild(avatar);
@@ -280,32 +336,63 @@ function appendToMessage(messageId, content) {
     if (messageText) {
         messageText.textContent += content;
 
-        // 如果是 assistant 消息且还没有小喇叭按钮，添加一个
+        // 如果是 assistant 消息且还没有按钮容器，添加一个
         if (messageDiv.classList.contains('assistant')) {
             const messageContent = messageDiv.querySelector('.message-content');
-            const existingTTSBtn = messageContent.querySelector('.message-tts-btn');
+            const existingButtonContainer = messageDiv.querySelector('.message-action-buttons');
             const messageId = messageDiv.id;
 
-            if (!existingTTSBtn && messageText.textContent.trim()) {
-                const ttsButton = document.createElement('button');
-                ttsButton.className = 'message-tts-btn';
-                ttsButton.innerHTML = '<img src="/static/imgs/icon/小喇叭.png" alt="语音播放">';
-                ttsButton.title = '播放语音';
-                ttsButton.dataset.messageId = messageId;
-                ttsButton.dataset.text = messageText.textContent;
-                ttsButton.onclick = (e) => {
+            if (!existingButtonContainer && messageText.textContent.trim() && messageContent) {
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'message-action-buttons';
+
+                // 播放按钮
+                const playButton = document.createElement('button');
+                playButton.className = 'message-action-btn message-play-btn';
+                playButton.innerHTML = '<img src="/static/imgs/icon/小喇叭.png" alt="播放">';
+                playButton.title = '播放语音';
+                playButton.dataset.messageId = messageId;
+                playButton.dataset.text = messageText.textContent;
+                playButton.onclick = (e) => {
                     e.stopPropagation();
-                    playTTS(messageText.textContent, ttsButton, messageId);
+                    playTTS(messageText.textContent, playButton, messageId);
                 };
-                messageContent.appendChild(ttsButton);
-            } else if (existingTTSBtn) {
-                // 更新现有按钮的点击事件和数据，使用最新内容
-                existingTTSBtn.dataset.messageId = messageId;
-                existingTTSBtn.dataset.text = messageText.textContent;
-                existingTTSBtn.onclick = (e) => {
+
+                // 复制按钮
+                const copyButton = document.createElement('button');
+                copyButton.className = 'message-action-btn message-copy-btn';
+                copyButton.innerHTML = '<img src="/static/imgs/icon/复制.png" alt="复制">';
+                copyButton.title = '复制文本';
+                copyButton.dataset.messageId = messageId;
+                copyButton.dataset.text = messageText.textContent;
+                copyButton.onclick = (e) => {
                     e.stopPropagation();
-                    playTTS(messageText.textContent, existingTTSBtn, messageId);
+                    copyText(messageText.textContent, copyButton);
                 };
+
+                buttonContainer.appendChild(playButton);
+                buttonContainer.appendChild(copyButton);
+                messageDiv.appendChild(buttonContainer);
+            } else if (existingButtonContainer) {
+                // 更新现有按钮的数据，使用最新内容
+                const playButton = existingButtonContainer.querySelector('.message-play-btn');
+                const copyButton = existingButtonContainer.querySelector('.message-copy-btn');
+                if (playButton) {
+                    playButton.dataset.messageId = messageId;
+                    playButton.dataset.text = messageText.textContent;
+                    playButton.onclick = (e) => {
+                        e.stopPropagation();
+                        playTTS(messageText.textContent, playButton, messageId);
+                    };
+                }
+                if (copyButton) {
+                    copyButton.dataset.messageId = messageId;
+                    copyButton.dataset.text = messageText.textContent;
+                    copyButton.onclick = (e) => {
+                        e.stopPropagation();
+                        copyText(messageText.textContent, copyButton);
+                    };
+                }
             }
         }
 
@@ -524,6 +611,7 @@ function showSkillsNote(messageElement) {
 // 全局 ESC 键事件处理器（避免重复添加监听器）
 let imageModalEscHandler = null;
 let videoModalEscHandler = null;
+let aiInfoModalEscHandler = null;
 
 /**
  * 打开图片模态框
@@ -641,6 +729,62 @@ function closeVideoModal(event) {
     }
 }
 
+/**
+ * 打开AI信息模态框
+ * @param {string} avatarPath - AI头像路径
+ */
+function openAIInfoModal(avatarPath) {
+    const modal = document.getElementById('aiInfoModal');
+    const modalAvatar = document.getElementById('aiInfoAvatar');
+
+    if (modal && modalAvatar) {
+        // 设置头像
+        modalAvatar.src = avatarPath;
+        modal.classList.add('active');
+        // 防止背景滚动
+        document.body.style.overflow = 'hidden';
+
+        // 如果还没有添加 ESC 键监听器，则添加
+        if (!aiInfoModalEscHandler) {
+            aiInfoModalEscHandler = (e) => {
+                if (e.key === 'Escape') {
+                    const modal = document.getElementById('aiInfoModal');
+                    if (modal && modal.classList.contains('active')) {
+                        closeAIInfoModal();
+                    }
+                }
+            };
+            document.addEventListener('keydown', aiInfoModalEscHandler);
+        }
+    }
+}
+
+/**
+ * 关闭AI信息模态框
+ * @param {Event} event - 事件对象（可选，用于判断点击位置）
+ */
+function closeAIInfoModal(event) {
+    // 如果传入了事件对象，检查点击位置
+    if (event && event.target) {
+        // 如果点击的是内容区域（但不是关闭按钮），则不关闭
+        const isCloseButton = event.target.classList.contains('ai-info-modal-close');
+        const isBackground = event.target.id === 'aiInfoModal';
+        const isContentArea = event.target.closest('.ai-info-modal-content');
+
+        // 只有当点击的是关闭按钮或背景时才关闭
+        if (!isCloseButton && !isBackground) {
+            return;
+        }
+    }
+
+    const modal = document.getElementById('aiInfoModal');
+    if (modal && modal.classList.contains('active')) {
+        modal.classList.remove('active');
+        // 恢复背景滚动
+        document.body.style.overflow = '';
+    }
+}
+
 // TTS 播放相关变量
 let currentAudio = null;
 let currentTTSButton = null;
@@ -669,8 +813,8 @@ async function checkAudioExists(audioUrl) {
  * @param {string} messageId - 消息ID（可选，用于缓存）
  */
 async function playTTS(text, button, messageId = null) {
-    // 如果正在加载，不允许点击
-    if (button.classList.contains('loading') || button.classList.contains('disabled')) {
+    // 如果按钮被禁用，不允许点击
+    if (button.classList.contains('disabled')) {
         return;
     }
 
@@ -692,8 +836,8 @@ async function playTTS(text, button, messageId = null) {
         currentTTSButton.classList.remove('playing');
     }
 
-    // 禁用按钮，防止重复点击
-    button.classList.add('disabled', 'loading');
+    // 禁用按钮，防止重复点击（不显示加载动画）
+    button.classList.add('disabled');
     currentTTSButton = button;
 
     try {
@@ -704,7 +848,7 @@ async function playTTS(text, button, messageId = null) {
             const exists = await checkAudioExists(cachedAudioUrl);
             if (exists) {
                 // 文件存在，直接播放
-                button.classList.remove('loading', 'disabled');
+                button.classList.remove('disabled');
                 button.classList.add('playing');
 
                 const audio = new Audio(cachedAudioUrl);
@@ -759,8 +903,8 @@ async function playTTS(text, button, messageId = null) {
             ttsAudioCache.set(messageId, data.audio_url);
         }
 
-        // 移除加载状态，添加播放状态
-        button.classList.remove('loading', 'disabled');
+        // 移除禁用状态，添加播放状态
+        button.classList.remove('disabled');
         button.classList.add('playing');
 
         // 创建音频元素并播放
@@ -774,7 +918,7 @@ async function playTTS(text, button, messageId = null) {
         };
 
         audio.onerror = () => {
-            button.classList.remove('playing', 'disabled');
+            button.classList.remove('playing');
             currentTTSButton = null;
             currentAudio = null;
             // 清除缓存
@@ -789,9 +933,39 @@ async function playTTS(text, button, messageId = null) {
 
     } catch (error) {
         console.error('TTS 播放错误:', error);
-        button.classList.remove('playing', 'loading', 'disabled');
+        button.classList.remove('playing', 'disabled');
         currentTTSButton = null;
         alert('语音生成失败: ' + error.message);
+    }
+}
+
+/**
+ * 复制文本到剪贴板
+ * @param {string} text - 要复制的文本
+ * @param {HTMLElement} button - 触发按钮元素
+ */
+async function copyText(text, button) {
+    try {
+        // 复制文本到剪贴板
+        await navigator.clipboard.writeText(text);
+
+        // 播放复制成功音频
+        const audio = new Audio('/static/audio/system_audio/copy.mp3');
+        audio.play().catch(err => {
+            console.warn('播放复制音频失败:', err);
+        });
+
+        // 显示复制成功提示
+        const originalTitle = button.title;
+        button.title = '复制成功！';
+
+        // 恢复原始标题
+        setTimeout(() => {
+            button.title = originalTitle;
+        }, 2000);
+    } catch (error) {
+        console.error('复制失败:', error);
+        alert('复制失败，请稍后重试');
     }
 }
 

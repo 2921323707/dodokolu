@@ -492,62 +492,63 @@
     transform: scale(0.95);
 }
 
-/* TTS 小喇叭按钮样式 */
-.message-tts-btn {
+/* 消息操作按钮容器 - 位于 message-content 外部 */
+.message.assistant {
+    padding-bottom: 36px;
+}
+
+.message-action-buttons {
     position: absolute;
-    bottom: 8px;
-    right: 8px;
-    width: 28px;
-    height: 28px;
+    bottom: 0;
+    left: 48px;
+    display: flex;
+    gap: 4px;
+    z-index: 10;
+}
+
+/* 消息操作按钮样式 */
+.message-action-btn {
+    height: 32px;
+    width: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    padding: 0;
     border: none;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
+    border-radius: 6px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    transition: all 0.2s ease;
-    z-index: 10;
+    box-shadow: none;
+    transition: opacity 0.2s ease;
+    background-color: transparent;
+    font-family: var(--font-family);
+    position: relative;
+    box-sizing: border-box;
 }
 
-.message-tts-btn:hover:not(.loading):not(.disabled) {
-    background: rgba(255, 255, 255, 1);
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+.message-action-btn:hover:not(.loading):not(.disabled) {
+    opacity: 0.7;
 }
 
-.message-tts-btn:active:not(.loading):not(.disabled) {
-    transform: scale(0.95);
+.message-action-btn:active:not(.loading):not(.disabled) {
+    opacity: 0.5;
 }
 
-.message-tts-btn img {
+.message-action-btn img {
     width: 18px;
     height: 18px;
     object-fit: contain;
     transition: opacity 0.2s ease;
+    flex-shrink: 0;
+    display: block;
 }
 
-.message-tts-btn.playing {
-    background: rgba(255, 192, 203, 0.9);
+.message-play-btn.playing {
     animation: ttsPulse 1.5s ease-in-out infinite;
 }
 
-.message-tts-btn.loading {
-    background: rgba(255, 255, 255, 0.9);
-    cursor: not-allowed;
-    pointer-events: none;
-    border: 3px solid rgba(255, 192, 203, 0.3);
-    border-top-color: #ffb3d9;
-    animation: ttsLoading 0.8s linear infinite;
-}
-
-.message-tts-btn.loading img {
-    opacity: 0;
-}
-
-.message-tts-btn.disabled {
+.message-action-btn.disabled {
     cursor: not-allowed;
     pointer-events: none;
     opacity: 0.6;
@@ -562,14 +563,6 @@
     }
 }
 
-@keyframes ttsLoading {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
 
 /* 确保消息内容区域有相对定位，以便按钮定位 */
 .message-content {

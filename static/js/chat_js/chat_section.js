@@ -23,7 +23,7 @@ async function sendMessage() {
 
     // 如果没有消息也没有图片，则不发送
     if ((!message && !hasImage) || isStreaming) return;
-    
+
     // 检测指令模式：如果消息以 /image 或 /video 开头，触发指令流程
     // 但如果消息包含 [已成功生成] 标记，说明这是自动触发的AI响应消息，应该跳过指令处理
     if ((message.startsWith('/image ') || message.startsWith('/video ')) && !message.includes('[已成功生成]')) {
@@ -42,10 +42,10 @@ async function sendMessage() {
 
     // 检查消息是否包含[已成功生成]标记，如果有则不显示消息框
     const isSuccessMessage = message.includes('[已成功生成]');
-    
+
     // 保存图片文件引用（在重置前保存，必须在 removeImage() 之前）
     const imageFileToUpload = hasImage ? currentImageFile : null;
-    
+
     // 添加用户消息到界面（如果有图片，显示图片预览）
     // 注意：如果消息包含[已成功生成]标记，不显示消息框
     if (!isSuccessMessage) {
@@ -338,7 +338,7 @@ async function loadHistory() {
                 if (msg.role === 'system' || msg.role === 'tool') {
                     return;
                 }
-                
+
                 // 检查是否有图片URL（用户上传的图片或指令生成的图片）
                 if (msg.image_url) {
                     const messageId = addMessage(msg.role, msg.content || '', {
@@ -350,9 +350,9 @@ async function loadHistory() {
                         setTimeout(() => {
                             const messageDiv = document.getElementById(messageId);
                             if (messageDiv) {
-                                const ttsButton = messageDiv.querySelector('.message-tts-btn');
-                                if (ttsButton) {
-                                    ttsButton.dataset.audioUrl = msg.audio_url;
+                                const playButton = messageDiv.querySelector('.message-play-btn');
+                                if (playButton) {
+                                    playButton.dataset.audioUrl = msg.audio_url;
                                 }
                             }
                         }, 100);
@@ -369,9 +369,9 @@ async function loadHistory() {
                         setTimeout(() => {
                             const messageDiv = document.getElementById(messageId);
                             if (messageDiv) {
-                                const ttsButton = messageDiv.querySelector('.message-tts-btn');
-                                if (ttsButton) {
-                                    ttsButton.dataset.audioUrl = msg.audio_url;
+                                const playButton = messageDiv.querySelector('.message-play-btn');
+                                if (playButton) {
+                                    playButton.dataset.audioUrl = msg.audio_url;
                                 }
                             }
                         }, 100);
@@ -385,9 +385,9 @@ async function loadHistory() {
                         setTimeout(() => {
                             const messageDiv = document.getElementById(messageId);
                             if (messageDiv) {
-                                const ttsButton = messageDiv.querySelector('.message-tts-btn');
-                                if (ttsButton) {
-                                    ttsButton.dataset.audioUrl = msg.audio_url;
+                                const playButton = messageDiv.querySelector('.message-play-btn');
+                                if (playButton) {
+                                    playButton.dataset.audioUrl = msg.audio_url;
                                 }
                             }
                         }, 100);

@@ -220,7 +220,31 @@ def get_history(session_id):
         
         return None
     
-    for msg in history:
+    # 第一遍遍历：收集所有收藏图片tool消息，建立与assistant消息的映射关系
+    # key: assistant消息在history中的索引，value: 收藏图片信息列表
+    favorite_images_map = {}
+    for i, msg in enumerate(history):
+        if msg.get('role') == 'tool' and msg.get('name') == 'send_favorite_image':
+            try:
+                # 解析tool消息的content字段（JSON格式）
+                tool_content = json.loads(msg.get('content', '{}'))
+                if tool_content.get('sent') and tool_content.get('image_url'):
+                    # 查找该tool消息之前的最近一个assistant消息的索引
+                    for j in range(i - 1, -1, -1):
+                        if history[j].get('role') == 'assistant':
+                            if j not in favorite_images_map:
+                                favorite_images_map[j] = []
+                            favorite_images_map[j].append({
+                                'image_url': tool_content.get('image_url'),
+                                'description': tool_content.get('description'),
+                                'timestamp': msg.get('timestamp', '')
+                            })
+                            break
+            except (json.JSONDecodeError, ValueError):
+                pass
+    
+    # 第二遍遍历：处理消息并插入收藏图片
+    for i, msg in enumerate(history):
         processed_msg = dict(msg)  # 复制消息
         
         # 跳过 system 和 tool 角色的消息（不在前端渲染）
@@ -272,6 +296,17 @@ def get_history(session_id):
                 continue  # 跳过后续处理，因为已经添加了
         
         processed_history.append(processed_msg)
+        
+        # 如果是assistant消息，检查是否有对应的收藏图片，如果有则添加
+        if msg.get('role') == 'assistant' and i in favorite_images_map:
+            for fav_img in favorite_images_map[i]:
+                favorite_img_msg = {
+                    'role': 'assistant',
+                    'content': fav_img.get('description', '') if fav_img.get('description') else '',
+                    'image_url': fav_img['image_url'],
+                    'timestamp': fav_img.get('timestamp', msg.get('timestamp', ''))
+                }
+                processed_history.append(favorite_img_msg)
     
     return jsonify({'history': processed_history, 'current_file': current_file})
 

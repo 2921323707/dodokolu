@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_scrollbar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_responsive.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_command.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_ai_info.css') }}">
 </head>
 
 <body>
@@ -86,6 +87,39 @@
             </div>
         </section>
 
+        <!-- 右侧 Banner 区域 -->
+        <aside class="right-sidebar">
+            <div class="banner-container">
+                <div class="banner-carousel" id="bannerCarousel">
+                    <div class="carousel-wrapper">
+                        <div class="carousel-slide active">
+                            <div class="slide-content">轮播图 1</div>
+                        </div>
+                        <div class="carousel-slide">
+                            <div class="slide-content">轮播图 2</div>
+                        </div>
+                        <div class="carousel-slide">
+                            <div class="slide-content">轮播图 3</div>
+                        </div>
+                    </div>
+                    <div class="carousel-indicators">
+                        <span class="indicator active" data-slide="0"></span>
+                        <span class="indicator" data-slide="1"></span>
+                        <span class="indicator" data-slide="2"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="banner-container">
+                <div class="banner">Banner</div>
+            </div>
+            <div class="banner-container">
+                <div class="banner-square">Banner</div>
+            </div>
+            <div class="banner-container">
+                <div class="banner-ad">广告位</div>
+            </div>
+        </aside>
+
     </main>
 
     <!-- 图片查看模态框 -->
@@ -104,6 +138,38 @@
         </div>
     </div>
 
+    <!-- AI信息模态框 -->
+    <div id="aiInfoModal" class="ai-info-modal" onclick="closeAIInfoModal(event)">
+        <div class="ai-info-modal-content" onclick="event.stopPropagation()">
+            <button class="ai-info-modal-close" onclick="closeAIInfoModal(event)">×</button>
+            <div class="ai-info-container">
+                <div class="ai-info-left">
+                    <div class="ai-info-avatar-wrapper">
+                        <img id="aiInfoAvatar" src="" alt="AI头像" class="ai-info-avatar">
+                    </div>
+                    <h2 class="ai-info-name">Peach & JY</h2>
+                    <p class="ai-info-description">DODOKOLU</p>
+                    <div class="ai-info-stats">
+                        <div class="ai-info-stat-item">
+                            <span class="stat-label">版本</span>
+                            <span class="stat-value">v1.0</span>
+                        </div>
+                        <div class="ai-info-stat-item">
+                            <span class="stat-label">状态</span>
+                            <span class="stat-value online">在线</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ai-info-right">
+                    <div class="ai-info-custom-area">
+                        <!-- 用户自定义内容区域 -->
+                        <p class="custom-placeholder">此区域待用户定义</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- JavaScript 文件按功能模块拆分 -->
     <script src="{{ url_for('static', filename='js/chat_js/chat_variables.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chat_js/chat_location.js') }}"></script>
@@ -112,6 +178,7 @@
     <script src="{{ url_for('static', filename='js/chat_js/chat_input.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chat_js/chat_command.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chat_js/chat_navbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat_js/chat_carousel.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chat_js/chat_init.js') }}"></script>
 </body>
 

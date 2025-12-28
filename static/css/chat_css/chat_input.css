@@ -22,6 +22,7 @@
     border-radius: 8px;
     background: var(--bg-color, #ffffff);
     color: var(--text-primary, #1e293b);
+    font-family: var(--font-family);
     font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
