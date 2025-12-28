@@ -1,12 +1,9 @@
 // 随机加载背景图片（与 login.js 保持一致）
 function loadRandomBackground() {
-    // 背景图片
+    // 背景图片（login_back_x.jpg格式，与注册页面一致）
     const backgroundImages = [
-        '/static/login_back_imgs/bg1.jpg',
-        // '/static/login_back_imgs/bg2.jpg',
-        // '/static/login_back_imgs/bg3.jpg',
-        // '/static/login_back_imgs/bg4.jpg',
-        // '/static/login_back_imgs/bg5.jpg'
+        '/static/imgs/deco/login/login_back_1.jpg',
+        '/static/imgs/deco/login/login_back_2.jpg'
     ];
 
     // 随机选择一张
