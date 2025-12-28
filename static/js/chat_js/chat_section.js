@@ -43,12 +43,13 @@ async function sendMessage() {
     // 检查消息是否包含[已成功生成]标记，如果有则不显示消息框
     const isSuccessMessage = message.includes('[已成功生成]');
     
+    // 保存图片文件引用（在重置前保存，必须在 removeImage() 之前）
+    const imageFileToUpload = hasImage ? currentImageFile : null;
+    
     // 添加用户消息到界面（如果有图片，显示图片预览）
     // 注意：如果消息包含[已成功生成]标记，不显示消息框
     if (!isSuccessMessage) {
         let userMessageContent = message;
-        // 保存图片文件引用（在重置前保存）
-        const imageFileToUpload = hasImage ? currentImageFile : null;
         if (hasImage && currentImageUrl) {
             userMessageContent = message || '[图片]';
             // 保存图片URL用于显示预览
