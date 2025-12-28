@@ -82,6 +82,20 @@ static/imgs/album/**
 static/video/**/*
 !static/video/**/.gitkeep
 
+# ==================== 音频资源 ====================
+# 忽略所有音频文件（根目录和子目录）
+*.mp3
+*.wav
+*.flac
+*.aac
+*.ogg
+*.m4a
+*.wma
+*.opus
+# TTS生成的音频文件
+static/audio/response_audio/**/*
+!static/audio/response_audio/**/.gitkeep
+
 # ==================== 3D模型和素材文件 ====================
 # 3D模型文件
 *.fbx

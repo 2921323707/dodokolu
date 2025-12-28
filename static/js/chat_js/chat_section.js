@@ -341,21 +341,57 @@ async function loadHistory() {
                 
                 // 检查是否有图片URL（用户上传的图片或指令生成的图片）
                 if (msg.image_url) {
-                    addMessage(msg.role, msg.content || '', {
+                    const messageId = addMessage(msg.role, msg.content || '', {
                         imageUrl: msg.image_url,
                         imagePreview: true
                     });
+                    // 如果有音频URL，设置到按钮
+                    if (msg.audio_url && messageId) {
+                        setTimeout(() => {
+                            const messageDiv = document.getElementById(messageId);
+                            if (messageDiv) {
+                                const ttsButton = messageDiv.querySelector('.message-tts-btn');
+                                if (ttsButton) {
+                                    ttsButton.dataset.audioUrl = msg.audio_url;
+                                }
+                            }
+                        }, 100);
+                    }
                 }
                 // 检查是否有视频URL（指令生成的视频）
                 else if (msg.video_url) {
-                    addMessage(msg.role, msg.content || '', {
+                    const messageId = addMessage(msg.role, msg.content || '', {
                         videoUrl: msg.video_url,
                         videoPreview: true
                     });
+                    // 如果有音频URL，设置到按钮
+                    if (msg.audio_url && messageId) {
+                        setTimeout(() => {
+                            const messageDiv = document.getElementById(messageId);
+                            if (messageDiv) {
+                                const ttsButton = messageDiv.querySelector('.message-tts-btn');
+                                if (ttsButton) {
+                                    ttsButton.dataset.audioUrl = msg.audio_url;
+                                }
+                            }
+                        }, 100);
+                    }
                 }
                 // 普通文本消息
                 else {
-                    addMessage(msg.role, msg.content || '');
+                    const messageId = addMessage(msg.role, msg.content || '');
+                    // 如果有音频URL，设置到按钮
+                    if (msg.audio_url && messageId) {
+                        setTimeout(() => {
+                            const messageDiv = document.getElementById(messageId);
+                            if (messageDiv) {
+                                const ttsButton = messageDiv.querySelector('.message-tts-btn');
+                                if (ttsButton) {
+                                    ttsButton.dataset.audioUrl = msg.audio_url;
+                                }
+                            }
+                        }, 100);
+                    }
                 }
             });
         }

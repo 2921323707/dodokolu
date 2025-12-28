@@ -491,3 +491,87 @@
 .video-modal-close:active {
     transform: scale(0.95);
 }
+
+/* TTS 小喇叭按钮样式 */
+.message-tts-btn {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.message-tts-btn:hover:not(.loading):not(.disabled) {
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.message-tts-btn:active:not(.loading):not(.disabled) {
+    transform: scale(0.95);
+}
+
+.message-tts-btn img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    transition: opacity 0.2s ease;
+}
+
+.message-tts-btn.playing {
+    background: rgba(255, 192, 203, 0.9);
+    animation: ttsPulse 1.5s ease-in-out infinite;
+}
+
+.message-tts-btn.loading {
+    background: rgba(255, 255, 255, 0.9);
+    cursor: not-allowed;
+    pointer-events: none;
+    border: 3px solid rgba(255, 192, 203, 0.3);
+    border-top-color: #ffb3d9;
+    animation: ttsLoading 0.8s linear infinite;
+}
+
+.message-tts-btn.loading img {
+    opacity: 0;
+}
+
+.message-tts-btn.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+@keyframes ttsPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.15);
+    }
+}
+
+@keyframes ttsLoading {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* 确保消息内容区域有相对定位，以便按钮定位 */
+.message-content {
+    position: relative;
+}

@@ -182,6 +182,44 @@ def get_history(session_id):
     # 用于向后兼容的索引（仅在没有文件名时使用）
     legacy_image_index = 0
     
+    # 查找音频文件目录，基于文本内容匹配
+    audio_dir = Path('static') / 'audio' / 'response_audio' / safe_email
+    import hashlib
+    import re
+    
+    # 为每个 assistant 消息查找对应的音频文件
+    def find_audio_for_message(msg_content):
+        """基于消息内容查找对应的音频文件"""
+        if not msg_content or msg_content.strip() == '':
+            return None
+        
+        # 过滤括号内容和星号（与TTS生成时保持一致）
+        filtered_text = re.sub(r'[（(【\[].*?[）)\]\】]', '', msg_content)
+        # 过滤掉星号
+        filtered_text = re.sub(r'\*+', '', filtered_text)
+        filtered_text = filtered_text.strip()
+        
+        if not filtered_text:
+            return None
+        
+        # 生成文本哈希
+        text_hash = hashlib.md5(filtered_text.encode('utf-8')).hexdigest()[:16]
+        
+        # 查找匹配的音频文件（支持两种格式：tts_{message_id}_{hash}.mp3 或 tts_{hash}.mp3）
+        if audio_dir.exists():
+            # 先查找带 message_id 的文件
+            for audio_file in audio_dir.glob(f'tts_*_{text_hash}.mp3'):
+                audio_url = url_for('static', filename=f"audio/response_audio/{safe_email}/{audio_file.name}")
+                return audio_url
+            
+            # 再查找只有 hash 的文件
+            hash_file = audio_dir / f'tts_{text_hash}.mp3'
+            if hash_file.exists():
+                audio_url = url_for('static', filename=f"audio/response_audio/{safe_email}/{hash_file.name}")
+                return audio_url
+        
+        return None
+    
     for msg in history:
         processed_msg = dict(msg)  # 复制消息
         
@@ -203,6 +241,13 @@ def get_history(session_id):
             elif not image_filename and legacy_image_index < len(user_images_sorted):
                 processed_msg['image_url'] = user_images_sorted[legacy_image_index]['url']
                 legacy_image_index += 1
+        
+        # 如果是 assistant 消息，尝试查找对应的音频文件
+        if msg.get('role') == 'assistant':
+            msg_content = msg.get('content', '')
+            audio_url = find_audio_for_message(msg_content)
+            if audio_url:
+                processed_msg['audio_url'] = audio_url
         
         # 如果消息包含 command_info，为生成的图片/视频创建 assistant 消息
         if 'command_info' in msg:
@@ -745,3 +790,102 @@ def generate_video_api():
         import traceback
         traceback.print_exc()
         return jsonify({'error': f'生成视频失败: {str(e)}'}), 500
+
+
+@chat_bp.route('/tts', methods=['POST'])
+def tts_api():
+    """TTS 语音合成API"""
+    try:
+        # 检查是否登录
+        user_email = session.get('email')
+        if not user_email:
+            return jsonify({'error': '登录了吗，就想榨干我的Token(￣へ￣)'}), 401
+        
+        data = request.json
+        text = data.get('text', '').strip()
+        message_id = data.get('message_id', None)  # 可选的消息ID，用于缓存
+        
+        if not text:
+            return jsonify({'error': '文本不能为空'}), 400
+        
+        # 过滤掉括号内的内容（角色扮演动作描述）和星号
+        import re
+        # 匹配中文括号、英文括号、方括号等
+        filtered_text = re.sub(r'[（(【\[].*?[）)\]\】]', '', text)
+        # 过滤掉星号
+        filtered_text = re.sub(r'\*+', '', filtered_text)
+        filtered_text = filtered_text.strip()
+        
+        if not filtered_text:
+            return jsonify({'error': '过滤后文本为空'}), 400
+        
+        # 导入 TTS 模块
+        import sys
+        from pathlib import Path
+        import hashlib
+        tts_module_path = Path(__file__).parent.parent / 'components' / 'tts语音合成' / 'src.py'
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("tts_src", str(tts_module_path))
+        tts_src = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(tts_src)
+        
+        # 创建配置
+        config = tts_src.TTSConfig()
+        
+        # 确保音频目录存在
+        safe_email = user_email.replace('@', '_at_').replace('.', '_')
+        safe_email = secure_filename(safe_email)
+        audio_dir = Path('static') / 'audio' / 'response_audio' / safe_email
+        audio_dir.mkdir(parents=True, exist_ok=True)
+        
+        # 基于文本内容生成唯一ID（用于缓存）
+        text_hash = hashlib.md5(filtered_text.encode('utf-8')).hexdigest()[:16]
+        
+        # 如果提供了 message_id，优先使用 message_id 作为文件名
+        if message_id:
+            filename = f"tts_{message_id}_{text_hash}.mp3"
+        else:
+            filename = f"tts_{text_hash}.mp3"
+        
+        output_file = audio_dir / filename
+        
+        # 检查文件是否已存在（缓存）
+        if output_file.exists():
+            relative_path = f"audio/response_audio/{safe_email}/{filename}"
+            audio_url = url_for('static', filename=relative_path)
+            return jsonify({
+                'success': True,
+                'audio_url': audio_url,
+                'filename': filename,
+                'cached': True
+            })
+        
+        # 调用 TTS 生成语音
+        import asyncio
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            loop.run_until_complete(tts_src.submit_text(config, filtered_text, str(output_file)))
+        finally:
+            loop.close()
+        
+        # 检查文件是否生成成功
+        if not output_file.exists():
+            return jsonify({'error': '语音生成失败'}), 500
+        
+        # 生成访问URL
+        relative_path = f"audio/response_audio/{safe_email}/{filename}"
+        audio_url = url_for('static', filename=relative_path)
+        
+        return jsonify({
+            'success': True,
+            'audio_url': audio_url,
+            'filename': filename,
+            'cached': False
+        })
+        
+    except Exception as e:
+        print(f'TTS 生成错误: {e}')
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': f'语音生成失败: {str(e)}'}), 500

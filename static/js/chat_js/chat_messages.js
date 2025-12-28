@@ -70,6 +70,22 @@ function addMessage(role, content = '', options = {}) {
             messageText.textContent = textContent;
 
             textMessageContent.appendChild(messageText);
+
+            // 为 assistant 文本消息添加小喇叭按钮
+            if (role === 'assistant' && textContent && textContent.trim()) {
+                const ttsButton = document.createElement('button');
+                ttsButton.className = 'message-tts-btn';
+                ttsButton.innerHTML = '<img src="/static/imgs/icon/小喇叭.png" alt="语音播放">';
+                ttsButton.title = '播放语音';
+                ttsButton.dataset.messageId = textMessageId;
+                ttsButton.dataset.text = textContent;
+                ttsButton.onclick = (e) => {
+                    e.stopPropagation();
+                    playTTS(textContent, ttsButton, textMessageId);
+                };
+                textMessageContent.appendChild(ttsButton);
+            }
+
             textMessageDiv.appendChild(textAvatar);
             textMessageDiv.appendChild(textMessageContent);
             chatMessages.appendChild(textMessageDiv);
@@ -151,6 +167,22 @@ function addMessage(role, content = '', options = {}) {
             messageText.textContent = textContent;
 
             textMessageContent.appendChild(messageText);
+
+            // 为 assistant 文本消息添加小喇叭按钮
+            if (role === 'assistant' && textContent && textContent.trim()) {
+                const ttsButton = document.createElement('button');
+                ttsButton.className = 'message-tts-btn';
+                ttsButton.innerHTML = '<img src="/static/imgs/icon/小喇叭.png" alt="语音播放">';
+                ttsButton.title = '播放语音';
+                ttsButton.dataset.messageId = textMessageId;
+                ttsButton.dataset.text = textContent;
+                ttsButton.onclick = (e) => {
+                    e.stopPropagation();
+                    playTTS(textContent, ttsButton, textMessageId);
+                };
+                textMessageContent.appendChild(ttsButton);
+            }
+
             textMessageDiv.appendChild(textAvatar);
             textMessageDiv.appendChild(textMessageContent);
             chatMessages.appendChild(textMessageDiv);
@@ -200,6 +232,23 @@ function addMessage(role, content = '', options = {}) {
     }
 
     messageContent.appendChild(messageText);
+
+    // 为 assistant 消息添加小喇叭按钮
+    if (role === 'assistant' && content && content.trim()) {
+        const ttsButton = document.createElement('button');
+        ttsButton.className = 'message-tts-btn';
+        ttsButton.innerHTML = '<img src="/static/imgs/icon/小喇叭.png" alt="语音播放">';
+        ttsButton.title = '播放语音';
+        // 存储消息ID和文本内容到按钮
+        ttsButton.dataset.messageId = messageId;
+        ttsButton.dataset.text = content;
+        ttsButton.onclick = (e) => {
+            e.stopPropagation();
+            playTTS(content, ttsButton, messageId);
+        };
+        messageContent.appendChild(ttsButton);
+    }
+
     messageDiv.appendChild(avatar);
     messageDiv.appendChild(messageContent);
     chatMessages.appendChild(messageDiv);
@@ -230,6 +279,36 @@ function appendToMessage(messageId, content) {
 
     if (messageText) {
         messageText.textContent += content;
+
+        // 如果是 assistant 消息且还没有小喇叭按钮，添加一个
+        if (messageDiv.classList.contains('assistant')) {
+            const messageContent = messageDiv.querySelector('.message-content');
+            const existingTTSBtn = messageContent.querySelector('.message-tts-btn');
+            const messageId = messageDiv.id;
+
+            if (!existingTTSBtn && messageText.textContent.trim()) {
+                const ttsButton = document.createElement('button');
+                ttsButton.className = 'message-tts-btn';
+                ttsButton.innerHTML = '<img src="/static/imgs/icon/小喇叭.png" alt="语音播放">';
+                ttsButton.title = '播放语音';
+                ttsButton.dataset.messageId = messageId;
+                ttsButton.dataset.text = messageText.textContent;
+                ttsButton.onclick = (e) => {
+                    e.stopPropagation();
+                    playTTS(messageText.textContent, ttsButton, messageId);
+                };
+                messageContent.appendChild(ttsButton);
+            } else if (existingTTSBtn) {
+                // 更新现有按钮的点击事件和数据，使用最新内容
+                existingTTSBtn.dataset.messageId = messageId;
+                existingTTSBtn.dataset.text = messageText.textContent;
+                existingTTSBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    playTTS(messageText.textContent, existingTTSBtn, messageId);
+                };
+            }
+        }
+
         // 滚动到底部
         const chatMessages = document.getElementById('chatMessages');
         chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -407,6 +486,8 @@ function createSkillsNote(role = 'assistant', messageId = null) {
         '联网搜索：搜索最新信息，帮你获取实时资讯',
         '发送表情包：我会根据对话内容自动发送相关表情包,你懂概率的',
         '收藏图片：问我最喜欢的图片，我会分享收藏的图片给你,站主收藏款请勿外传',
+        '图像生成：根据你的描述，我可以为你生成图片,40s左右',
+        '视频生成：根据你的描述，我可以为你生成视频,100s左右',
         '(人家可以看懂你发送的图片哦)'
     ];
 
@@ -427,6 +508,8 @@ function showSkillsNote(messageElement) {
         '联网搜索：搜索最新信息，帮你获取实时资讯',
         '发送表情包：我会根据对话内容自动发送相关表情包,你懂概率的',
         '收藏图片：问我最喜欢的图片，我会分享收藏的图片给你,站主收藏款请勿外传',
+        '图像生成：根据你的描述，我可以为你生成图片,40s左右',
+        '视频生成：根据你的描述，我可以为你生成视频,100s左右',
         '(人家可以看懂你发送的图片哦)'
 
     ];
@@ -555,6 +638,160 @@ function closeVideoModal(event) {
         }
         // 恢复背景滚动
         document.body.style.overflow = '';
+    }
+}
+
+// TTS 播放相关变量
+let currentAudio = null;
+let currentTTSButton = null;
+
+// TTS 音频缓存（存储已生成的音频URL）
+const ttsAudioCache = new Map();
+
+/**
+ * 检查音频文件是否存在
+ * @param {string} audioUrl - 音频文件URL
+ * @returns {Promise<boolean>} 文件是否存在
+ */
+async function checkAudioExists(audioUrl) {
+    try {
+        const response = await fetch(audioUrl, { method: 'HEAD' });
+        return response.ok;
+    } catch (error) {
+        return false;
+    }
+}
+
+/**
+ * 播放 TTS 语音
+ * @param {string} text - 要转换为语音的文本
+ * @param {HTMLElement} button - 触发按钮元素
+ * @param {string} messageId - 消息ID（可选，用于缓存）
+ */
+async function playTTS(text, button, messageId = null) {
+    // 如果正在加载，不允许点击
+    if (button.classList.contains('loading') || button.classList.contains('disabled')) {
+        return;
+    }
+
+    // 如果正在播放，先停止
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio = null;
+    }
+
+    // 如果点击的是同一个按钮，重置状态
+    if (currentTTSButton === button && button.classList.contains('playing')) {
+        currentTTSButton = null;
+        button.classList.remove('playing');
+        return;
+    }
+
+    // 重置之前按钮的状态
+    if (currentTTSButton && currentTTSButton !== button) {
+        currentTTSButton.classList.remove('playing');
+    }
+
+    // 禁用按钮，防止重复点击
+    button.classList.add('disabled', 'loading');
+    currentTTSButton = button;
+
+    try {
+        // 检查缓存：如果按钮已有存储的音频URL，先检查文件是否存在
+        const cachedAudioUrl = button.dataset.audioUrl;
+        if (cachedAudioUrl) {
+            // 检查文件是否存在
+            const exists = await checkAudioExists(cachedAudioUrl);
+            if (exists) {
+                // 文件存在，直接播放
+                button.classList.remove('loading', 'disabled');
+                button.classList.add('playing');
+
+                const audio = new Audio(cachedAudioUrl);
+                currentAudio = audio;
+
+                audio.onended = () => {
+                    button.classList.remove('playing');
+                    currentTTSButton = null;
+                    currentAudio = null;
+                };
+
+                audio.onerror = () => {
+                    button.classList.remove('playing');
+                    currentTTSButton = null;
+                    currentAudio = null;
+                    // 缓存失效，清除
+                    delete button.dataset.audioUrl;
+                    alert('音频播放失败，请重试');
+                };
+
+                await audio.play();
+                return;
+            } else {
+                // 文件不存在，清除缓存，继续生成
+                delete button.dataset.audioUrl;
+            }
+        }
+
+        // 调用后端 API 生成语音（传递 message_id 用于缓存）
+        const requestBody = { text: text };
+        if (messageId) {
+            requestBody.message_id = messageId;
+        }
+
+        const response = await fetch('/api/tts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || '语音生成失败');
+        }
+
+        // 将音频URL存储到按钮和缓存中
+        button.dataset.audioUrl = data.audio_url;
+        if (messageId) {
+            ttsAudioCache.set(messageId, data.audio_url);
+        }
+
+        // 移除加载状态，添加播放状态
+        button.classList.remove('loading', 'disabled');
+        button.classList.add('playing');
+
+        // 创建音频元素并播放
+        const audio = new Audio(data.audio_url);
+        currentAudio = audio;
+
+        audio.onended = () => {
+            button.classList.remove('playing');
+            currentTTSButton = null;
+            currentAudio = null;
+        };
+
+        audio.onerror = () => {
+            button.classList.remove('playing', 'disabled');
+            currentTTSButton = null;
+            currentAudio = null;
+            // 清除缓存
+            delete button.dataset.audioUrl;
+            if (messageId) {
+                ttsAudioCache.delete(messageId);
+            }
+            alert('音频播放失败');
+        };
+
+        await audio.play();
+
+    } catch (error) {
+        console.error('TTS 播放错误:', error);
+        button.classList.remove('playing', 'loading', 'disabled');
+        currentTTSButton = null;
+        alert('语音生成失败: ' + error.message);
     }
 }
 
