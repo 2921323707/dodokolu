@@ -5,7 +5,7 @@ function createSessionId() {
 
 let sessionId = createSessionId();
 let isStreaming = false;
-// 模式状态：'unnormal' 或 'normal'，默认为 'normal'
+// 模式状态：'normal'，默认为 'normal'
 let currentMode = 'normal';
 
 // 当前 session 的头像编号（1-5），每次创建新 session 时随机选择
@@ -54,8 +54,7 @@ function createAIAvatarElement() {
 // 将模式值转换为显示文本
 function getModeDisplayText(mode) {
     const modeMap = {
-        'normal': '标准版',
-        'unnormal': '进阶版'
+        'normal': '标准版'
     };
     return modeMap[mode] || mode;
 }

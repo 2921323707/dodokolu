@@ -2,17 +2,19 @@
 """
 Heaven API路由
 """
-from flask import jsonify
+from flask import Blueprint, jsonify
 from pathlib import Path
 import os
 import logging
-from route.heaven_route import heaven_bp
+
+# 创建蓝图
+heaven_api_bp = Blueprint('heaven_api', __name__, url_prefix='/api')
 
 # 配置日志
 logger = logging.getLogger(__name__)
 
 
-@heaven_bp.route('/api/videos')
+@heaven_api_bp.route('/videos')
 def get_videos():
     """获取视频列表API，增强容错处理"""
     try:

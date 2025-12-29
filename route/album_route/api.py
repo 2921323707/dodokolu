@@ -2,11 +2,13 @@
 """
 相册API路由
 """
-from flask import jsonify, request, session
+from flask import Blueprint, jsonify, request, session
 from pathlib import Path
 import os
 import re
-from route.album_route import album_bp
+
+# 创建蓝图
+album_api_bp = Blueprint('album_api', __name__, url_prefix='/api')
 from route.album_route.utils import (
     CATEGORY_MAP,
     ALLOWED_EXTENSIONS,
@@ -39,7 +41,7 @@ def is_category_visible(category_key):
         return True
 
 
-@album_bp.route('/api/categories', methods=['GET'])
+@album_api_bp.route('/categories', methods=['GET'])
 def get_visible_categories():
     """获取所有可见的类别列表（公开API）"""
     try:
@@ -73,7 +75,7 @@ def get_visible_categories():
         }), 500
 
 
-@album_bp.route('/api/images/<category>')
+@album_api_bp.route('/images/<category>')
 def get_images(category):
     """获取指定分类的图片列表API"""
     if category not in CATEGORY_MAP:
@@ -153,7 +155,7 @@ def get_images(category):
     })
 
 
-@album_bp.route('/api/upload', methods=['POST'])
+@album_api_bp.route('/upload', methods=['POST'])
 def upload_image():
     """上传图片API（仅管理员）"""
     # 检查登录状态和权限

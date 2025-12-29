@@ -437,74 +437,9 @@ function promptLoginRequired() {
     window.location.href = '/login';
 }
 
-// 校验unnormal模式权限：登录 + 具有高级角色（创作者/管理员等）
-async function canSwitchToUnnormal() {
-    try {
-        const resp = await fetch('/api/auth-status');
-        if (!resp.ok) {
-            throw new Error('auth status request failed');
-        }
-        const data = await resp.json();
-        if (!data.logged_in) {
-            promptLoginRequired();
-            return false;
-        }
-        const role = data.user?.role ?? 0;
-        // role 为 0 表示普通用户，其它值（1: 创作者, 2/9: 管理员等）视为有权限
-        if (role === 0) {
-            alert('当前账号无权限切换到 unnormal 模式，请联系管理员或填写邀请码升级身份');
-            return false;
-        }
-        return true;
-    } catch (error) {
-        console.error('检查模式权限失败:', error);
-        alert('检查模式权限失败，请稍后重试');
-        return false;
-    }
-}
-
-// 切换模式（只有管理员可切到unnormal）
+// 切换模式（已移除，现在只有normal模式）
 async function toggleMode() {
-    const modeText = document.getElementById('modeText');
-    const modeToggleBtn = document.getElementById('modeToggleBtn');
-    const previousSessionId = sessionId;
-
-    // 切换到unnormal前进行鉴权
-    if (currentMode === 'normal') {
-        const allow = await canSwitchToUnnormal();
-        if (!allow) return;
-        currentMode = 'unnormal';
-    } else {
-        currentMode = 'normal';
-    }
-
-    if (modeText) {
-        modeText.textContent = getModeDisplayText(currentMode);
-    }
-
-    // 更新按钮样式
-    if (modeToggleBtn) {
-        if (currentMode === 'normal') {
-            modeToggleBtn.classList.add('active');
-        } else {
-            modeToggleBtn.classList.remove('active');
-        }
-    }
-
-    // 切换模式时重置会话：新 sessionId + 清空历史
-    sessionId = createSessionId();
-    // 重置时重新随机选择头像
-    currentAvatarIndex = Math.floor(Math.random() * 5) + 1;
-    try {
-        await fetch(`/api/clear/${previousSessionId}`, { method: 'POST' });
-    } catch (error) {
-        console.warn('清理上一会话历史失败:', error);
-    }
-    resetMessages();
-    isStreaming = false;
-    const sendBtn = document.getElementById('sendBtn');
-    if (sendBtn) sendBtn.disabled = false;
-
-    console.log('模式已切换为:', currentMode, '会话已重置为:', sessionId);
+    // 模式切换功能已移除，现在只支持normal模式
+    console.log('当前模式: normal（模式切换功能已移除）');
 }
 

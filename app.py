@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, request
 from flask_cors import CORS
-from route.chat_routes import chat_bp
-from route.image_routes import image_bp
-from route.login_route import login_bp
-from route.alert.alert import alert_bp
-from route.album_route import album_bp
-from route.admin_route import admin_bp
-from route.heaven_route import heaven_bp
+from route import (
+    chat_bp,
+    image_bp,
+    login_bp,
+    alert_bp,
+    album_bp,
+    admin_bp,
+    heaven_bp
+)
 from database import init_database
-from route.config.maintenance.maintenance import MAINTENANCE_PAGES
+from config.maintenance.maintenance import MAINTENANCE_PAGES
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-here'  # 用于 session，建议改为环境变量
@@ -29,7 +31,7 @@ except Exception as e:
 
 # 启动历史记录清理定时任务（在后台线程中运行）
 try:
-    from route.config.llm.history.cleanup import start_cleanup_schedule
+    from config.llm.base.history.cleanup import start_cleanup_schedule
     start_cleanup_schedule()
     print("历史记录清理任务已经启动")
     print("会在每天的 0:00 自动清理空的 JSON 文件")

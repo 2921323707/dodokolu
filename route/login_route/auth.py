@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, session
 from database import get_db_connection
-from route.config.llm.history import create_history_file
+from config.llm.base.history import create_history_file
 import sqlite3
 
 auth_bp = Blueprint('auth', __name__)
