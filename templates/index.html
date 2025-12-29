@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
     <title>JY's Chat</title>
     <!-- CSS 文件按功能模块拆分 -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_variables.css') }}">
@@ -37,9 +37,9 @@
         </div>
     </nav>
 
-    <main class="container" style="padding: 24px;">
+    <main class="container">
         <!-- 聊天区域 -->
-        <section class="chat-section" id="chatSection" style="min-height: 400px;">
+        <section class="chat-section" id="chatSection">
             <div class="chat-header">
                 <h2>Peach & JY</h2>
                 <div class="header-buttons">
