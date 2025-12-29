@@ -792,6 +792,72 @@ let currentTTSButton = null;
 // TTS 音频缓存（存储已生成的音频URL）
 const ttsAudioCache = new Map();
 
+// 音频生成模态框相关变量
+let audioGeneratingClickHandler = null;
+
+/**
+ * 显示音频生成模态框并阻止所有点击事件
+ */
+function showAudioGeneratingModal() {
+    const modal = document.getElementById('audioGeneratingModal');
+    if (!modal) {
+        console.warn('音频生成模态框元素未找到');
+        return;
+    }
+
+    // 显示模态框
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // 确保图片加载（如果图片加载失败，至少显示文字）
+    const img = modal.querySelector('.audio-generating-image');
+    if (img) {
+        img.onerror = function () {
+            console.warn('音频生成表情包图片加载失败，但模态框仍会显示');
+            // 图片加载失败时，至少确保文字可见
+            this.style.display = 'none';
+        };
+        // 如果图片还没有加载，强制重新加载
+        if (!img.complete || img.naturalHeight === 0) {
+            const src = img.src;
+            img.src = '';
+            img.src = src;
+        }
+    }
+
+    // 阻止所有点击事件
+    audioGeneratingClickHandler = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        return false;
+    };
+
+    // 在捕获阶段阻止所有点击事件
+    document.addEventListener('click', audioGeneratingClickHandler, true);
+    document.addEventListener('mousedown', audioGeneratingClickHandler, true);
+    document.addEventListener('touchstart', audioGeneratingClickHandler, true);
+}
+
+/**
+ * 隐藏音频生成模态框并恢复点击事件
+ */
+function hideAudioGeneratingModal() {
+    const modal = document.getElementById('audioGeneratingModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+    document.body.style.overflow = '';
+
+    // 恢复点击事件
+    if (audioGeneratingClickHandler) {
+        document.removeEventListener('click', audioGeneratingClickHandler, true);
+        document.removeEventListener('mousedown', audioGeneratingClickHandler, true);
+        document.removeEventListener('touchstart', audioGeneratingClickHandler, true);
+        audioGeneratingClickHandler = null;
+    }
+}
+
 /**
  * 检查音频文件是否存在
  * @param {string} audioUrl - 音频文件URL
@@ -840,6 +906,9 @@ async function playTTS(text, button, messageId = null) {
     button.classList.add('disabled');
     currentTTSButton = button;
 
+    // 先显示音频生成模态框（在检查缓存之前，确保用户能看到加载状态）
+    showAudioGeneratingModal();
+
     try {
         // 检查缓存：如果按钮已有存储的音频URL，先检查文件是否存在
         const cachedAudioUrl = button.dataset.audioUrl;
@@ -847,7 +916,9 @@ async function playTTS(text, button, messageId = null) {
             // 检查文件是否存在
             const exists = await checkAudioExists(cachedAudioUrl);
             if (exists) {
-                // 文件存在，直接播放
+                // 文件存在，直接播放，隐藏模态框
+                hideAudioGeneratingModal();
+
                 button.classList.remove('disabled');
                 button.classList.add('playing');
 
@@ -872,10 +943,12 @@ async function playTTS(text, button, messageId = null) {
                 await audio.play();
                 return;
             } else {
-                // 文件不存在，清除缓存，继续生成
+                // 文件不存在，清除缓存，继续生成（模态框保持显示）
                 delete button.dataset.audioUrl;
             }
         }
+
+        // 模态框已经在上面显示了，这里不需要再次显示
 
         // 调用后端 API 生成语音（传递 message_id 用于缓存）
         const requestBody = { text: text };
@@ -892,6 +965,9 @@ async function playTTS(text, button, messageId = null) {
         });
 
         const data = await response.json();
+
+        // 隐藏音频生成模态框并恢复点击
+        hideAudioGeneratingModal();
 
         if (!response.ok || !data.success) {
             throw new Error(data.error || '语音生成失败');
@@ -933,6 +1009,8 @@ async function playTTS(text, button, messageId = null) {
 
     } catch (error) {
         console.error('TTS 播放错误:', error);
+        // 确保在错误时也隐藏模态框
+        hideAudioGeneratingModal();
         button.classList.remove('playing', 'disabled');
         currentTTSButton = null;
         alert('语音生成失败: ' + error.message);

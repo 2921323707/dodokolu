@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
     <title>JY's Chat</title>
     <!-- CSS 文件按功能模块拆分 -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_variables.css') }}">
@@ -167,6 +168,15 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- 音频生成中模态框 -->
+    <div id="audioGeneratingModal" class="audio-generating-modal">
+        <div class="audio-generating-content">
+            <img src="{{ url_for('static', filename='imgs/deco/chat_index/sound_error.png') }}" alt="正在生成"
+                class="audio-generating-image">
+            <p class="audio-generating-text">正在生成...</p>
         </div>
     </div>
 
