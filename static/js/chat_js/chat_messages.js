@@ -946,8 +946,30 @@ async function playTTS(text, button, messageId = null) {
  */
 async function copyText(text, button) {
     try {
-        // 复制文本到剪贴板
-        await navigator.clipboard.writeText(text);
+        // 检查是否支持现代 Clipboard API（需要 HTTPS 或 localhost）
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            // 使用现代 Clipboard API
+            await navigator.clipboard.writeText(text);
+        } else {
+            // 回退到传统方法（适用于非 HTTPS 环境）
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                if (!successful) {
+                    throw new Error('execCommand 复制失败');
+                }
+            } finally {
+                document.body.removeChild(textArea);
+            }
+        }
 
         // 播放复制成功音频
         const audio = new Audio('/static/audio/system_audio/copy.mp3');
