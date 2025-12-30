@@ -19,7 +19,7 @@ _AGENT_ALIASES: Dict[str, str] = {
 # value: 是否在线（True=在线，False=离线）
 # 注意：此配置只存储真正的智能体，不存储别名
 _AGENT_STATUS: Dict[str, bool] = {
-    'suheyao': False,    # 苏禾瑶智能体（真实名称）
+    'suheyao': True,    # 苏禾瑶智能体（真实名称）
     'undefined': True,  # Undefined 智能体（基于 Minimax API）
 }
 

@@ -36,15 +36,34 @@
         </form>
     </div>
 
-    <!-- 忘记密码模态框 -->
+    <!-- 修改密码模态框 -->
     <div id="forgotPasswordModal" class="forgot-modal">
         <div class="forgot-modal-content">
             <span class="forgot-modal-close" onclick="closeForgotModal()">&times;</span>
-            <h2>Forgot Password?</h2>
-            <p>Please email <a href="mailto:ssnigdhasiraz22@sirhenryfloyd.co.uk"
-                    style="color: #fff; text-decoration: underline;">2921323707@qq.com</a> to request a password reset.
-            </p>
-            <button class="btn" onclick="closeForgotModal()">OK</button>
+            <h2>修改密码</h2>
+            <div class="forgot-form">
+                <div class="input-box">
+                    <i class="fas fa-user icon"></i>
+                    <input id="changePasswordUsername" type="text" placeholder="用户名" required />
+                </div>
+                <div class="input-box">
+                    <i class="fas fa-lock icon"></i>
+                    <input id="changePasswordOld" type="password" placeholder="旧密码" required />
+                </div>
+                <div class="input-box">
+                    <i class="fas fa-lock icon"></i>
+                    <input id="changePasswordNew" type="password" placeholder="新密码（至少6位）" required />
+                </div>
+                <div class="input-box">
+                    <i class="fas fa-lock icon"></i>
+                    <input id="changePasswordConfirm" type="password" placeholder="确认新密码" required />
+                </div>
+                <div id="changePasswordError" class="error-message" style="display:none;"></div>
+                <div class="btn-container">
+                    <button type="button" class="btn cancel-btn" onclick="closeForgotModal()">取消</button>
+                    <button type="button" class="btn" onclick="changePassword()">确认修改</button>
+                </div>
+            </div>
         </div>
     </div>
 

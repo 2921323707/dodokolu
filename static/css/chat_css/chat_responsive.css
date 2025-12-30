@@ -158,12 +158,13 @@
         font-size: 0.875rem !important;
     }
 
+    .message-action-buttons {
+        left: 32px !important;
+    }
+
     .input-container {
-        flex-direction: column;
-        align-items: stretch;
         width: 100%;
         box-sizing: border-box;
-        gap: 0.5rem;
     }
 
     .input-wrapper {
@@ -177,8 +178,8 @@
 
     .chat-input {
         padding: 0.625rem 0.875rem !important;
-        padding-right: 3rem !important;
-        /* 为上传按钮留出空间 */
+        padding-right: 5.5rem !important;
+        /* 为上传按钮和发送按钮留出空间 */
         font-size: 16px !important;
         /* 防止iOS自动缩放 */
         min-height: 44px;
@@ -187,20 +188,38 @@
     }
 
     .send-btn {
-        padding: 0.625rem 1rem !important;
-        font-size: 0.875rem !important;
-        min-height: 44px;
-    }
-
-    .upload-btn {
         position: absolute;
         right: 0.5rem;
         top: 50%;
-        transform: translateY(-50%);
+        transform: translateY(-60%);
         width: 32px;
         height: 32px;
         border: none;
         background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .send-btn img {
+        width: 24px;
+        height: 24px;
+    }
+
+    .upload-btn {
+        position: absolute;
+        right: 2.75rem;
+        top: 50%;
+        transform: translateY(-60%);
+        width: 32px;
+        height: 32px;
+        border: none;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
     }
 
     .upload-btn img {
@@ -210,10 +229,6 @@
 
     .upload-btn:hover {
         background: var(--bg-secondary);
-    }
-
-    .send-btn {
-        width: 100%;
     }
 
     /* 移动端装饰图标缩小 */
@@ -259,8 +274,7 @@
     .right-sidebar {
         display: flex !important;
         flex-direction: column !important;
-        justify-content: flex-end !important;
-        /* 内容靠底部，轮播图通过 align-self 在顶部 */
+        justify-content: flex-start !important;
         height: calc(100vh - 130px) !important;
         min-height: 600px !important;
         align-self: start !important;
@@ -276,31 +290,6 @@
         box-sizing: border-box !important;
         /* 确保浏览器兼容性 */
         vertical-align: top !important;
-    }
-
-    /* 确保轮播图在顶部正确显示，并与聊天框上边缘对齐（与电脑端一致） */
-    .banner-container:first-child {
-        align-self: flex-start !important;
-        margin-bottom: auto !important;
-        margin-top: 0 !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-        padding-top: 0 !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        padding-bottom: 0 !important;
-    }
-
-    /* 确保轮播图本身没有额外的顶部偏移 */
-    .banner-container:first-child .banner-carousel {
-        margin-top: 0 !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-        margin-bottom: 0 !important;
-        padding-top: 0 !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        padding-bottom: 0 !important;
     }
 
     .image-section {
@@ -466,12 +455,13 @@
         font-size: 0.875rem !important;
     }
 
+    .message-action-buttons {
+        left: 32px !important;
+    }
+
     .input-container {
-        flex-direction: column;
-        align-items: stretch;
         width: 100%;
         box-sizing: border-box;
-        gap: 0.5rem;
     }
 
     .input-wrapper {
@@ -485,8 +475,8 @@
 
     .chat-input {
         padding: 0.625rem 0.875rem !important;
-        padding-right: 3rem !important;
-        /* 为上传按钮留出空间 */
+        padding-right: 5.5rem !important;
+        /* 为上传按钮和发送按钮留出空间 */
         font-size: 16px !important;
         /* 防止iOS自动缩放 */
         min-height: 44px;
@@ -495,20 +485,38 @@
     }
 
     .send-btn {
-        padding: 0.625rem 1rem !important;
-        font-size: 0.875rem !important;
-        min-height: 44px;
-    }
-
-    .upload-btn {
         position: absolute;
         right: 0.5rem;
         top: 50%;
-        transform: translateY(-50%);
+        transform: translateY(-60%);
         width: 32px;
         height: 32px;
         border: none;
         background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .send-btn img {
+        width: 24px;
+        height: 24px;
+    }
+
+    .upload-btn {
+        position: absolute;
+        right: 2.75rem;
+        top: 50%;
+        transform: translateY(-60%);
+        width: 32px;
+        height: 32px;
+        border: none;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
     }
 
     .upload-btn img {
@@ -518,10 +526,6 @@
 
     .upload-btn:hover {
         background: var(--bg-secondary);
-    }
-
-    .send-btn {
-        width: 100%;
     }
 
     /* 移动端装饰图标缩小 */
@@ -610,12 +614,17 @@
         font-size: 0.8125rem !important;
     }
 
+    .message-action-buttons {
+        left: 28px !important;
+    }
+
     .chat-input-area {
         padding: 0.375rem;
     }
 
     .input-container {
-        gap: 0.375rem !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .command-buttons {
@@ -631,22 +640,46 @@
 
     .chat-input {
         padding: 0.5rem 0.75rem !important;
-        padding-right: 2.5rem !important;
+        padding-right: 5rem !important;
+        /* 为上传按钮和发送按钮留出空间 */
         font-size: 16px !important;
         min-height: 40px;
         max-height: 100px;
     }
 
     .send-btn {
-        padding: 0.5rem 0.75rem !important;
-        font-size: 0.8125rem !important;
-        min-height: 40px;
+        position: absolute;
+        right: 0.375rem;
+        top: 50%;
+        transform: translateY(-60%);
+        width: 28px;
+        height: 28px;
+        border: none;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .send-btn img {
+        width: 20px;
+        height: 20px;
     }
 
     .upload-btn {
+        position: absolute;
+        right: 2.5rem;
+        top: 50%;
+        transform: translateY(-60%);
         width: 28px;
         height: 28px;
-        right: 0.375rem;
+        border: none;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
     }
 
     .upload-btn img {

@@ -299,7 +299,7 @@ async function sendMessage() {
                         if (data.done) {
                             isStreaming = false;
                             sendBtn.disabled = false;
-                            
+
                             // 检查是否是离线消息，如果是则自动播放系统音频
                             const messageDiv = document.getElementById(assistantMessageId);
                             if (messageDiv) {
@@ -415,7 +415,7 @@ async function loadHistory() {
                     }
                 }
             });
-            
+
             // 加载历史记录后，更新用户头像（如果已获取）
             if (typeof userAvatarUrl !== 'undefined' && userAvatarUrl) {
                 const userAvatars = chatMessages.querySelectorAll('.message.user .message-avatar');
@@ -434,24 +434,24 @@ async function loadHistory() {
                         img.style.borderRadius = '50%';
                         img.style.cursor = 'pointer';
                         img.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
-                        
+
                         img.addEventListener('click', (e) => {
                             e.stopPropagation();
                             if (typeof openUserInfoModal === 'function') {
                                 openUserInfoModal();
                             }
                         });
-                        
+
                         img.addEventListener('mouseenter', () => {
                             img.style.transform = 'scale(1.1)';
                             img.style.opacity = '0.9';
                         });
-                        
+
                         img.addEventListener('mouseleave', () => {
                             img.style.transform = 'scale(1)';
                             img.style.opacity = '1';
                         });
-                        
+
                         avatarDiv.appendChild(img);
                     }
                 });

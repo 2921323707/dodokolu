@@ -10,7 +10,8 @@ from route import (
     album_bp,
     admin_bp,
     heaven_bp,
-    user_message_bp
+    user_message_bp,
+    github_bp
 )
 from database import init_database
 from config.maintenance.maintenance import MAINTENANCE_PAGES
@@ -69,6 +70,7 @@ app.register_blueprint(album_bp)
 app.register_blueprint(admin_bp)
 app.register_blueprint(heaven_bp)
 app.register_blueprint(user_message_bp)
+app.register_blueprint(github_bp)
 
 @app.route('/')
 def index():

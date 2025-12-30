@@ -38,7 +38,89 @@ function closeForgotModal() {
     const modal = document.getElementById('forgotPasswordModal');
     if (modal) {
         modal.classList.remove('active');
+        // 清空表单
+        document.getElementById('changePasswordUsername').value = '';
+        document.getElementById('changePasswordOld').value = '';
+        document.getElementById('changePasswordNew').value = '';
+        document.getElementById('changePasswordConfirm').value = '';
+        const errorEl = document.getElementById('changePasswordError');
+        if (errorEl) {
+            errorEl.style.display = 'none';
+            errorEl.textContent = '';
+        }
     }
+}
+
+// 修改密码功能
+function changePassword() {
+    const username = document.getElementById('changePasswordUsername').value.trim();
+    const oldPassword = document.getElementById('changePasswordOld').value.trim();
+    const newPassword = document.getElementById('changePasswordNew').value.trim();
+    const confirmPassword = document.getElementById('changePasswordConfirm').value.trim();
+    const errorEl = document.getElementById('changePasswordError');
+
+    // 隐藏错误信息
+    if (errorEl) {
+        errorEl.style.display = 'none';
+        errorEl.textContent = '';
+    }
+
+    // 验证输入
+    if (!username || !oldPassword || !newPassword || !confirmPassword) {
+        if (errorEl) {
+            errorEl.textContent = '请填写所有字段';
+            errorEl.style.display = 'block';
+        }
+        return;
+    }
+
+    if (newPassword.length < 6) {
+        if (errorEl) {
+            errorEl.textContent = '新密码长度至少6位';
+            errorEl.style.display = 'block';
+        }
+        return;
+    }
+
+    if (newPassword !== confirmPassword) {
+        if (errorEl) {
+            errorEl.textContent = '两次输入的密码不一致';
+            errorEl.style.display = 'block';
+        }
+        return;
+    }
+
+    // 发送修改密码请求
+    fetch('/api/account/change-password-by-username', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            username: username,
+            old_password: oldPassword,
+            new_password: newPassword
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('密码修改成功！');
+            closeForgotModal();
+        } else {
+            if (errorEl) {
+                errorEl.textContent = data.message || '密码修改失败';
+                errorEl.style.display = 'block';
+            }
+        }
+    })
+    .catch(error => {
+        console.error('修改密码错误:', error);
+        if (errorEl) {
+            errorEl.textContent = '密码修改失败，请稍后重试';
+            errorEl.style.display = 'block';
+        }
+    });
 }
 
 // 点击模态框外部关闭

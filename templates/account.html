@@ -35,48 +35,94 @@
         </div>
     </nav>
 
-    <main class="container account-container">
-        <div class="account-card">
-            <div class="account-header">
-                <h1 class="account-title">账户信息</h1>
-                <span id="accountStatus" class="status-pill">加载中...</span>
-            </div>
-            <div class="actions">
-                <button id="applyCreatorBtn" class="btn" type="button">申请成为创作者</button>
-                <button id="changePasswordBtn" class="btn" type="button">修改密码</button>
-                <button id="switchAdminBtn" class="btn" type="button">切换为管理员模式</button>
-                <button id="logoutBtn" class="btn btn-danger" type="button">退出登录</button>
-            </div>
-            <div id="accountInfo" class="info-grid" style="display:none;"></div>
-        </div>
-    </main>
+    <!-- 背景大盒子 -->
+    <div class="background-box">
+        <div class="account-layout">
+            <!-- 左侧导航栏 -->
+            <aside class="account-sidebar" id="accountSidebar">
+                <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="折叠/展开">
+                    <img src="{{ url_for('static', filename='imgs/icon/展开.png') }}" alt="展开" class="toggle-icon">
+                </button>
+                <div class="avatar-section">
+                    <div class="avatar-wrapper" id="accountAvatarWrapper">
+                        <img id="accountAvatar" src="" alt="头像" class="account-avatar" style="display: none;">
+                        <div id="accountAvatarPlaceholder" class="account-avatar-placeholder">我</div>
+                        <input type="file" id="accountAvatarInput" accept="image/png,image/jpeg,image/jpg" style="display: none;">
+                    </div>
+                </div>
+                <nav class="account-sidebar-nav">
+                    <ul class="sidebar-nav-links">
+                        <li><a href="#" class="sidebar-nav-link active" data-section="basic">
+                                <span>基础信息</span>
+                                <img src="{{ url_for('static', filename='imgs/icon/基础信息管理_line.png') }}" alt="基础信息"
+                                    class="sidebar-nav-icon">
+                            </a></li>
+                        <li><a href="#" class="sidebar-nav-link" data-section="section1"><span>待定义</span></a></li>
+                        <li><a href="#" class="sidebar-nav-link" data-section="section2"><span>待定义</span></a></li>
+                        <li><a href="#" class="sidebar-nav-link" data-section="section3"><span>待定义</span></a></li>
+                    </ul>
+                    <div class="sidebar-footer">
+                        <div class="sidebar-footer-left">
+                            <img id="applyCreatorBtn" src="{{ url_for('static', filename='imgs/icon/申请权限.png') }}"
+                                alt="申请权限" class="sidebar-footer-icon" title="申请成为创作者">
+                            <img id="switchAdminBtn" src="{{ url_for('static', filename='imgs/icon/管理员_角色管理.png') }}"
+                                alt="管理员" class="sidebar-footer-icon" title="切换为管理员模式">
+                        </div>
+                        <img id="logoutBtn" src="{{ url_for('static', filename='imgs/icon/退出登录.png') }}"
+                            alt="退出登录" class="sidebar-footer-icon" title="退出登录">
+                    </div>
+                </nav>
+            </aside>
 
-    <!-- 修改密码对话框 -->
-    <div id="changePasswordModal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>修改密码</h2>
-                <span class="modal-close" id="closeChangePasswordModal">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="oldPassword">旧密码：</label>
-                    <input type="password" id="oldPassword" placeholder="请输入旧密码" required>
+            <!-- 右侧区域 -->
+            <main class="account-main">
+                <!-- 基础信息部分 -->
+                <div class="account-section active" id="section-basic">
+                    <div class="account-card">
+                        <div class="account-header">
+                            <h1 class="account-title">账户信息</h1>
+                            <span id="accountStatus" class="status-pill">加载中...</span>
+                        </div>
+                        <div id="accountInfo" class="info-grid" style="display:none;"></div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="newPassword">新密码：</label>
-                    <input type="password" id="newPassword" placeholder="请输入新密码（至少6位）" required>
+
+                <!-- 待定义部分1 -->
+                <div class="account-section" id="section-section1" style="display:none;">
+                    <div class="account-card">
+                        <div class="account-header">
+                            <h1 class="account-title">待定义</h1>
+                        </div>
+                        <div class="section-content">
+                            <p>此区域待定义</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="confirmPassword">确认新密码：</label>
-                    <input type="password" id="confirmPassword" placeholder="请再次输入新密码" required>
+
+                <!-- 待定义部分2 -->
+                <div class="account-section" id="section-section2" style="display:none;">
+                    <div class="account-card">
+                        <div class="account-header">
+                            <h1 class="account-title">待定义</h1>
+                        </div>
+                        <div class="section-content">
+                            <p>此区域待定义</p>
+                        </div>
+                    </div>
                 </div>
-                <div id="changePasswordError" class="error-message" style="display:none;"></div>
-            </div>
-            <div class="modal-footer">
-                <button id="cancelChangePassword" class="btn">取消</button>
-                <button id="confirmChangePassword" class="btn">确认修改</button>
-            </div>
+
+                <!-- 待定义部分3 -->
+                <div class="account-section" id="section-section3" style="display:none;">
+                    <div class="account-card">
+                        <div class="account-header">
+                            <h1 class="account-title">待定义</h1>
+                        </div>
+                        <div class="section-content">
+                            <p>此区域待定义</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
     </div>
 

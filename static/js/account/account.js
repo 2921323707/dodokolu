@@ -3,23 +3,150 @@ document.addEventListener('DOMContentLoaded', function () {
     const infoEl = document.getElementById('accountInfo');
     const applyBtn = document.getElementById('applyCreatorBtn');
     const logoutBtn = document.getElementById('logoutBtn');
-    const changePasswordBtn = document.getElementById('changePasswordBtn');
     const switchAdminBtn = document.getElementById('switchAdminBtn');
-    
+
+    // 侧边栏折叠功能
+    const sidebar = document.getElementById('accountSidebar');
+    const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+
+    // 从本地存储读取折叠状态
+    const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+    if (isCollapsed) {
+        sidebar.classList.add('collapsed');
+    }
+
+    sidebarToggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        const collapsed = sidebar.classList.contains('collapsed');
+        localStorage.setItem('sidebarCollapsed', collapsed);
+    });
+
+    // 加载用户头像
+    async function loadUserAvatar() {
+        const avatarImg = document.getElementById('accountAvatar');
+        const avatarPlaceholder = document.getElementById('accountAvatarPlaceholder');
+
+        try {
+            const response = await fetch('/api/user/avatar');
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success && data.has_avatar && data.avatar_url) {
+                    avatarImg.src = data.avatar_url;
+                    avatarImg.style.display = 'block';
+                    avatarPlaceholder.style.display = 'none';
+                } else {
+                    avatarImg.style.display = 'none';
+                    avatarPlaceholder.style.display = 'flex';
+                }
+            }
+        } catch (error) {
+            console.error('获取头像失败:', error);
+            avatarImg.style.display = 'none';
+            avatarPlaceholder.style.display = 'flex';
+        }
+    }
+
+    // 加载头像
+    loadUserAvatar();
+
+    // 头像上传功能
+    const avatarImg = document.getElementById('accountAvatar');
+    const avatarPlaceholder = document.getElementById('accountAvatarPlaceholder');
+    const avatarInput = document.getElementById('accountAvatarInput');
+    const avatarWrapper = document.getElementById('accountAvatarWrapper');
+
+    // 点击头像或占位符时触发文件选择
+    avatarImg.addEventListener('click', () => {
+        avatarInput.click();
+    });
+
+    avatarPlaceholder.addEventListener('click', () => {
+        avatarInput.click();
+    });
+
+    // 处理头像上传
+    async function handleAvatarUpload(event) {
+        const file = event.target.files[0];
+        if (!file) {
+            return;
+        }
+
+        // 验证文件类型
+        const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+        if (!allowedTypes.includes(file.type)) {
+            alert('仅支持 PNG 或 JPG 格式的图片');
+            event.target.value = ''; // 清空选择
+            return;
+        }
+
+        // 验证文件大小（限制为5MB）
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        if (file.size > maxSize) {
+            alert('图片大小不能超过 5MB');
+            event.target.value = ''; // 清空选择
+            return;
+        }
+
+        // 创建 FormData
+        const formData = new FormData();
+        formData.append('avatar', file);
+
+        try {
+            const response = await fetch('/api/user/upload-avatar', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                // 更新头像显示
+                avatarImg.src = data.avatar_url + '?t=' + Date.now(); // 添加时间戳防止缓存
+                avatarImg.style.display = 'block';
+                avatarPlaceholder.style.display = 'none';
+            } else {
+                alert(data.message || '头像上传失败');
+            }
+        } catch (error) {
+            console.error('上传头像失败:', error);
+            alert('头像上传失败，请稍后重试');
+        }
+
+        // 清空文件选择，允许重复选择同一文件
+        event.target.value = '';
+    }
+
+    // 绑定文件选择事件
+    avatarInput.addEventListener('change', handleAvatarUpload);
+
+    // 导航切换功能
+    const navLinks = document.querySelectorAll('.sidebar-nav-link');
+    const sections = document.querySelectorAll('.account-section');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            // 移除所有活动状态
+            navLinks.forEach(l => l.classList.remove('active'));
+            sections.forEach(s => s.style.display = 'none');
+
+            // 添加当前活动状态
+            link.classList.add('active');
+            const sectionId = link.getAttribute('data-section');
+            const targetSection = document.getElementById(`section-${sectionId}`);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+        });
+    });
+
     // 对话框相关元素
-    const changePasswordModal = document.getElementById('changePasswordModal');
     const adminVerifyModal = document.getElementById('adminVerifyModal');
-    const closeChangePasswordModal = document.getElementById('closeChangePasswordModal');
     const closeAdminVerifyModal = document.getElementById('closeAdminVerifyModal');
-    const cancelChangePassword = document.getElementById('cancelChangePassword');
-    const confirmChangePassword = document.getElementById('confirmChangePassword');
-    const oldPasswordInput = document.getElementById('oldPassword');
-    const newPasswordInput = document.getElementById('newPassword');
-    const confirmPasswordInput = document.getElementById('confirmPassword');
-    const changePasswordError = document.getElementById('changePasswordError');
     const adminVerifyError = document.getElementById('adminVerifyError');
     const turnstileContainer = document.getElementById('turnstile-container');
-    
+
     let turnstileWidgetId = null;
     let turnstileSiteKey = null;
 
@@ -80,6 +207,7 @@ document.addEventListener('DOMContentLoaded', function () {
             statusEl.textContent = '获取资料失败';
         });
 
+
     applyBtn.addEventListener('click', () => {
         const code = prompt('请输入邀请码，站主QQ:2921323707');
         if (!code) return;
@@ -103,101 +231,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 退出登录
     logoutBtn.addEventListener('click', () => {
-        if (confirm('确定要退出登录吗？')) {
-            fetch('/api/account/logout', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        localStorage.removeItem('userInfo');
-                        alert('已退出登录');
-                        window.location.href = '/login';
-                    } else {
-                        alert(data.message || '退出登录失败');
-                    }
-                })
-                .catch(() => {
-                    alert('退出登录失败，请稍后重试');
-                });
-        }
-    });
-
-    // 显示修改密码对话框
-    changePasswordBtn.addEventListener('click', () => {
-        oldPasswordInput.value = '';
-        newPasswordInput.value = '';
-        confirmPasswordInput.value = '';
-        changePasswordError.style.display = 'none';
-        changePasswordModal.style.display = 'flex';
-    });
-
-    // 关闭修改密码对话框
-    const closeChangePasswordModalFn = () => {
-        changePasswordModal.style.display = 'none';
-        oldPasswordInput.value = '';
-        newPasswordInput.value = '';
-        confirmPasswordInput.value = '';
-        changePasswordError.style.display = 'none';
-    };
-    closeChangePasswordModal.addEventListener('click', closeChangePasswordModalFn);
-    cancelChangePassword.addEventListener('click', closeChangePasswordModalFn);
-    
-    // 点击对话框外部关闭
-    changePasswordModal.addEventListener('click', (e) => {
-        if (e.target === changePasswordModal) {
-            closeChangePasswordModalFn();
-        }
-    });
-
-    // 确认修改密码
-    confirmChangePassword.addEventListener('click', () => {
-        const oldPassword = oldPasswordInput.value.trim();
-        const newPassword = newPasswordInput.value.trim();
-        const confirmPassword = confirmPasswordInput.value.trim();
-
-        changePasswordError.style.display = 'none';
-
-        if (!oldPassword || !newPassword || !confirmPassword) {
-            changePasswordError.textContent = '请填写所有字段';
-            changePasswordError.style.display = 'block';
-            return;
-        }
-
-        if (newPassword.length < 6) {
-            changePasswordError.textContent = '新密码长度至少6位';
-            changePasswordError.style.display = 'block';
-            return;
-        }
-
-        if (newPassword !== confirmPassword) {
-            changePasswordError.textContent = '两次输入的密码不一致';
-            changePasswordError.style.display = 'block';
-            return;
-        }
-
-        fetch('/api/account/change-password', {
+        fetch('/api/account/logout', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                old_password: oldPassword,
-                new_password: newPassword
-            })
+            headers: { 'Content-Type': 'application/json' }
         })
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    alert('密码修改成功');
-                    closeChangePasswordModalFn();
+                    localStorage.removeItem('userInfo');
+                    window.location.href = '/login';
                 } else {
-                    changePasswordError.textContent = data.message || '密码修改失败';
-                    changePasswordError.style.display = 'block';
+                    alert(data.message || '退出登录失败');
                 }
             })
             .catch(() => {
-                changePasswordError.textContent = '密码修改失败，请稍后重试';
-                changePasswordError.style.display = 'block';
+                alert('退出登录失败，请稍后重试');
             });
     });
 
@@ -218,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 显示管理员验证对话框
     switchAdminBtn.addEventListener('click', () => {
         adminVerifyError.style.display = 'none';
-        
+
         // 如果未配置 Turnstile，直接验证管理员身份（跳过人机验证）
         if (!turnstileSiteKey) {
             fetch('/api/account/verify-admin', {
@@ -243,23 +291,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // 配置了 Turnstile，显示验证对话框
         adminVerifyModal.style.display = 'flex';
-        
+
         // 等待 Turnstile 脚本加载完成
         const initTurnstile = () => {
             if (typeof turnstile === 'undefined') {
                 setTimeout(initTurnstile, 100);
                 return;
             }
-            
+
             // 清除之前的 widget
             if (turnstileWidgetId !== null) {
                 turnstile.remove(turnstileWidgetId);
                 turnstileWidgetId = null;
             }
-            
+
             // 清空容器
             turnstileContainer.innerHTML = '';
-            
+
             // 渲染 Turnstile
             turnstileWidgetId = turnstile.render(turnstileContainer, {
                 sitekey: turnstileSiteKey,
@@ -304,7 +352,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         };
-        
+
         initTurnstile();
     });
 
@@ -320,7 +368,7 @@ document.addEventListener('DOMContentLoaded', function () {
         turnstileContainer.innerHTML = '';
     };
     closeAdminVerifyModal.addEventListener('click', closeAdminVerifyModalFn);
-    
+
     // 点击对话框外部关闭
     adminVerifyModal.addEventListener('click', (e) => {
         if (e.target === adminVerifyModal) {

@@ -70,10 +70,9 @@
 }
 
 .input-wrapper {
+    position: relative;
     flex: 1;
-    display: flex;
-    gap: 0.75rem;
-    align-items: flex-end;
+    display: block;
     width: 100%;
     box-sizing: border-box;
 }
@@ -81,6 +80,8 @@
 .chat-input {
     flex: 1;
     padding: 0.875rem 1.125rem;
+    padding-right: 5.5rem;
+    /* 为上传按钮和发送按钮留出空间 */
     border: 1px solid var(--border-color);
     border-radius: 8px;
     font-size: 0.9375rem;
@@ -98,20 +99,24 @@
 }
 
 .send-btn {
-    padding: 0.875rem 1.5rem;
-    background: linear-gradient(135deg, #ffb3d9, #ffc0cb);
-    color: white;
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-60%);
+    width: 32px;
+    height: 32px;
     border: none;
-    border-radius: 8px;
+    background: transparent;
     cursor: pointer;
-    font-weight: 500;
-    transition: transform 0.2s, box-shadow 0.2s;
-    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    padding: 0;
 }
 
 .send-btn:hover:not(:disabled) {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(255, 179, 217, 0.3);
+    background: var(--bg-secondary);
 }
 
 .send-btn:disabled {
@@ -119,30 +124,36 @@
     cursor: not-allowed;
 }
 
+.send-btn img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
 .upload-btn {
-    padding: 0.5rem;
+    position: absolute;
+    right: 2.75rem;
+    top: 50%;
+    transform: translateY(-60%);
+    width: 32px;
+    height: 32px;
+    border: none;
     background: transparent;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s;
-    width: 40px;
-    height: 40px;
-    transform: translateY(-3.5px);
+    padding: 0;
 }
 
 .upload-btn:hover {
     background: var(--bg-secondary);
-    border-color: #ff69b4;
 }
 
 .upload-btn:focus {
     outline: 2px solid #ffc0cb;
     outline-offset: 2px;
-    border-color: #ff69b4;
 }
 
 .upload-btn img {

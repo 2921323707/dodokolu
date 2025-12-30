@@ -11,6 +11,7 @@ from route.album_route import album_bp
 from route.admin_route import admin_bp
 from route.heaven_route import heaven_bp
 from route.user_message import user_message_bp
+from route._github import github_bp
 
 __all__ = [
     'chat_bp',
@@ -20,5 +21,6 @@ __all__ = [
     'album_bp',
     'admin_bp',
     'heaven_bp',
-    'user_message_bp'
+    'user_message_bp',
+    'github_bp'
 ]

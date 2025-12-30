@@ -166,7 +166,7 @@ body {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 192, 203, 0.3);
     backdrop-filter: blur(5px);
     align-items: center;
     justify-content: center;
@@ -178,21 +178,30 @@ body {
 
 .forgot-modal-content {
     position: relative;
+    width: 400px;
+    height: auto;
+    min-height: 450px;
     background: transparent;
     border: 2px solid rgba(255, 255, 255, 0.5);
     border-radius: 20px;
     padding: 2rem;
-    width: 90%;
-    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     backdrop-filter: blur(15px);
     box-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
-    text-align: center;
+}
+
+.forgot-modal-content:hover {
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
 }
 
 .forgot-modal-content h2 {
     font-size: 2em;
     color: #fff;
-    margin-bottom: 1rem;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .forgot-modal-content p {
@@ -218,7 +227,91 @@ body {
     opacity: 0.7;
 }
 
-.forgot-modal-content .btn {
+.forgot-form {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.forgot-form .input-box {
+    position: relative;
+    width: 310px;
+    margin: 30px 0;
+    border-bottom: 2px solid #fff;
+}
+
+.forgot-form .input-box input {
+    width: 100%;
+    height: 50px;
+    background: transparent;
+    outline: none;
+    border: none;
+    font-size: 1em;
+    color: #fff;
+    padding: 0 40px 0 5px;
+}
+
+.forgot-form .input-box input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.forgot-form .input-box .icon {
+    position: absolute;
+    right: 8px;
+    color: #fff;
+    font-size: 1.2em;
+    line-height: 57px;
+}
+
+.forgot-form .btn {
+    width: 100%;
+    height: 40px;
+    background: #fff;
+    outline: none;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    color: #000;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+
+.forgot-form .btn:hover {
+    background: #ffffea;
+}
+
+.forgot-form .btn-container {
+    display: flex;
+    gap: 10px;
+    width: 310px;
+    margin-top: 10px;
+}
+
+.forgot-form .btn-container .btn {
+    flex: 1;
     margin-top: 0;
+}
+
+.forgot-form .btn-container .btn.cancel-btn {
+    background: rgba(255, 255, 255, 0.3);
+    color: #fff;
+}
+
+.forgot-form .btn-container .btn.cancel-btn:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.error-message {
+    width: 310px;
+    padding: 0.5rem;
+    border-radius: 5px;
+    background: rgba(255, 107, 107, 0.2);
+    border: 1px solid rgba(255, 107, 107, 0.5);
+    color: #ff6b6b;
+    margin-top: 10px;
+    font-size: 0.9em;
+    text-align: center;
 }

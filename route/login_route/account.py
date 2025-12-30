@@ -90,7 +90,7 @@ def logout():
 
 @account_bp.route('/api/account/change-password', methods=['POST'])
 def change_password():
-    """修改密码"""
+    """修改密码（需要登录）"""
     user_id = session.get('user_id')
     if not user_id:
         return jsonify({'success': False, 'message': '未登录'}), 401
@@ -121,6 +121,43 @@ def change_password():
         
         # 更新密码
         cursor.execute('UPDATE user_profile SET password = ? WHERE id = ?', (new_password, user_id))
+        conn.commit()
+        
+        return jsonify({'success': True, 'message': '密码修改成功'})
+    finally:
+        conn.close()
+
+
+@account_bp.route('/api/account/change-password-by-username', methods=['POST'])
+def change_password_by_username():
+    """通过用户名修改密码（不需要登录）"""
+    data = request.json or {}
+    username = data.get('username', '').strip()
+    old_password = data.get('old_password', '').strip()
+    new_password = data.get('new_password', '').strip()
+    
+    if not username or not old_password or not new_password:
+        return jsonify({'success': False, 'message': '用户名、旧密码和新密码不能为空'}), 400
+    
+    if len(new_password) < 6:
+        return jsonify({'success': False, 'message': '新密码长度至少6位'}), 400
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        # 验证用户名和旧密码
+        cursor.execute('SELECT id, password FROM user_profile WHERE username = ?', (username,))
+        user = cursor.fetchone()
+        
+        if not user:
+            return jsonify({'success': False, 'message': '用户名不存在'}), 404
+        
+        # 验证密码（暂时明文比较）
+        if user['password'] != old_password:
+            return jsonify({'success': False, 'message': '旧密码错误'}), 401
+        
+        # 更新密码
+        cursor.execute('UPDATE user_profile SET password = ? WHERE id = ?', (new_password, user['id']))
         conn.commit()
         
         return jsonify({'success': True, 'message': '密码修改成功'})
@@ -182,3 +219,23 @@ def get_turnstile_site_key_api():
     # 如果未配置，返回空字符串，前端会跳过 Turnstile 验证
     return jsonify({'success': True, 'site_key': site_key or ''})
 
+
+@account_bp.route('/api/account/password', methods=['GET'])
+def get_password():
+    """获取当前用户的密码（用于密码预览）"""
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'success': False, 'message': '未登录'}), 401
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('SELECT password FROM user_profile WHERE id = ?', (user_id,))
+        user = cursor.fetchone()
+        
+        if not user:
+            return jsonify({'success': False, 'message': '用户不存在'}), 404
+        
+        return jsonify({'success': True, 'password': user['password']})
+    finally:
+        conn.close()

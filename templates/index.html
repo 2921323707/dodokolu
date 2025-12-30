@@ -86,34 +86,16 @@
                             onclick="document.getElementById('imageUpload').click()" title="上传图片">
                             <img src="{{ url_for('static', filename='imgs/icon/upload.png') }}" alt="上传">
                         </button>
+                        <button class="send-btn" id="sendBtn" onclick="sendMessage()" title="发送">
+                            <img src="{{ url_for('static', filename='imgs/icon/发送.png') }}" alt="发送">
+                        </button>
                     </div>
-                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">send</button>
                 </div>
             </div>
         </section>
 
         <!-- 右侧 Banner 区域 -->
         <aside class="right-sidebar">
-            <div class="banner-container">
-                <div class="banner-carousel" id="bannerCarousel">
-                    <div class="carousel-wrapper">
-                        <div class="carousel-slide active">
-                            <div class="slide-content">轮播图 1</div>
-                        </div>
-                        <div class="carousel-slide">
-                            <div class="slide-content">轮播图 2</div>
-                        </div>
-                        <div class="carousel-slide">
-                            <div class="slide-content">轮播图 3</div>
-                        </div>
-                    </div>
-                    <div class="carousel-indicators">
-                        <span class="indicator active" data-slide="0"></span>
-                        <span class="indicator" data-slide="1"></span>
-                        <span class="indicator" data-slide="2"></span>
-                    </div>
-                </div>
-            </div>
             <div class="banner-container">
                 <div class="banner">Banner</div>
             </div>
@@ -181,11 +163,15 @@
             <button class="ai-info-modal-close" onclick="closeUserInfoModal(event)">×</button>
             <div class="ai-info-container">
                 <div class="ai-info-left">
-                    <div class="ai-info-avatar-wrapper" style="cursor: pointer;" onclick="document.getElementById('avatarUploadInput').click()" title="点击上传头像">
+                    <div class="ai-info-avatar-wrapper" style="cursor: pointer;"
+                        onclick="document.getElementById('avatarUploadInput').click()" title="点击上传头像">
                         <img id="userInfoAvatar" src="" alt="用户头像" class="ai-info-avatar" style="display: none;">
-                        <div id="userInfoAvatarPlaceholder" class="ai-info-avatar" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #64748b, #94a3b8); color: white; font-size: 2.5rem; font-weight: 600;">我</div>
+                        <div id="userInfoAvatarPlaceholder" class="ai-info-avatar"
+                            style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #64748b, #94a3b8); color: white; font-size: 2.5rem; font-weight: 600;">
+                            我</div>
                     </div>
-                    <input type="file" id="avatarUploadInput" accept="image/png,image/jpeg,image/jpg" style="display: none;" onchange="handleAvatarUpload(event)">
+                    <input type="file" id="avatarUploadInput" accept="image/png,image/jpeg,image/jpg"
+                        style="display: none;" onchange="handleAvatarUpload(event)">
                     <h2 class="ai-info-name" id="userInfoName">用户</h2>
                     <p class="ai-info-description" id="userInfoEmail">未登录</p>
                     <div class="ai-info-stats">
@@ -226,7 +212,6 @@
     <script src="{{ url_for('static', filename='js/chat_js/chat_input.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chat_js/chat_command.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chat_js/chat_navbar.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/chat_js/chat_carousel.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chat_js/chat_init.js') }}"></script>
 </body>
 

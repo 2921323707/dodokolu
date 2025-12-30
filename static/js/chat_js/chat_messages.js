@@ -1096,8 +1096,6 @@ async function handleAvatarUpload(event) {
 
             // 更新聊天界面中的用户头像
             updateUserAvatarInChat(data.avatar_url);
-
-            alert('头像上传成功！');
         } else {
             alert(data.message || '头像上传失败');
         }

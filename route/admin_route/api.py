@@ -34,7 +34,7 @@ def get_maintenance_config():
     
     try:
         # 读取维护配置文件
-        maintenance_file = Path(__file__).parent.parent / 'config' / 'maintenance' / 'maintenance.py'
+        maintenance_file = Path(__file__).parent.parent.parent / 'config' / 'maintenance' / 'maintenance.py'
         
         with open(maintenance_file, 'r', encoding='utf-8') as f:
             content = f.read()
@@ -80,7 +80,7 @@ def update_maintenance_config():
                 return jsonify({'success': False, 'message': '页面路径必须是字符串'}), 400
         
         # 直接重写配置文件
-        maintenance_file = Path(__file__).parent.parent / 'config' / 'maintenance' / 'maintenance.py'
+        maintenance_file = Path(__file__).parent.parent.parent / 'config' / 'maintenance' / 'maintenance.py'
         
         # 生成新文件内容
         new_content = '''# -*- coding: utf-8 -*-
