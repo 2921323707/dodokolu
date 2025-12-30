@@ -367,3 +367,75 @@ def delete_row(table_name):
         return jsonify({'success': True, 'message': '删除成功'})
     except Exception as e:
         return jsonify({'success': False, 'message': f'删除失败: {str(e)}'}), 500
+
+
+# ==================== 智能体状态管理API ====================
+
+@admin_api_bp.route('/agent/status', methods=['GET'])
+def get_agent_status_admin():
+    """获取所有智能体的在线状态（管理员）"""
+    result = check_admin_api()
+    if result:
+        return result
+    
+    try:
+        from config.llm.agent_config import get_all_agent_status
+        
+        status_dict = get_all_agent_status()
+        
+        # 转换为更友好的格式
+        status_list = [
+            {
+                'name': name,
+                'is_online': is_online,
+                'status': '在线' if is_online else '离线'
+            }
+            for name, is_online in status_dict.items()
+        ]
+        
+        return jsonify({
+            'success': True,
+            'agents': status_list
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'获取状态失败: {str(e)}'}), 500
+
+
+@admin_api_bp.route('/agent/status', methods=['POST'])
+def set_agent_status_admin():
+    """设置智能体的在线状态（管理员）"""
+    result = check_admin_api()
+    if result:
+        return result
+    
+    try:
+        data = request.json
+        agent_name = data.get('agent_name')
+        is_online = data.get('is_online')
+        
+        if agent_name is None:
+            return jsonify({'success': False, 'message': '缺少参数: agent_name'}), 400
+        
+        if is_online is None:
+            return jsonify({'success': False, 'message': '缺少参数: is_online'}), 400
+        
+        if not isinstance(is_online, bool):
+            return jsonify({'success': False, 'message': 'is_online 必须是布尔值'}), 400
+        
+        from config.llm.agent_config import set_agent_status, get_agent_status
+        
+        # 设置状态
+        set_agent_status(agent_name, is_online)
+        
+        # 验证设置是否成功
+        current_status = get_agent_status(agent_name)
+        
+        return jsonify({
+            'success': True,
+            'message': f'智能体 {agent_name} 已设置为{"在线" if is_online else "离线"}',
+            'agent_name': agent_name,
+            'is_online': current_status,
+            'status': '在线' if current_status else '离线'
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'设置状态失败: {str(e)}'}), 500

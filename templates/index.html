@@ -3,13 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JY's Chat</title>
     <!-- CSS 文件按功能模块拆分 -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_variables.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_reset.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_navbar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_section.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_messages.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_input.css') }}">
@@ -18,8 +18,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_responsive.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_command.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_ai_info.css') }}">
-    <!-- 导航栏样式放在最后，确保优先级最高 -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_navbar.css') }}">
 </head>
 
 <body>
@@ -42,7 +40,13 @@
         <!-- 聊天区域 -->
         <section class="chat-section" id="chatSection">
             <div class="chat-header">
-                <h2>Peach & JY</h2>
+                <div class="header-title-wrapper">
+                    <h2>Peach & JY</h2>
+                    <span class="agent-status" id="agentStatus">
+                        <span class="status-dot"></span>
+                        <span class="status-text">检查中...</span>
+                    </span>
+                </div>
                 <div class="header-buttons">
                     <button class="mode-toggle-btn active" id="modeToggleBtn" onclick="toggleMode()">
                         <span id="modeText">标准版</span>
@@ -158,6 +162,38 @@
                         <div class="ai-info-stat-item">
                             <span class="stat-label">状态</span>
                             <span class="stat-value online">在线</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ai-info-right">
+                    <div class="ai-info-custom-area">
+                        <!-- 用户自定义内容区域 -->
+                        <p class="custom-placeholder">此区域待用户定义</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 用户信息模态框 -->
+    <div id="userInfoModal" class="ai-info-modal" onclick="closeUserInfoModal(event)">
+        <div class="ai-info-modal-content" onclick="event.stopPropagation()">
+            <button class="ai-info-modal-close" onclick="closeUserInfoModal(event)">×</button>
+            <div class="ai-info-container">
+                <div class="ai-info-left">
+                    <div class="ai-info-avatar-wrapper">
+                        <div id="userInfoAvatar" class="ai-info-avatar" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #64748b, #94a3b8); color: white; font-size: 2.5rem; font-weight: 600;">我</div>
+                    </div>
+                    <h2 class="ai-info-name" id="userInfoName">用户</h2>
+                    <p class="ai-info-description" id="userInfoEmail">未登录</p>
+                    <div class="ai-info-stats">
+                        <div class="ai-info-stat-item">
+                            <span class="stat-label">用户ID</span>
+                            <span class="stat-value" id="userInfoId">-</span>
+                        </div>
+                        <div class="ai-info-stat-item">
+                            <span class="stat-label">注册时间</span>
+                            <span class="stat-value" id="userInfoCreatedAt">-</span>
                         </div>
                     </div>
                 </div>

@@ -40,24 +40,24 @@ document.addEventListener('DOMContentLoaded', function () {
         avatarImg.style.borderRadius = '50%';
         avatarImg.style.cursor = 'pointer';
         avatarImg.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
-        
+
         // 添加点击事件，打开AI信息模态框
         avatarImg.addEventListener('click', (e) => {
             e.stopPropagation();
             openAIInfoModal(getAvatarImagePath());
         });
-        
+
         // 添加悬停效果
         avatarImg.addEventListener('mouseenter', () => {
             avatarImg.style.transform = 'scale(1.1)';
             avatarImg.style.opacity = '0.9';
         });
-        
+
         avatarImg.addEventListener('mouseleave', () => {
             avatarImg.style.transform = 'scale(1)';
             avatarImg.style.opacity = '1';
         });
-        
+
         initialAvatar.textContent = '';
         initialAvatar.appendChild(avatarImg);
     }
@@ -77,6 +77,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 初始化地理位置（静默获取，不阻塞页面加载）
     initLocation();
+
+    // 初始化智能体在线状态显示（静默获取，不阻塞页面加载）
+    if (typeof updateAgentStatusDisplay === 'function') {
+        const mode = typeof currentMode !== 'undefined' ? currentMode : 'normal';
+        updateAgentStatusDisplay(mode);
+    }
+
+    // 初始化标题栏中的dodokolu智能体在线状态显示
+    if (typeof updateHeaderAgentStatus === 'function') {
+        updateHeaderAgentStatus('dodokolu');
+        // 每30秒更新一次状态
+        setInterval(() => {
+            updateHeaderAgentStatus('dodokolu');
+        }, 30000);
+    }
 
     // 加载历史记录
     loadHistory().then(() => {

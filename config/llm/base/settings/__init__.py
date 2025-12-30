@@ -29,6 +29,11 @@ DOUBAO_API_KEY = os.getenv('DOUBAO_API_KEY', '') or os.getenv('ARK_API_KEY', '')
 DOUBAO_BASE_URL = os.getenv('DOUBAO_BASE_URL', 'https://ark.cn-beijing.volces.com/api/v3')
 DOUBAO_MODEL = os.getenv('DOUBAO_MODEL', 'doubao-seed-1-6-251015')
 
+# ==================== Minimax API配置 ====================
+MINIMAX_API_KEY = os.getenv('MINIMAX_API_KEY', '')
+MINIMAX_BASE_URL = os.getenv('MINIMAX_BASE_URL', 'https://api.minimaxi.com/anthropic')
+MINIMAX_MODEL = os.getenv('MINIMAX_MODEL', 'MiniMax-M2.1')
+
 # ==================== 通用配置 ====================
 DEFAULT_MODE = os.getenv('DEFAULT_MODE', 'normal')
 MAX_HISTORY_LENGTH = int(os.getenv('MAX_HISTORY_LENGTH', '50'))
@@ -38,5 +43,6 @@ __all__ = [
     'OPENROUTER_API_KEY', 'OPENROUTER_BASE_URL', 'OPENROUTER_MODEL',
     'DEEPSEEK_API_KEY', 'DEEPSEEK_BASE_URL', 'DEEPSEEK_MODEL',
     'DOUBAO_API_KEY', 'DOUBAO_BASE_URL', 'DOUBAO_MODEL',
+    'MINIMAX_API_KEY', 'MINIMAX_BASE_URL', 'MINIMAX_MODEL',
     'DEFAULT_MODE', 'MAX_HISTORY_LENGTH', 'TEMPERATURE'
 ]

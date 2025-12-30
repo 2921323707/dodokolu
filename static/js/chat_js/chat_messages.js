@@ -17,12 +17,7 @@ function addMessage(role, content = '', options = {}) {
         imageMessageDiv.id = imageMessageId;
 
         const imageAvatar = role === 'user'
-            ? (() => {
-                const avatar = document.createElement('div');
-                avatar.className = 'message-avatar';
-                avatar.textContent = '我';
-                return avatar;
-            })()
+            ? createUserAvatarElement()
             : createAIAvatarElement();
 
         const imageMessageContent = document.createElement('div');
@@ -54,12 +49,7 @@ function addMessage(role, content = '', options = {}) {
             textMessageDiv.id = textMessageId;
 
             const textAvatar = role === 'user'
-                ? (() => {
-                    const avatar = document.createElement('div');
-                    avatar.className = 'message-avatar';
-                    avatar.textContent = '我';
-                    return avatar;
-                })()
+                ? createUserAvatarElement()
                 : createAIAvatarElement();
 
             const textMessageContent = document.createElement('div');
@@ -73,6 +63,12 @@ function addMessage(role, content = '', options = {}) {
 
             // 为 assistant 文本消息添加播放和复制按钮（在 message-content 外部）
             if (role === 'assistant' && textContent && textContent.trim()) {
+                // 检查是否是离线消息
+                const isOfflineMessage = textContent.trim() === '人家也是需要睡觉的~';
+                if (isOfflineMessage) {
+                    textMessageDiv.dataset.offline = 'true';
+                }
+
                 const buttonContainer = document.createElement('div');
                 buttonContainer.className = 'message-action-buttons';
 
@@ -83,10 +79,18 @@ function addMessage(role, content = '', options = {}) {
                 playButton.title = '播放语音';
                 playButton.dataset.messageId = textMessageId;
                 playButton.dataset.text = textContent;
-                playButton.onclick = (e) => {
-                    e.stopPropagation();
-                    playTTS(textContent, playButton, textMessageId);
-                };
+                if (isOfflineMessage) {
+                    playButton.dataset.offline = 'true';
+                    playButton.onclick = (e) => {
+                        e.stopPropagation();
+                        playOfflineAudio(playButton);
+                    };
+                } else {
+                    playButton.onclick = (e) => {
+                        e.stopPropagation();
+                        playTTS(textContent, playButton, textMessageId);
+                    };
+                }
 
                 // 复制按钮
                 const copyButton = document.createElement('button');
@@ -129,12 +133,7 @@ function addMessage(role, content = '', options = {}) {
         videoMessageDiv.id = videoMessageId;
 
         const videoAvatar = role === 'user'
-            ? (() => {
-                const avatar = document.createElement('div');
-                avatar.className = 'message-avatar';
-                avatar.textContent = '我';
-                return avatar;
-            })()
+            ? createUserAvatarElement()
             : createAIAvatarElement();
 
         const videoMessageContent = document.createElement('div');
@@ -170,12 +169,7 @@ function addMessage(role, content = '', options = {}) {
             textMessageDiv.id = textMessageId;
 
             const textAvatar = role === 'user'
-                ? (() => {
-                    const avatar = document.createElement('div');
-                    avatar.className = 'message-avatar';
-                    avatar.textContent = '我';
-                    return avatar;
-                })()
+                ? createUserAvatarElement()
                 : createAIAvatarElement();
 
             const textMessageContent = document.createElement('div');
@@ -189,6 +183,12 @@ function addMessage(role, content = '', options = {}) {
 
             // 为 assistant 文本消息添加播放和复制按钮（在 message-content 外部）
             if (role === 'assistant' && textContent && textContent.trim()) {
+                // 检查是否是离线消息
+                const isOfflineMessage = textContent.trim() === '人家也是需要睡觉的~';
+                if (isOfflineMessage) {
+                    textMessageDiv.dataset.offline = 'true';
+                }
+
                 const buttonContainer = document.createElement('div');
                 buttonContainer.className = 'message-action-buttons';
 
@@ -199,10 +199,18 @@ function addMessage(role, content = '', options = {}) {
                 playButton.title = '播放语音';
                 playButton.dataset.messageId = textMessageId;
                 playButton.dataset.text = textContent;
-                playButton.onclick = (e) => {
-                    e.stopPropagation();
-                    playTTS(textContent, playButton, textMessageId);
-                };
+                if (isOfflineMessage) {
+                    playButton.dataset.offline = 'true';
+                    playButton.onclick = (e) => {
+                        e.stopPropagation();
+                        playOfflineAudio(playButton);
+                    };
+                } else {
+                    playButton.onclick = (e) => {
+                        e.stopPropagation();
+                        playTTS(textContent, playButton, textMessageId);
+                    };
+                }
 
                 // 复制按钮
                 const copyButton = document.createElement('button');
@@ -240,12 +248,7 @@ function addMessage(role, content = '', options = {}) {
     messageDiv.id = messageId;
 
     const avatar = role === 'user'
-        ? (() => {
-            const av = document.createElement('div');
-            av.className = 'message-avatar';
-            av.textContent = '我';
-            return av;
-        })()
+        ? createUserAvatarElement()
         : createAIAvatarElement();
 
     const messageContent = document.createElement('div');
@@ -273,6 +276,12 @@ function addMessage(role, content = '', options = {}) {
 
     // 为 assistant 消息添加播放和复制按钮（在 message-content 外部）
     if (role === 'assistant' && content && content.trim()) {
+        // 检查是否是离线消息
+        const isOfflineMessage = content.trim() === '人家也是需要睡觉的~';
+        if (isOfflineMessage) {
+            messageDiv.dataset.offline = 'true';
+        }
+
         const buttonContainer = document.createElement('div');
         buttonContainer.className = 'message-action-buttons';
 
@@ -283,10 +292,18 @@ function addMessage(role, content = '', options = {}) {
         playButton.title = '播放语音';
         playButton.dataset.messageId = messageId;
         playButton.dataset.text = content;
-        playButton.onclick = (e) => {
-            e.stopPropagation();
-            playTTS(content, playButton, messageId);
-        };
+        if (isOfflineMessage) {
+            playButton.dataset.offline = 'true';
+            playButton.onclick = (e) => {
+                e.stopPropagation();
+                playOfflineAudio(playButton);
+            };
+        } else {
+            playButton.onclick = (e) => {
+                e.stopPropagation();
+                playTTS(content, playButton, messageId);
+            };
+        }
 
         // 复制按钮
         const copyButton = document.createElement('button');
@@ -343,6 +360,12 @@ function appendToMessage(messageId, content) {
             const messageId = messageDiv.id;
 
             if (!existingButtonContainer && messageText.textContent.trim() && messageContent) {
+                // 检查是否是离线消息
+                const isOfflineMessage = messageText.textContent.trim() === '人家也是需要睡觉的~';
+                if (isOfflineMessage) {
+                    messageDiv.dataset.offline = 'true';
+                }
+
                 const buttonContainer = document.createElement('div');
                 buttonContainer.className = 'message-action-buttons';
 
@@ -353,10 +376,18 @@ function appendToMessage(messageId, content) {
                 playButton.title = '播放语音';
                 playButton.dataset.messageId = messageId;
                 playButton.dataset.text = messageText.textContent;
-                playButton.onclick = (e) => {
-                    e.stopPropagation();
-                    playTTS(messageText.textContent, playButton, messageId);
-                };
+                if (isOfflineMessage) {
+                    playButton.dataset.offline = 'true';
+                    playButton.onclick = (e) => {
+                        e.stopPropagation();
+                        playOfflineAudio(playButton);
+                    };
+                } else {
+                    playButton.onclick = (e) => {
+                        e.stopPropagation();
+                        playTTS(messageText.textContent, playButton, messageId);
+                    };
+                }
 
                 // 复制按钮
                 const copyButton = document.createElement('button');
@@ -378,12 +409,24 @@ function appendToMessage(messageId, content) {
                 const playButton = existingButtonContainer.querySelector('.message-play-btn');
                 const copyButton = existingButtonContainer.querySelector('.message-copy-btn');
                 if (playButton) {
+                    // 检查是否是离线消息
+                    const isOfflineMessage = messageText.textContent.trim() === '人家也是需要睡觉的~';
+                    if (isOfflineMessage) {
+                        messageDiv.dataset.offline = 'true';
+                        playButton.dataset.offline = 'true';
+                        playButton.onclick = (e) => {
+                            e.stopPropagation();
+                            playOfflineAudio(playButton);
+                        };
+                    } else {
+                        playButton.dataset.offline = 'false';
+                        playButton.onclick = (e) => {
+                            e.stopPropagation();
+                            playTTS(messageText.textContent, playButton, messageId);
+                        };
+                    }
                     playButton.dataset.messageId = messageId;
                     playButton.dataset.text = messageText.textContent;
-                    playButton.onclick = (e) => {
-                        e.stopPropagation();
-                        playTTS(messageText.textContent, playButton, messageId);
-                    };
                 }
                 if (copyButton) {
                     copyButton.dataset.messageId = messageId;
@@ -612,6 +655,7 @@ function showSkillsNote(messageElement) {
 let imageModalEscHandler = null;
 let videoModalEscHandler = null;
 let aiInfoModalEscHandler = null;
+let userInfoModalEscHandler = null;
 
 /**
  * 打开图片模态框
@@ -730,6 +774,96 @@ function closeVideoModal(event) {
 }
 
 /**
+ * 获取智能体的在线状态
+ * @param {string} mode - 智能体模式，默认为 'normal'
+ * @returns {Promise<boolean>} 返回是否在线
+ */
+async function getAgentStatus(mode = 'normal') {
+    try {
+        const response = await fetch(`/api/chat/agent/status?mode=${mode}`);
+        if (!response.ok) {
+            console.error('获取智能体状态失败:', response.status);
+            return true; // 默认返回在线状态
+        }
+        const data = await response.json();
+        return data.is_online === true;
+    } catch (error) {
+        console.error('获取智能体状态出错:', error);
+        return true; // 默认返回在线状态
+    }
+}
+
+/**
+ * 更新标题栏中的dodokolu智能体在线状态显示
+ * @param {string} mode - 智能体模式，默认为 'dodokolu'
+ */
+async function updateHeaderAgentStatus(mode = 'dodokolu') {
+    const statusElement = document.getElementById('agentStatus');
+    if (!statusElement) {
+        return;
+    }
+
+    // 设置为检查中状态
+    statusElement.classList.remove('online', 'offline');
+    statusElement.classList.add('checking');
+    const statusText = statusElement.querySelector('.status-text');
+    if (statusText) {
+        statusText.textContent = '检查中...';
+    }
+
+    try {
+        const isOnline = await getAgentStatus(mode);
+        statusElement.classList.remove('checking');
+        statusElement.classList.add(isOnline ? 'online' : 'offline');
+        if (statusText) {
+            statusText.textContent = isOnline ? '在线' : '离线';
+        }
+    } catch (error) {
+        console.error('更新标题栏在线状态失败:', error);
+        statusElement.classList.remove('checking');
+        statusElement.classList.add('offline');
+        if (statusText) {
+            statusText.textContent = '离线';
+        }
+    }
+}
+
+/**
+ * 更新AI信息模态框中的在线状态显示
+ * @param {string} mode - 智能体模式，默认为 'normal'
+ */
+async function updateAgentStatusDisplay(mode = 'normal') {
+    // 查找状态元素：优先查找已有的状态元素，否则通过标签查找
+    let statusElement = document.querySelector('#aiInfoModal .stat-value.online, #aiInfoModal .stat-value.offline');
+
+    if (!statusElement) {
+        // 如果找不到已有的状态元素，通过标签查找
+        const statItems = document.querySelectorAll('#aiInfoModal .ai-info-stat-item');
+        for (let item of statItems) {
+            const label = item.querySelector('.stat-label');
+            if (label && label.textContent.trim() === '状态') {
+                statusElement = item.querySelector('.stat-value');
+                break;
+            }
+        }
+    }
+
+    if (!statusElement) {
+        console.warn('无法找到状态显示元素');
+        return;
+    }
+
+    try {
+        const isOnline = await getAgentStatus(mode);
+        statusElement.textContent = isOnline ? '在线' : '离线';
+        statusElement.classList.remove('online', 'offline');
+        statusElement.classList.add(isOnline ? 'online' : 'offline');
+    } catch (error) {
+        console.error('更新在线状态显示失败:', error);
+    }
+}
+
+/**
  * 打开AI信息模态框
  * @param {string} avatarPath - AI头像路径
  */
@@ -743,6 +877,11 @@ function openAIInfoModal(avatarPath) {
         modal.classList.add('active');
         // 防止背景滚动
         document.body.style.overflow = 'hidden';
+
+        // 更新在线状态显示
+        // 获取当前模式（从全局变量获取，默认为 'normal'）
+        const mode = typeof currentMode !== 'undefined' ? currentMode : 'normal';
+        updateAgentStatusDisplay(mode);
 
         // 如果还没有添加 ESC 键监听器，则添加
         if (!aiInfoModalEscHandler) {
@@ -778,6 +917,103 @@ function closeAIInfoModal(event) {
     }
 
     const modal = document.getElementById('aiInfoModal');
+    if (modal && modal.classList.contains('active')) {
+        modal.classList.remove('active');
+        // 恢复背景滚动
+        document.body.style.overflow = '';
+    }
+}
+
+/**
+ * 打开用户信息模态框
+ */
+async function openUserInfoModal() {
+    const modal = document.getElementById('userInfoModal');
+    if (!modal) {
+        console.warn('用户信息模态框元素未找到');
+        return;
+    }
+
+    // 显示模态框
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // 获取用户信息
+    try {
+        const response = await fetch('/api/account/profile');
+        if (response.status === 401) {
+            // 未登录
+            document.getElementById('userInfoName').textContent = '未登录';
+            document.getElementById('userInfoEmail').textContent = '请先登录';
+            document.getElementById('userInfoId').textContent = '-';
+            document.getElementById('userInfoCreatedAt').textContent = '-';
+        } else if (response.ok) {
+            const data = await response.json();
+            if (data.success && data.data) {
+                const profile = data.data;
+                document.getElementById('userInfoName').textContent = profile.username || '用户';
+                document.getElementById('userInfoEmail').textContent = profile.email || '未设置';
+                document.getElementById('userInfoId').textContent = profile.id || '-';
+                // 格式化注册时间
+                if (profile.created_at) {
+                    const date = new Date(profile.created_at);
+                    document.getElementById('userInfoCreatedAt').textContent = date.toLocaleDateString('zh-CN');
+                } else {
+                    document.getElementById('userInfoCreatedAt').textContent = '-';
+                }
+            } else {
+                document.getElementById('userInfoName').textContent = '获取失败';
+                document.getElementById('userInfoEmail').textContent = data.message || '未知错误';
+                document.getElementById('userInfoId').textContent = '-';
+                document.getElementById('userInfoCreatedAt').textContent = '-';
+            }
+        } else {
+            document.getElementById('userInfoName').textContent = '获取失败';
+            document.getElementById('userInfoEmail').textContent = '网络错误';
+            document.getElementById('userInfoId').textContent = '-';
+            document.getElementById('userInfoCreatedAt').textContent = '-';
+        }
+    } catch (error) {
+        console.error('获取用户信息失败:', error);
+        document.getElementById('userInfoName').textContent = '获取失败';
+        document.getElementById('userInfoEmail').textContent = '网络错误';
+        document.getElementById('userInfoId').textContent = '-';
+        document.getElementById('userInfoCreatedAt').textContent = '-';
+    }
+
+    // 如果还没有添加 ESC 键监听器，则添加
+    if (!userInfoModalEscHandler) {
+        userInfoModalEscHandler = (e) => {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('userInfoModal');
+                if (modal && modal.classList.contains('active')) {
+                    closeUserInfoModal();
+                }
+            }
+        };
+        document.addEventListener('keydown', userInfoModalEscHandler);
+    }
+}
+
+/**
+ * 关闭用户信息模态框
+ * @param {Event} event - 事件对象（可选，用于判断点击位置）
+ */
+function closeUserInfoModal(event) {
+    // 如果传入了事件对象，检查点击位置
+    if (event && event.target) {
+        // 如果点击的是内容区域（但不是关闭按钮），则不关闭
+        const isCloseButton = event.target.classList.contains('ai-info-modal-close');
+        const isBackground = event.target.id === 'userInfoModal';
+        const isContentArea = event.target.closest('.ai-info-modal-content');
+
+        // 只有当点击的是关闭按钮或背景时才关闭
+        if (!isCloseButton && !isBackground) {
+            return;
+        }
+    }
+
+    const modal = document.getElementById('userInfoModal');
     if (modal && modal.classList.contains('active')) {
         modal.classList.remove('active');
         // 恢复背景滚动
@@ -873,12 +1109,80 @@ async function checkAudioExists(audioUrl) {
 }
 
 /**
+ * 播放离线系统音频
+ * @param {HTMLElement} button - 触发按钮元素（可选）
+ * @param {boolean} autoPlay - 是否自动播放（默认false）
+ */
+function playOfflineAudio(button = null, autoPlay = false) {
+    // 如果正在播放，先停止
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio = null;
+    }
+
+    // 如果提供了按钮，处理按钮状态
+    if (button) {
+        // 如果点击的是同一个按钮，重置状态
+        if (currentTTSButton === button && button.classList.contains('playing')) {
+            currentTTSButton = null;
+            button.classList.remove('playing');
+            return;
+        }
+
+        // 重置之前按钮的状态
+        if (currentTTSButton && currentTTSButton !== button) {
+            currentTTSButton.classList.remove('playing');
+        }
+
+        currentTTSButton = button;
+        button.classList.add('playing');
+    }
+
+    // 播放系统音频
+    const systemAudioUrl = '/static/audio/system_audio/request_close.mp3';
+    const audio = new Audio(systemAudioUrl);
+    currentAudio = audio;
+
+    audio.onended = () => {
+        if (button) {
+            button.classList.remove('playing');
+            currentTTSButton = null;
+        }
+        currentAudio = null;
+    };
+
+    audio.onerror = () => {
+        console.error('系统音频播放失败');
+        if (button) {
+            button.classList.remove('playing');
+            currentTTSButton = null;
+        }
+        currentAudio = null;
+    };
+
+    audio.play().catch(error => {
+        console.error('播放系统音频失败:', error);
+        if (button) {
+            button.classList.remove('playing');
+            currentTTSButton = null;
+        }
+        currentAudio = null;
+    });
+}
+
+/**
  * 播放 TTS 语音
  * @param {string} text - 要转换为语音的文本
  * @param {HTMLElement} button - 触发按钮元素
  * @param {string} messageId - 消息ID（可选，用于缓存）
  */
 async function playTTS(text, button, messageId = null) {
+    // 检查是否是离线消息，如果是则直接播放系统音频
+    if (button && button.dataset.offline === 'true') {
+        playOfflineAudio(button);
+        return;
+    }
+
     // 如果按钮被禁用，不允许点击
     if (button.classList.contains('disabled')) {
         return;

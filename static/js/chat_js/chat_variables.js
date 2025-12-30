@@ -51,6 +51,34 @@ function createAIAvatarElement() {
     return avatar;
 }
 
+// 创建用户头像元素（使用文本，可点击）
+function createUserAvatarElement() {
+    const avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.textContent = '我';
+    avatar.style.cursor = 'pointer';
+    avatar.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
+
+    // 添加点击事件，打开用户信息模态框
+    avatar.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openUserInfoModal();
+    });
+
+    // 添加悬停效果
+    avatar.addEventListener('mouseenter', () => {
+        avatar.style.transform = 'scale(1.1)';
+        avatar.style.opacity = '0.9';
+    });
+
+    avatar.addEventListener('mouseleave', () => {
+        avatar.style.transform = 'scale(1)';
+        avatar.style.opacity = '1';
+    });
+
+    return avatar;
+}
+
 // 将模式值转换为显示文本
 function getModeDisplayText(mode) {
     const modeMap = {

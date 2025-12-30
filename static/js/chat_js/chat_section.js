@@ -299,6 +299,27 @@ async function sendMessage() {
                         if (data.done) {
                             isStreaming = false;
                             sendBtn.disabled = false;
+                            
+                            // 检查是否是离线消息，如果是则自动播放系统音频
+                            const messageDiv = document.getElementById(assistantMessageId);
+                            if (messageDiv) {
+                                const messageText = messageDiv.querySelector('.message-text');
+                                if (messageText && messageText.textContent.trim() === '人家也是需要睡觉的~') {
+                                    // 标记为离线消息
+                                    messageDiv.dataset.offline = 'true';
+                                    // 更新播放按钮，使其直接播放系统音频
+                                    const playButton = messageDiv.querySelector('.message-play-btn');
+                                    if (playButton) {
+                                        playButton.dataset.offline = 'true';
+                                        playButton.onclick = (e) => {
+                                            e.stopPropagation();
+                                            playOfflineAudio(playButton);
+                                        };
+                                    }
+                                    // 自动播放系统音频
+                                    playOfflineAudio(null, true);
+                                }
+                            }
                         }
                     } catch (e) {
                         console.error('解析数据错误:', e);

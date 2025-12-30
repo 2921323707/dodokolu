@@ -173,6 +173,24 @@
     animation: onlinePulse 2s ease-in-out infinite;
 }
 
+.stat-value.offline {
+    color: #ef4444;
+    position: relative;
+    padding-left: 12px;
+}
+
+.stat-value.offline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background: #ef4444;
+    border-radius: 50%;
+}
+
 /* 右侧用户自定义区域 */
 .ai-info-right {
     flex: 1;

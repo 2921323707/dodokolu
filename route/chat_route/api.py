@@ -5,12 +5,14 @@
 """
 import json
 import re
+import time
 from pathlib import Path
 from flask import Blueprint, request, jsonify, Response, stream_with_context, session, url_for
 from werkzeug.utils import secure_filename
 from config.llm.base.history import get_conversation_history, save_message, clear_history, set_current_file
 from config.llm.base.history.cleanup import cleanup_empty_json_files
 from config.llm import llm_stream  # 向后兼容
+from config.llm.agent_config import is_agent_online
 
 # 创建蓝图
 chat_api_bp = Blueprint('chat_api', __name__)
@@ -50,6 +52,30 @@ def chat():
         session['current_history_file'] = current_file
         # 更新线程本地存储
         set_current_file(user_email, current_file)
+    
+    # 检查智能体是否在线，如果离线则返回默认消息
+    if not is_agent_online(mode):
+        # 生成流式响应：返回默认消息"人家也是需要睡觉的~"
+        def offline_response_generator():
+            offline_message = "人家也是需要睡觉的~"
+            # 模拟流式输出，逐字符发送（与正常响应格式保持一致）
+            for char in offline_message:
+                yield f"data: {json.dumps({'content': char, 'done': False}, ensure_ascii=False)}\n\n"
+                time.sleep(0.05)  # 添加小延迟，模拟真实流式输出效果
+            # 发送完成标记
+            yield f"data: {json.dumps({'content': '', 'done': True}, ensure_ascii=False)}\n\n"
+        
+        # 保存离线消息到历史记录
+        save_message(user_email, "assistant", "人家也是需要睡觉的~", session_id, current_file)
+        
+        return Response(
+            stream_with_context(offline_response_generator()),
+            mimetype='text/event-stream',
+            headers={
+                'Cache-Control': 'no-cache',
+                'X-Accel-Buffering': 'no'
+            }
+        )
     
     # 获取对话历史（不包括系统提示词，但保留我们转换的系统消息）
     history, _ = get_conversation_history(user_email, session_id, current_file)
@@ -337,4 +363,21 @@ def cleanup_empty_history():
             }), 500
     except Exception as e:
         return jsonify({'success': False, 'error': f'清理失败: {str(e)}'}), 500
+
+
+@chat_api_bp.route('/chat/agent/status', methods=['GET'])
+def get_agent_status():
+    """获取智能体的在线状态"""
+    mode = request.args.get('mode', 'normal')  # 获取模式参数，默认为normal
+    
+    from config.llm.agent_config import get_agent_status
+    
+    is_online = get_agent_status(mode)
+    
+    return jsonify({
+        'success': True,
+        'mode': mode,
+        'is_online': is_online,
+        'status': '在线' if is_online else '离线'
+    })
 

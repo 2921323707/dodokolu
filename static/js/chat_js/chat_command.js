@@ -92,6 +92,19 @@ async function executeGeneration(type, prompt) {
         return;
     }
 
+    // 检查智能体是否在线
+    try {
+        const mode = typeof currentMode !== 'undefined' ? currentMode : 'normal';
+        const isOnline = await getAgentStatus(mode);
+        if (!isOnline) {
+            alert('智能体当前离线，无法使用图像/视频生成功能');
+            return;
+        }
+    } catch (error) {
+        console.error('检查智能体状态失败:', error);
+        // 如果检查失败，允许继续（避免因为网络问题阻止用户）
+    }
+
     // 显示用户消息
     addMessage('user', `/${type} ${prompt}`);
 
@@ -106,6 +119,7 @@ async function executeGeneration(type, prompt) {
         const progressInterval = startProgressUpdate(loadingMessageId, estimatedTime);
 
         // 发送生成请求
+        const mode = typeof currentMode !== 'undefined' ? currentMode : 'normal';
         const response = await fetch(endpoint, {
             method: 'POST',
             headers: {
@@ -114,6 +128,7 @@ async function executeGeneration(type, prompt) {
             body: JSON.stringify({
                 prompt: prompt,
                 session_id: sessionId, // 传入session_id
+                mode: mode, // 传入模式参数，用于检查智能体状态
                 // 视频默认配置：5秒，无水印
                 ...(type === 'video' ? { duration: 5, watermark: false } : {})
             })
@@ -128,6 +143,11 @@ async function executeGeneration(type, prompt) {
             if (response.status === 401) {
                 promptLoginRequired();
                 updateGenerationLoadingMessage(loadingMessageId, '生成失败：请先登录', true);
+                return;
+            }
+            if (response.status === 503) {
+                const errorData = await response.json().catch(() => ({}));
+                updateGenerationLoadingMessage(loadingMessageId, errorData.error || '智能体当前离线，无法使用生成功能', true);
                 return;
             }
             const errorData = await response.json().catch(() => ({}));

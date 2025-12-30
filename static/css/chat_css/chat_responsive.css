@@ -108,6 +108,21 @@
         font-size: 0.9375rem !important;
     }
 
+    .header-title-wrapper {
+        gap: 0.5rem !important;
+    }
+
+    .agent-status {
+        font-size: 0.6875rem !important;
+        padding: 0.2rem 0.4rem !important;
+        gap: 0.375rem !important;
+    }
+
+    .agent-status .status-dot {
+        width: 6px !important;
+        height: 6px !important;
+    }
+
     /* 移动端隐藏首页右上角的小组件 */
     .header-buttons {
         display: none !important;
@@ -231,7 +246,7 @@
 
     /* 确保聊天区域和右侧边栏高度一致并顶部对齐，与电脑端完全一致 */
     .chat-section {
-        height: calc(100vh - 120px) !important;
+        height: calc(100vh - 130px) !important;
         min-height: 600px !important;
         margin-top: 0 !important;
         padding-top: 0 !important;
@@ -246,7 +261,7 @@
         flex-direction: column !important;
         justify-content: flex-end !important;
         /* 内容靠底部，轮播图通过 align-self 在顶部 */
-        height: calc(100vh - 120px) !important;
+        height: calc(100vh - 130px) !important;
         min-height: 600px !important;
         align-self: start !important;
         /* 顶部对齐 - Grid 属性 */
@@ -401,6 +416,21 @@
         font-size: 0.9375rem !important;
     }
 
+    .header-title-wrapper {
+        gap: 0.5rem !important;
+    }
+
+    .agent-status {
+        font-size: 0.6875rem !important;
+        padding: 0.2rem 0.4rem !important;
+        gap: 0.375rem !important;
+    }
+
+    .agent-status .status-dot {
+        width: 6px !important;
+        height: 6px !important;
+    }
+
     /* 移动端隐藏首页右上角的小组件 */
     .header-buttons {
         display: none !important;
@@ -531,6 +561,21 @@
 
     .chat-header h2 {
         font-size: 0.875rem !important;
+    }
+
+    .header-title-wrapper {
+        gap: 0.375rem !important;
+    }
+
+    .agent-status {
+        font-size: 0.625rem !important;
+        padding: 0.15rem 0.3rem !important;
+        gap: 0.3rem !important;
+    }
+
+    .agent-status .status-dot {
+        width: 5px !important;
+        height: 5px !important;
     }
 
     /* 移动端隐藏首页右上角的小组件 */

@@ -12,6 +12,7 @@ from flask import Blueprint, request, jsonify, session, url_for
 from openai import OpenAI
 from dotenv import load_dotenv
 from config.llm.base.history import get_conversation_history, save_message, set_current_file, HISTORY_DIR
+from config.llm.agent_config import is_agent_online
 from route.chat_route.utils import generate_video
 
 # 加载环境变量
@@ -31,6 +32,12 @@ def generate_image_api():
             return jsonify({'error': '登录了吗，就想榨干我的Token(￣へ￣)'}), 401
         
         data = request.json
+        mode = data.get('mode', 'normal') if data else 'normal'
+        
+        # 检查智能体是否在线
+        if not is_agent_online(mode):
+            return jsonify({'error': '智能体当前离线，无法使用图像生成功能'}), 503
+        
         prompt = data.get('prompt', '').strip()
         session_id = data.get('session_id', 'default')
         
@@ -189,6 +196,12 @@ def generate_video_api():
             return jsonify({'error': '登录了吗，就想榨干我的Token(￣へ￣)'}), 401
         
         data = request.json
+        mode = data.get('mode', 'normal') if data else 'normal'
+        
+        # 检查智能体是否在线
+        if not is_agent_online(mode):
+            return jsonify({'error': '智能体当前离线，无法使用视频生成功能'}), 503
+        
         prompt = data.get('prompt', '').strip()
         session_id = data.get('session_id', 'default')
         duration = data.get('duration', 5)  # 默认5秒
