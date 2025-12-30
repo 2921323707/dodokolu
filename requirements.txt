@@ -37,6 +37,9 @@ anyio>=4.0.0,<5.0.0  # 异步IO抽象层，httpx/trio依赖
 # ==================== 火山引擎方舟SDK（豆包模型） ====================
 volcengine-python-sdk[ark]>=1.0.0,<2.0.0  # 火山引擎方舟SDK，用于豆包模型（Seedance等）
 
+# ==================== Anthropic SDK（Minimax API 兼容） ====================
+anthropic>=0.18.0,<1.0.0  # Anthropic SDK，用于 Minimax API（通过兼容层）
+
 # ==================== HTTP请求库及其依赖 ====================
 requests>=2.31.0,<4.0.0  # 同步HTTP客户端，放宽版本范围增加容错性
 charset-normalizer>=3.3.0,<4.0.0  # 字符编码检测，requests依赖
@@ -98,7 +101,10 @@ tqdm>=4.65.0,<5.0.0  # 进度条显示库，用于视频生成等任务的进度
 #    source venv/bin/activate
 # 3. 更新pip和构建工具（提高容错性）：
 #    python -m pip install --upgrade pip setuptools wheel
-# 4. 安装依赖：
+# 4. 安装依赖（推荐使用 install.bat 脚本，可避免命令行长度限制）：
+#    # 方式1：使用安装脚本（Windows推荐）
+#    install.bat
+#    # 方式2：直接使用pip（如果遇到命令过长的问题，请使用方式1）
 #    pip install -r requirements.txt
 #    如果遇到依赖冲突或安装失败，可以尝试：
 #    - 升级pip: pip install --upgrade pip

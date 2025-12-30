@@ -162,11 +162,9 @@ out/
 # Vim / Neovim
 *.swp
 *.swo
+*.un~
 *~
 .vim/
-*.swp
-*.swo
-*.un~
 Session.vim
 .netrwhist
 
@@ -233,9 +231,6 @@ Temporary Items
 *.old
 *.orig
 *.save
-*.swp
-*.swo
-*~
 .#*
 \#*#
 
@@ -251,8 +246,6 @@ nosetests.xml
 coverage.xml
 *.cover
 *.py,cover
-.hypothesis/
-.pytest_cache/
 test-results/
 junit.xml
 
@@ -334,4 +327,14 @@ components/rss/data/json/*.json
 # 忽略素材中转目录下的所有文件（保留目录结构）
 static/imgs/素材中转/**
 !static/imgs/素材中转/.gitkeep
+
+# ==================== 安装脚本生成的临时文件 ====================
+# 安装过程中的临时文件
+pip-log.txt
+pip-delete-this-directory.txt
+install.log
+
+# ==================== Cursor IDE 相关 ====================
+.cursor/
+.cursorrules
 
