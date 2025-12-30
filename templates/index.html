@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_variables.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_reset.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_layout.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_navbar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_section.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_messages.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_input.css') }}">
@@ -19,6 +18,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_responsive.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_command.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_ai_info.css') }}">
+    <!-- 导航栏样式放在最后，确保优先级最高 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_navbar.css') }}">
 </head>
 
 <body>
@@ -29,12 +30,11 @@
                 <span>JY's Chat</span>
             </div>
             <ul class="nav-links" id="navLinks">
-                <li><a href="{{ url_for('login.pages.alert_page') }}">提醒</a></li>
-                <li><a href="{{ url_for('login.feedback.feedback_page') }}">反馈</a></li>
+                <li><a href="/alert/">提醒</a></li>
+                <li><a href="/feedback">反馈</a></li>
                 <li><a href="/#chat">对话</a></li>
-                <li><a id="authNavLink" href="{{ url_for('login.pages.login_page') }}">登录</a></li>
+                <li><a id="authNavLink" href="/login">登录</a></li>
             </ul>
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
         </div>
     </nav>
 

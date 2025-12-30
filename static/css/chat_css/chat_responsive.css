@@ -1,5 +1,6 @@
 /* 响应式设计 */
 /* iPad 竖屏和移动端 - 只显示对话框 */
+/* 注意：导航栏样式已统一移至 chat_navbar.css，此处不再重复定义 */
 @media (max-width: 1024px) and (orientation: portrait) {
     html {
         height: 100%;
@@ -19,51 +20,7 @@
         padding: 0;
     }
 
-    .navbar {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 0.75rem 1rem;
-        box-sizing: border-box;
-        min-height: 56px;
-        flex-shrink: 0;
-    }
-
-    .navbar-content {
-        padding: 0;
-        width: 100%;
-        max-width: 100%;
-        box-sizing: border-box;
-    }
-
-    .logo {
-        font-size: 1.0625rem !important;
-    }
-
-    .mobile-menu-btn {
-        font-size: 1.5rem !important;
-        padding: 0.25rem;
-    }
-
-    .nav-links {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background-color: var(--card-bg);
-        flex-direction: column;
-        padding: 1rem;
-        border-top: 1px solid var(--border-color);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .nav-links.active {
-        display: flex;
-    }
-
-    .mobile-menu-btn {
-        display: block;
-    }
+    /* 导航栏样式已移至 chat_navbar.css */
 
     main.container {
         width: 100% !important;
@@ -149,6 +106,11 @@
 
     .chat-header h2 {
         font-size: 0.9375rem !important;
+    }
+
+    /* 移动端隐藏首页右上角的小组件 */
+    .header-buttons {
+        display: none !important;
     }
 
     .mode-toggle-btn,
@@ -253,6 +215,7 @@
 
 /* iPad 横屏 - 和电脑网页端同步显示，保持完整布局 */
 @media (max-width: 1024px) and (orientation: landscape) {
+
     /* 完全按照电脑端的布局设置 - 添加浏览器兼容性 */
     .container {
         display: grid !important;
@@ -260,7 +223,8 @@
         gap: 2rem !important;
         max-width: 1400px !important;
         padding: 2rem 1rem !important;
-        align-items: start !important; /* 确保顶部对齐 - Grid 容器属性 */
+        align-items: start !important;
+        /* 确保顶部对齐 - Grid 容器属性 */
         /* 重置可能影响对齐的属性 */
         vertical-align: top !important;
     }
@@ -271,7 +235,8 @@
         min-height: 600px !important;
         margin-top: 0 !important;
         padding-top: 0 !important;
-        border-radius: 12px !important; /* 保持圆角，与电脑端一致 */
+        border-radius: 12px !important;
+        /* 保持圆角，与电脑端一致 */
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
     }
 
@@ -279,10 +244,12 @@
     .right-sidebar {
         display: flex !important;
         flex-direction: column !important;
-        justify-content: flex-end !important; /* 内容靠底部，轮播图通过 align-self 在顶部 */
+        justify-content: flex-end !important;
+        /* 内容靠底部，轮播图通过 align-self 在顶部 */
         height: calc(100vh - 120px) !important;
         min-height: 600px !important;
-        align-self: start !important; /* 顶部对齐 - Grid 属性 */
+        align-self: start !important;
+        /* 顶部对齐 - Grid 属性 */
         gap: 1rem !important;
         margin-top: 0 !important;
         padding-top: 0 !important;
@@ -346,51 +313,7 @@
         padding: 0;
     }
 
-    .navbar {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 0.75rem 1rem;
-        box-sizing: border-box;
-        min-height: 56px;
-        flex-shrink: 0;
-    }
-
-    .navbar-content {
-        padding: 0;
-        width: 100%;
-        max-width: 100%;
-        box-sizing: border-box;
-    }
-
-    .logo {
-        font-size: 1.0625rem !important;
-    }
-
-    .mobile-menu-btn {
-        font-size: 1.5rem !important;
-        padding: 0.25rem;
-    }
-
-    .nav-links {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background-color: var(--card-bg);
-        flex-direction: column;
-        padding: 1rem;
-        border-top: 1px solid var(--border-color);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .nav-links.active {
-        display: flex;
-    }
-
-    .mobile-menu-btn {
-        display: block;
-    }
+    /* 导航栏样式已移至 chat_navbar.css */
 
     main.container {
         width: 100% !important;
@@ -476,6 +399,11 @@
 
     .chat-header h2 {
         font-size: 0.9375rem !important;
+    }
+
+    /* 移动端隐藏首页右上角的小组件 */
+    .header-buttons {
+        display: none !important;
     }
 
     .mode-toggle-btn,
@@ -580,14 +508,7 @@
 
 /* 超小屏幕优化（480px以下） */
 @media (max-width: 480px) {
-    .navbar {
-        padding: 0.625rem 0.875rem;
-        min-height: 52px;
-    }
-
-    .logo {
-        font-size: 1rem !important;
-    }
+    /* 导航栏样式已移至 chat_navbar.css，此处不再重复定义 */
 
     .mobile-menu-btn {
         font-size: 1.5rem !important;
@@ -610,6 +531,11 @@
 
     .chat-header h2 {
         font-size: 0.875rem !important;
+    }
+
+    /* 移动端隐藏首页右上角的小组件 */
+    .header-buttons {
+        display: none !important;
     }
 
     .mode-toggle-btn,

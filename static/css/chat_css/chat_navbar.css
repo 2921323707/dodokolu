@@ -1,4 +1,6 @@
-/* 导航栏样式 */
+/* 导航栏样式 - 统一供所有页面使用 */
+
+/* 基础样式 */
 .navbar {
     background-color: var(--card-bg);
     border-bottom: 1px solid var(--border-color);
@@ -9,14 +11,19 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     width: 100%;
     box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    min-height: 64px;
 }
 
 .navbar-content {
     max-width: 1400px;
+    width: 100%;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 100%;
 }
 
 .logo {
@@ -25,7 +32,10 @@
     color: #ffc0cb;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
+    height: 100%;
+    line-height: 1;
 }
 
 .logo span {
@@ -36,10 +46,18 @@
     display: flex;
     gap: 1.5rem;
     list-style: none;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
 
 .nav-links li {
     transition: outline 0.2s;
+    display: flex;
+    align-items: center;
+    height: 100%;
 }
 
 .nav-links li:focus-within {
@@ -52,6 +70,12 @@
     font-weight: 500;
     transition: color 0.2s;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    line-height: 1;
+    padding: 0.25rem 0;
 }
 
 .nav-links a:hover {
@@ -70,4 +94,167 @@
     font-size: 1.5rem;
     cursor: pointer;
     color: var(--text-primary);
+}
+
+/* 响应式样式 - iPad 竖屏和移动端 */
+@media (max-width: 1024px) and (orientation: portrait) {
+    .navbar {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0.75rem 1rem;
+        box-sizing: border-box;
+        min-height: 56px;
+        flex-shrink: 0;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .navbar-content {
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        height: 100% !important;
+    }
+
+    .logo {
+        font-size: 1.0625rem !important;
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .nav-links {
+        display: flex !important;
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+        background-color: transparent;
+        flex-direction: row;
+        padding: 0;
+        border-top: none;
+        box-shadow: none;
+        gap: 1rem;
+        align-items: center !important;
+        height: 100% !important;
+    }
+
+    .nav-links li {
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .nav-links a {
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+}
+
+/* 响应式样式 - 移动端 */
+@media (max-width: 768px) {
+    .navbar {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0.75rem 1rem;
+        box-sizing: border-box;
+        min-height: 56px;
+        flex-shrink: 0;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .navbar-content {
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        height: 100% !important;
+    }
+
+    .logo {
+        font-size: 1.0625rem !important;
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .nav-links {
+        display: flex !important;
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+        background-color: transparent;
+        flex-direction: row;
+        padding: 0;
+        border-top: none;
+        box-shadow: none;
+        gap: 1rem;
+        align-items: center !important;
+        height: 100% !important;
+    }
+
+    .nav-links li {
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .nav-links a {
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+}
+
+/* 响应式样式 - 超小屏幕 */
+@media (max-width: 480px) {
+    .navbar {
+        padding: 0.625rem 0.875rem;
+        min-height: 52px;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .navbar-content {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        height: 100% !important;
+    }
+
+    .logo {
+        font-size: 1rem !important;
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .nav-links {
+        gap: 0.75rem;
+        height: 100% !important;
+        align-items: center !important;
+    }
+
+    .nav-links li {
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .nav-links a {
+        font-size: 0.875rem;
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+    }
 }

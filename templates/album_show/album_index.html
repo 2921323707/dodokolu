@@ -25,12 +25,11 @@
                 <span>JY's Chat</span>
             </div>
             <ul class="nav-links" id="navLinks">
-                <li><a href="{{ url_for('alert.alert_page') }}">提醒</a></li>
-                <li><a href="{{ url_for('login.feedback.feedback_page') }}">反馈</a></li>
+                <li><a href="/alert/">提醒</a></li>
+                <li><a href="/feedback">反馈</a></li>
                 <li><a href="/#chat">对话</a></li>
-                <li><a id="authNavLink" href="{{ url_for('login.pages.login_page') }}">登录</a></li>
+                <li><a id="authNavLink" href="/login">登录</a></li>
             </ul>
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
         </div>
     </nav>
 
