@@ -181,9 +181,11 @@
             <button class="ai-info-modal-close" onclick="closeUserInfoModal(event)">×</button>
             <div class="ai-info-container">
                 <div class="ai-info-left">
-                    <div class="ai-info-avatar-wrapper">
-                        <div id="userInfoAvatar" class="ai-info-avatar" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #64748b, #94a3b8); color: white; font-size: 2.5rem; font-weight: 600;">我</div>
+                    <div class="ai-info-avatar-wrapper" style="cursor: pointer;" onclick="document.getElementById('avatarUploadInput').click()" title="点击上传头像">
+                        <img id="userInfoAvatar" src="" alt="用户头像" class="ai-info-avatar" style="display: none;">
+                        <div id="userInfoAvatarPlaceholder" class="ai-info-avatar" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #64748b, #94a3b8); color: white; font-size: 2.5rem; font-weight: 600;">我</div>
                     </div>
+                    <input type="file" id="avatarUploadInput" accept="image/png,image/jpeg,image/jpg" style="display: none;" onchange="handleAvatarUpload(event)">
                     <h2 class="ai-info-name" id="userInfoName">用户</h2>
                     <p class="ai-info-description" id="userInfoEmail">未登录</p>
                     <div class="ai-info-stats">

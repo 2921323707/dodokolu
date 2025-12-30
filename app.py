@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 from flask_cors import CORS
+from pathlib import Path
 from route import (
     chat_bp,
     image_bp,
@@ -8,7 +9,8 @@ from route import (
     alert_bp,
     album_bp,
     admin_bp,
-    heaven_bp
+    heaven_bp,
+    user_message_bp
 )
 from database import init_database
 from config.maintenance.maintenance import MAINTENANCE_PAGES
@@ -66,11 +68,26 @@ app.register_blueprint(alert_bp)
 app.register_blueprint(album_bp)
 app.register_blueprint(admin_bp)
 app.register_blueprint(heaven_bp)
+app.register_blueprint(user_message_bp)
 
 @app.route('/')
 def index():
     """主页面（通用路由）"""
     return render_template('index.html')
+
+
+@app.route('/database/avator/<path:filename>')
+def serve_avatar(filename):
+    """提供头像文件访问"""
+    # 从路径中提取邮箱文件夹和文件名
+    # filename 格式：邮箱文件夹/文件名
+    parts = filename.split('/', 1)
+    if len(parts) == 2:
+        email_folder, avatar_file = parts
+        avatar_dir = Path('database') / 'avator' / email_folder
+        if avatar_dir.exists() and (avatar_dir / avatar_file).exists():
+            return send_from_directory(str(avatar_dir), avatar_file)
+    return 'File not found', 404
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

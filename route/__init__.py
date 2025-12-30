@@ -10,6 +10,7 @@ from route.alert.alert import alert_bp
 from route.album_route import album_bp
 from route.admin_route import admin_bp
 from route.heaven_route import heaven_bp
+from route.user_message import user_message_bp
 
 __all__ = [
     'chat_bp',
@@ -18,5 +19,6 @@ __all__ = [
     'alert_bp',
     'album_bp',
     'admin_bp',
-    'heaven_bp'
+    'heaven_bp',
+    'user_message_bp'
 ]

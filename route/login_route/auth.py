@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, session
 from database import get_db_connection
 from config.llm.base.history import create_history_file
+from pathlib import Path
 import sqlite3
 
 auth_bp = Blueprint('auth', __name__)
@@ -100,6 +101,18 @@ def register_api():
                 create_history_file(email)
             except Exception as e:
                 print(f'创建历史记录文件失败: {e}')
+                # 不影响注册流程，仅记录错误
+            
+            # 创建用户头像文件夹
+            try:
+                avatar_dir = Path('database') / 'avator'
+                avatar_dir.mkdir(parents=True, exist_ok=True)
+                # 将邮箱中的特殊字符替换为安全字符，用于文件夹名
+                safe_email = email.replace('@', '_at_').replace('.', '_')
+                user_avatar_dir = avatar_dir / safe_email
+                user_avatar_dir.mkdir(parents=True, exist_ok=True)
+            except Exception as e:
+                print(f'创建头像文件夹失败: {e}')
                 # 不影响注册流程，仅记录错误
             
             return jsonify({'success': True, 'message': '注册成功'})

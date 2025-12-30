@@ -78,6 +78,57 @@ document.addEventListener('DOMContentLoaded', function () {
     // 初始化地理位置（静默获取，不阻塞页面加载）
     initLocation();
 
+    // 初始化用户头像（静默获取，不阻塞页面加载）
+    if (typeof getUserAvatarUrl === 'function') {
+        getUserAvatarUrl().then(avatarUrl => {
+            if (avatarUrl) {
+                // 更新所有已存在的用户头像
+                const userAvatars = document.querySelectorAll('.message.user .message-avatar');
+                userAvatars.forEach(avatarDiv => {
+                    // 如果已经有文本内容，替换为图片
+                    if (avatarDiv.textContent === '我' && !avatarDiv.querySelector('img')) {
+                        avatarDiv.textContent = '';
+                        const img = document.createElement('img');
+                        img.src = avatarUrl;
+                        img.alt = '我';
+                        img.style.width = '100%';
+                        img.style.height = '100%';
+                        img.style.objectFit = 'cover';
+                        img.style.borderRadius = '50%';
+                        img.style.cursor = 'pointer';
+                        img.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
+                        
+                        // 添加点击事件
+                        img.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            if (typeof openUserInfoModal === 'function') {
+                                openUserInfoModal();
+                            }
+                        });
+                        
+                        // 添加悬停效果
+                        img.addEventListener('mouseenter', () => {
+                            img.style.transform = 'scale(1.1)';
+                            img.style.opacity = '0.9';
+                        });
+                        
+                        img.addEventListener('mouseleave', () => {
+                            img.style.transform = 'scale(1)';
+                            img.style.opacity = '1';
+                        });
+                        
+                        avatarDiv.appendChild(img);
+                    } else if (avatarDiv.querySelector('img')) {
+                        // 如果已经有图片，更新URL
+                        avatarDiv.querySelector('img').src = avatarUrl + '?t=' + Date.now();
+                    }
+                });
+            }
+        }).catch(error => {
+            console.error('加载用户头像失败:', error);
+        });
+    }
+
     // 初始化智能体在线状态显示（静默获取，不阻塞页面加载）
     if (typeof updateAgentStatusDisplay === 'function') {
         const mode = typeof currentMode !== 'undefined' ? currentMode : 'normal';

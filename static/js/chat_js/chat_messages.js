@@ -938,7 +938,7 @@ async function openUserInfoModal() {
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 
-    // 获取用户信息
+    // 获取用户信息和头像
     try {
         const response = await fetch('/api/account/profile');
         if (response.status === 401) {
@@ -947,6 +947,9 @@ async function openUserInfoModal() {
             document.getElementById('userInfoEmail').textContent = '请先登录';
             document.getElementById('userInfoId').textContent = '-';
             document.getElementById('userInfoCreatedAt').textContent = '-';
+            // 隐藏头像，显示占位符
+            document.getElementById('userInfoAvatar').style.display = 'none';
+            document.getElementById('userInfoAvatarPlaceholder').style.display = 'flex';
         } else if (response.ok) {
             const data = await response.json();
             if (data.success && data.data) {
@@ -972,6 +975,30 @@ async function openUserInfoModal() {
             document.getElementById('userInfoEmail').textContent = '网络错误';
             document.getElementById('userInfoId').textContent = '-';
             document.getElementById('userInfoCreatedAt').textContent = '-';
+        }
+
+        // 获取用户头像
+        try {
+            const avatarResponse = await fetch('/api/user/avatar');
+            if (avatarResponse.ok) {
+                const avatarData = await avatarResponse.json();
+                if (avatarData.success && avatarData.has_avatar && avatarData.avatar_url) {
+                    const avatarImg = document.getElementById('userInfoAvatar');
+                    const avatarPlaceholder = document.getElementById('userInfoAvatarPlaceholder');
+                    avatarImg.src = avatarData.avatar_url;
+                    avatarImg.style.display = 'block';
+                    avatarPlaceholder.style.display = 'none';
+                } else {
+                    // 没有头像，显示占位符
+                    document.getElementById('userInfoAvatar').style.display = 'none';
+                    document.getElementById('userInfoAvatarPlaceholder').style.display = 'flex';
+                }
+            }
+        } catch (avatarError) {
+            console.error('获取头像失败:', avatarError);
+            // 显示占位符
+            document.getElementById('userInfoAvatar').style.display = 'none';
+            document.getElementById('userInfoAvatarPlaceholder').style.display = 'flex';
         }
     } catch (error) {
         console.error('获取用户信息失败:', error);
@@ -1019,6 +1046,118 @@ function closeUserInfoModal(event) {
         // 恢复背景滚动
         document.body.style.overflow = '';
     }
+}
+
+/**
+ * 处理头像上传
+ * @param {Event} event - 文件选择事件
+ */
+async function handleAvatarUpload(event) {
+    const file = event.target.files[0];
+    if (!file) {
+        return;
+    }
+
+    // 验证文件类型
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    if (!allowedTypes.includes(file.type)) {
+        alert('仅支持 PNG 或 JPG 格式的图片');
+        event.target.value = ''; // 清空选择
+        return;
+    }
+
+    // 验证文件大小（限制为5MB）
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+        alert('图片大小不能超过 5MB');
+        event.target.value = ''; // 清空选择
+        return;
+    }
+
+    // 创建 FormData
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    try {
+        const response = await fetch('/api/user/upload-avatar', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+            // 更新头像显示
+            const avatarImg = document.getElementById('userInfoAvatar');
+            const avatarPlaceholder = document.getElementById('userInfoAvatarPlaceholder');
+            avatarImg.src = data.avatar_url + '?t=' + Date.now(); // 添加时间戳防止缓存
+            avatarImg.style.display = 'block';
+            avatarPlaceholder.style.display = 'none';
+
+            // 更新聊天界面中的用户头像
+            updateUserAvatarInChat(data.avatar_url);
+
+            alert('头像上传成功！');
+        } else {
+            alert(data.message || '头像上传失败');
+        }
+    } catch (error) {
+        console.error('上传头像失败:', error);
+        alert('头像上传失败，请稍后重试');
+    }
+
+    // 清空文件选择，允许重复选择同一文件
+    event.target.value = '';
+}
+
+/**
+ * 更新聊天界面中的用户头像
+ * @param {string} avatarUrl - 头像URL
+ */
+function updateUserAvatarInChat(avatarUrl) {
+    // 更新全局变量
+    userAvatarUrl = avatarUrl;
+
+    // 更新所有用户消息中的头像
+    const userAvatars = document.querySelectorAll('.message.user .message-avatar');
+    userAvatars.forEach(avatarDiv => {
+        const existingImg = avatarDiv.querySelector('img');
+        if (existingImg) {
+            // 如果已经有图片，更新URL
+            existingImg.src = avatarUrl + '?t=' + Date.now();
+        } else if (avatarDiv.textContent === '我') {
+            // 如果是文本，替换为图片
+            avatarDiv.textContent = '';
+            const img = document.createElement('img');
+            img.src = avatarUrl + '?t=' + Date.now();
+            img.alt = '我';
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = '50%';
+            img.style.cursor = 'pointer';
+            img.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
+
+            // 添加点击事件
+            img.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openUserInfoModal();
+            });
+
+            // 添加悬停效果
+            img.addEventListener('mouseenter', () => {
+                img.style.transform = 'scale(1.1)';
+                img.style.opacity = '0.9';
+            });
+
+            img.addEventListener('mouseleave', () => {
+                img.style.transform = 'scale(1)';
+                img.style.opacity = '1';
+            });
+
+            avatarDiv.appendChild(img);
+        }
+    });
 }
 
 // TTS 播放相关变量

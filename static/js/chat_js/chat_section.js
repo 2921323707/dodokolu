@@ -415,6 +415,47 @@ async function loadHistory() {
                     }
                 }
             });
+            
+            // 加载历史记录后，更新用户头像（如果已获取）
+            if (typeof userAvatarUrl !== 'undefined' && userAvatarUrl) {
+                const userAvatars = chatMessages.querySelectorAll('.message.user .message-avatar');
+                userAvatars.forEach(avatarDiv => {
+                    const existingImg = avatarDiv.querySelector('img');
+                    if (existingImg) {
+                        existingImg.src = userAvatarUrl + '?t=' + Date.now();
+                    } else if (avatarDiv.textContent === '我') {
+                        avatarDiv.textContent = '';
+                        const img = document.createElement('img');
+                        img.src = userAvatarUrl + '?t=' + Date.now();
+                        img.alt = '我';
+                        img.style.width = '100%';
+                        img.style.height = '100%';
+                        img.style.objectFit = 'cover';
+                        img.style.borderRadius = '50%';
+                        img.style.cursor = 'pointer';
+                        img.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
+                        
+                        img.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            if (typeof openUserInfoModal === 'function') {
+                                openUserInfoModal();
+                            }
+                        });
+                        
+                        img.addEventListener('mouseenter', () => {
+                            img.style.transform = 'scale(1.1)';
+                            img.style.opacity = '0.9';
+                        });
+                        
+                        img.addEventListener('mouseleave', () => {
+                            img.style.transform = 'scale(1)';
+                            img.style.opacity = '1';
+                        });
+                        
+                        avatarDiv.appendChild(img);
+                    }
+                });
+            }
         }
     } catch (error) {
         console.error('加载历史记录错误:', error);
