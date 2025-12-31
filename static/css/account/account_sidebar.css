@@ -1,0 +1,291 @@
+/* 左侧边栏 - 作为背景盒子的左侧部分 */
+.account-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background: #ffffff;
+    height: 100%;
+    position: relative;
+    transition: width 0.3s ease;
+    padding: 20px 16px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.account-sidebar.collapsed {
+    width: 64px;
+}
+
+/* 侧边栏导航 */
+.account-sidebar-nav {
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.account-sidebar.collapsed .account-sidebar-nav {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    margin-top: 0;
+}
+
+/* 折叠按钮 */
+.sidebar-toggle-btn {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 100;
+    pointer-events: auto;
+    padding: 0;
+}
+
+.sidebar-toggle-btn:hover {
+    opacity: 0.8;
+    transform: scale(1.1);
+}
+
+.toggle-icon {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    display: block;
+    margin: 0 auto;
+}
+
+.account-sidebar.collapsed .toggle-icon {
+    transform: rotate(180deg);
+}
+
+/* 头像区域 */
+.avatar-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 0 20px 0;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.account-sidebar.collapsed .avatar-section {
+    display: none;
+}
+
+.avatar-wrapper {
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar-wrapper:hover .account-avatar,
+.avatar-wrapper:hover .account-avatar-placeholder {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.account-avatar,
+.account-avatar-placeholder {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ffc0cb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    display: block;
+    margin: 0 auto;
+}
+
+.account-sidebar.collapsed .account-avatar,
+.account-sidebar.collapsed .account-avatar-placeholder {
+    display: none;
+}
+
+.account-avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #64748b, #94a3b8);
+    color: white;
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.sidebar-nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: all 0.3s ease;
+    pointer-events: auto;
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+}
+
+.sidebar-nav-links li {
+    pointer-events: auto;
+}
+
+.sidebar-nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 12px 16px;
+    border-radius: 10px;
+    color: var(--text-primary, #1e293b);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.sidebar-nav-link span {
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.sidebar-nav-icon {
+    display: none;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.account-sidebar.collapsed .sidebar-nav-link {
+    justify-content: center;
+    padding: 12px;
+}
+
+.account-sidebar.collapsed .sidebar-nav-link span {
+    display: none;
+}
+
+.account-sidebar.collapsed .sidebar-nav-icon {
+    display: block;
+}
+
+.sidebar-nav-link:hover {
+    background: var(--hover-color, #f1f5f9);
+    color: #ffc0cb;
+}
+
+.sidebar-nav-link.active {
+    background: #ffc0cb;
+    color: #fff;
+}
+
+/* 导航栏底部 */
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--border, #e5e7eb);
+    flex-shrink: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.sidebar-footer-left {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.sidebar-footer-icon {
+    width: auto;
+    height: 28px;
+    max-width: calc(50% - 6px);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: block;
+    position: relative;
+}
+
+
+.account-sidebar.collapsed .sidebar-footer {
+    display: none;
+}
+
+.sidebar-footer-icon:hover {
+    opacity: 0.8;
+    transform: translateY(-2px);
+}
+
+.sidebar-footer-icon:active {
+    transform: translateY(0);
+    opacity: 0.9;
+}
+
+/* 悬浮提示 */
+.sidebar-footer-icon::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
+    margin-bottom: 8px;
+}
+
+.sidebar-footer-icon::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+    margin-bottom: 3px;
+}
+
+.sidebar-footer-icon:hover::after,
+.sidebar-footer-icon:hover::before {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.sidebar-footer-icon:hover::before {
+    transform: translateX(-50%);
+}

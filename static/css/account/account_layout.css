@@ -1,0 +1,69 @@
+/* 背景大盒子 */
+.background-box {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 1200px;
+    height: 100vh;
+    z-index: 0;
+    background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #f0f9ff 100%);
+    opacity: 0.6;
+}
+
+/* 账户布局容器 */
+.account-layout {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    height: calc(100vh - 60px);
+    margin-top: 60px;
+    padding: 0;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 0;
+}
+
+/* 右侧主内容区 */
+.account-main {
+    flex: 1;
+    min-width: 0;
+    padding: 32px 24px;
+    overflow-y: auto;
+    height: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* 账户内容区域 */
+.account-section {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section-content {
+    padding: 20px 0;
+    color: var(--text-secondary, #64748b);
+    font-size: 1rem;
+}
+
+.account-container {
+    padding: 0;
+    max-width: none;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+}

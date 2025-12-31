@@ -1,10 +1,11 @@
 # ==================== Python 相关 ====================
-# Python 缓存文件（Python 3.10+ 兼容）
+# Python 缓存文件（Python 3.10+ 兼容，增强容错）
 __pycache__/
 **/__pycache__/
 *.py[cod]
 *$py.class
 *.so
+*.pyd
 .Python
 build/
 develop-eggs/
@@ -19,16 +20,22 @@ var/
 wheels/
 share/python-wheels/
 *.egg-info/
+**/*.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
+pip-wheel-metadata/
 
-# Python 类型检查缓存（Python 3.10+）
+# Python 类型检查缓存（Python 3.10+，增强容错）
 .mypy_cache/
+**/.mypy_cache/
 .dmypy.json
 dmypy.json
 .pyre/
 .pytype/
+.ruff_cache/
+.pyright/
+.pyrightcache/
 
 # Python 虚拟环境
 venv/
@@ -231,8 +238,14 @@ Temporary Items
 *.old
 *.orig
 *.save
+*.swp
+*.swo
 .#*
 \#*#
+*~
+*.lock
+.lock
+*.pid
 
 # ==================== 测试和覆盖率 ====================
 .coverage
@@ -279,11 +292,17 @@ secrets/
 *.7z
 *.gz
 
-# 缓存目录
+# 缓存目录（增强容错）
 .cache/
+**/.cache/
 *.cache
+**/*.cache/
 .pip-cache/
 .pip/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+**/.mypy_cache/
 
 # 性能分析
 *.prof
@@ -337,4 +356,56 @@ install.log
 # ==================== Cursor IDE 相关 ====================
 .cursor/
 .cursorrules
+
+# ==================== Python 3.10+ 增强容错 ====================
+# Python 字节码和编译文件（容错：忽略所有可能的变体）
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+*.pyz
+*.pyzw
+
+# Python 虚拟环境（增强：覆盖更多可能的名称）
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+.ENV/
+venv*/
+env*/
+
+# Python 包分发（增强容错）
+*.dist-info/
+*.dist/
+*.tar.bz2
+*.tar.xz
+
+# Python 运行时和调试文件
+*.prof
+*.lprof
+*.pstats
+*.trace
+*.pdb
+
+# Python 环境变量（增强容错，确保所有变体都被忽略）
+.env
+.env.*
+!.env.example
+.env.local
+.env.development
+.env.test
+.env.production
+.env.staging
+.env.backup
+
+# Python 配置缓存（增强容错）
+setup.cfg.bak
+pyproject.toml.bak
+setup.py.bak
+requirements*.txt.bak
+requirements*.txt.old
+requirements*.txt.tmp
 

@@ -1,0 +1,121 @@
+/* 关于部分样式 */
+.about-project {
+    margin-bottom: 32px;
+}
+
+.about-project h2 {
+    font-size: 1.3rem;
+    margin: 0 0 16px 0;
+    color: var(--text-primary, #1e293b);
+    font-weight: 600;
+}
+
+.about-project-content {
+    position: relative;
+}
+
+.about-project p {
+    line-height: 1.8;
+    color: var(--text-secondary, #64748b);
+    margin: 0 0 16px 0;
+}
+
+.coffee-container {
+    margin-top: 16px;
+}
+
+.coffee-link {
+    display: inline-block;
+}
+
+.coffee-image {
+    width: auto;
+    height: 40px;
+    display: block;
+}
+
+.github-update-info {
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border, #e5e7eb);
+}
+
+.github-update-info h2 {
+    font-size: 1.3rem;
+    margin: 0 0 16px 0;
+    color: var(--text-primary, #1e293b);
+    font-weight: 600;
+}
+
+.update-loading {
+    color: var(--text-secondary, #64748b);
+    padding: 20px;
+    text-align: center;
+}
+
+.update-content {
+    padding: 20px;
+    background: var(--surface, #fff);
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 12px;
+}
+
+.update-item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.update-item-separator {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border, #e5e7eb);
+}
+
+.update-message {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-primary, #1e293b);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.update-meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+    color: var(--text-secondary, #64748b);
+}
+
+.update-time,
+.update-author {
+    display: flex;
+    align-items: center;
+}
+
+.update-link {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #ffc0cb;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    align-self: flex-start;
+}
+
+.update-link:hover {
+    background: #ffb0c1;
+    transform: translateY(-1px);
+}
+
+.update-error {
+    padding: 20px;
+    background: #fee2e2;
+    border: 1px solid #fecaca;
+    border-radius: 12px;
+    color: #991b1b;
+    text-align: center;
+}

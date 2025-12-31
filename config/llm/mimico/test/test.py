@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Undefined 智能体测试文件
+Mimico 智能体测试文件（米米可）
 测试 Minimax M2.1 API 调用
 """
 import os
@@ -20,15 +20,15 @@ if env_path.exists():
 from config.llm.base import get_agent
 
 
-def test_undefined_agent():
-    """测试 Undefined 智能体的基本功能"""
+def test_mimico_agent():
+    """测试 Mimico 智能体的基本功能（米米可）"""
     print("=" * 60)
-    print("测试 Undefined 智能体")
+    print("测试 Mimico 智能体（米米可）")
     print("=" * 60)
     
-    # 获取 Undefined 智能体
+    # 获取 Mimico 智能体
     try:
-        agent = get_agent('undefined')
+        agent = get_agent('mimico')
         print(f"✅ 成功获取智能体: {agent.name}")
         print(f"   描述: {agent.description}")
     except Exception as e:
@@ -88,7 +88,7 @@ def test_multiple_questions():
     print("=" * 60)
     
     try:
-        agent = get_agent('undefined')
+        agent = get_agent('mimico')
     except Exception as e:
         print(f"❌ 获取智能体失败: {e}")
         return
@@ -197,7 +197,7 @@ def test_direct_api_call():
 
 if __name__ == "__main__":
     print("\n" + "=" * 60)
-    print("Undefined 智能体测试套件")
+    print("Mimico 智能体测试套件（米米可）")
     print("=" * 60)
     print("\n请确保已在 .env 文件中配置以下环境变量:")
     print("  MINIMAX_API_KEY=your_api_key")
@@ -208,7 +208,7 @@ if __name__ == "__main__":
     # 运行测试
     try:
         # 测试 1: 基本功能测试
-        test_undefined_agent()
+        test_mimico_agent()
         
         # 测试 2: 多个问题测试（可选，取消注释以运行）
         # test_multiple_questions()

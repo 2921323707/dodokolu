@@ -19,8 +19,11 @@ from config.llm.base import (
 # 导入 dodokolu 模块（会自动注册 SuheyaoAgent）
 import config.llm.dodokolu
 
-# 导入 undefined 模块（会自动注册 UndefinedAgent）
-import config.llm.undefined
+# 导入 mimico 模块（会自动注册 MimicoAgent，米米可）
+import config.llm.mimico
+
+# 导入 lumina 模块（会自动注册 LuminaAgent）
+import config.llm.lumina
 
 # 为了向后兼容，提供旧的函数接口
 def llm_stream(messages, session_id, mode='normal', location=None, email=None):

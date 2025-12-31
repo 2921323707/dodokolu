@@ -16,7 +16,17 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_animations.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_scrollbar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_responsive.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/account/account.css') }}">
+    <!-- 账户页面 CSS 文件按功能拆分 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account/account_layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account/account_sidebar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account/account_card.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account/account_form.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account/account_permission.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account/account_about.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account/account_agents.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account/account_chat.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account/account_responsive.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account/account_device.css') }}">
 </head>
 
 <body>
@@ -47,7 +57,8 @@
                     <div class="avatar-wrapper" id="accountAvatarWrapper">
                         <img id="accountAvatar" src="" alt="头像" class="account-avatar" style="display: none;">
                         <div id="accountAvatarPlaceholder" class="account-avatar-placeholder">我</div>
-                        <input type="file" id="accountAvatarInput" accept="image/png,image/jpeg,image/jpg" style="display: none;">
+                        <input type="file" id="accountAvatarInput" accept="image/png,image/jpeg,image/jpg"
+                            style="display: none;">
                     </div>
                 </div>
                 <nav class="account-sidebar-nav">
@@ -57,9 +68,21 @@
                                 <img src="{{ url_for('static', filename='imgs/icon/基础信息管理_line.png') }}" alt="基础信息"
                                     class="sidebar-nav-icon">
                             </a></li>
-                        <li><a href="#" class="sidebar-nav-link" data-section="section1"><span>待定义</span></a></li>
-                        <li><a href="#" class="sidebar-nav-link" data-section="section2"><span>待定义</span></a></li>
-                        <li><a href="#" class="sidebar-nav-link" data-section="section3"><span>待定义</span></a></li>
+                        <li><a href="#" class="sidebar-nav-link" data-section="section1">
+                                <span>模型配置</span>
+                                <img src="{{ url_for('static', filename='imgs/icon/设置.png') }}" alt="模型配置"
+                                    class="sidebar-nav-icon">
+                            </a></li>
+                        <li><a href="#" class="sidebar-nav-link" data-section="section2">
+                                <span>聊天记录</span>
+                                <img src="{{ url_for('static', filename='imgs/icon/聊天.png') }}" alt="聊天记录"
+                                    class="sidebar-nav-icon">
+                            </a></li>
+                        <li><a href="#" class="sidebar-nav-link" data-section="section3">
+                                <span>关于</span>
+                                <img src="{{ url_for('static', filename='imgs/icon/github.png') }}" alt="关于"
+                                    class="sidebar-nav-icon">
+                            </a></li>
                     </ul>
                     <div class="sidebar-footer">
                         <div class="sidebar-footer-left">
@@ -68,8 +91,8 @@
                             <img id="switchAdminBtn" src="{{ url_for('static', filename='imgs/icon/管理员_角色管理.png') }}"
                                 alt="管理员" class="sidebar-footer-icon" title="切换为管理员模式">
                         </div>
-                        <img id="logoutBtn" src="{{ url_for('static', filename='imgs/icon/退出登录.png') }}"
-                            alt="退出登录" class="sidebar-footer-icon" title="退出登录">
+                        <img id="logoutBtn" src="{{ url_for('static', filename='imgs/icon/退出登录.png') }}" alt="退出登录"
+                            class="sidebar-footer-icon" title="退出登录">
                     </div>
                 </nav>
             </aside>
@@ -85,40 +108,94 @@
                         </div>
                         <div id="accountInfo" class="info-grid" style="display:none;"></div>
                     </div>
+                    <!-- 位置信息卡片 -->
+                    <div class="account-card" id="locationCard" style="display:none; margin-top: 24px;">
+                        <div class="account-header">
+                            <h1 class="account-title">位置信息</h1>
+                            <button id="refreshLocationBtn" class="refresh-btn" title="刷新位置信息">刷新</button>
+                        </div>
+                        <div id="locationInfo" class="info-grid"></div>
+                    </div>
+                    <!-- 设备信息卡片 -->
+                    <div class="account-card" id="deviceCard" style="margin-top: 24px;">
+                        <div class="account-header">
+                            <h1 class="account-title">设备信息</h1>
+                            <button id="refreshDeviceBtn" class="refresh-btn" title="刷新设备信息">刷新</button>
+                        </div>
+                        <div id="deviceInfo" class="info-grid"></div>
+                    </div>
                 </div>
 
-                <!-- 待定义部分1 -->
+                <!-- 模型配置部分 -->
                 <div class="account-section" id="section-section1" style="display:none;">
                     <div class="account-card">
                         <div class="account-header">
-                            <h1 class="account-title">待定义</h1>
+                            <h1 class="account-title">模型配置</h1>
                         </div>
                         <div class="section-content">
-                            <p>此区域待定义</p>
+                            <div id="agentsLoading" class="loading-message">正在加载智能体列表...</div>
+                            <div id="agentsError" class="error-message" style="display:none;"></div>
+                            <div id="agentsList" class="agents-list" style="display:none;">
+                                <!-- 智能体实例列表将在这里动态生成 -->
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 待定义部分2 -->
+                <!-- 聊天记录部分 -->
                 <div class="account-section" id="section-section2" style="display:none;">
                     <div class="account-card">
                         <div class="account-header">
-                            <h1 class="account-title">待定义</h1>
+                            <h1 class="account-title">聊天记录</h1>
                         </div>
                         <div class="section-content">
-                            <p>此区域待定义</p>
+                            <div id="chatHistoryLoading" class="loading-message">正在加载聊天记录...</div>
+                            <div id="chatHistoryError" class="error-message" style="display:none;"></div>
+                            <div id="chatHistoryContainer" style="display:none;">
+                                <div class="chat-history-controls">
+                                    <select id="chatHistorySelect" class="chat-history-select">
+                                        <option value="">请选择聊天记录文件</option>
+                                    </select>
+                                    <button id="refreshChatHistoryBtn" class="refresh-btn" title="刷新列表">刷新</button>
+                                </div>
+                                <div id="chatHistoryContent" class="chat-history-content">
+                                    <!-- 聊天记录内容将在这里显示 -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 待定义部分3 -->
+                <!-- 关于部分 -->
                 <div class="account-section" id="section-section3" style="display:none;">
                     <div class="account-card">
                         <div class="account-header">
-                            <h1 class="account-title">待定义</h1>
+                            <h1 class="account-title">关于</h1>
                         </div>
                         <div class="section-content">
-                            <p>此区域待定义</p>
+                            <div class="about-project">
+                                <h2>项目介绍</h2>
+                                <div class="about-project-content">
+                                    <p>DODOKOLU 是一个功能丰富的聊天应用平台，提供AI对话、图像生成、视频生成等多种功能。本项目持续更新迭代，致力于为用户提供更好的使用体验。</p>
+                                    <div class="coffee-container">
+                                        <a href="https://buymeacoffee.com/dodokolu" class="coffee-link" target="_blank"
+                                            rel="noopener noreferrer">
+                                            <img src="{{ url_for('static', filename='imgs/coffee.png') }}"
+                                                alt="Buy me a coffee" class="coffee-image">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="github-update-info" id="githubUpdateInfo">
+                                <h2>最新更新</h2>
+                                <div class="update-loading" id="updateLoading">正在加载更新信息...</div>
+                                <div class="update-content" id="updateContent" style="display:none;">
+                                    <!-- 提交列表将在这里动态生成 -->
+                                </div>
+                                <div class="update-error" id="updateError" style="display:none;">
+                                    <p>无法加载更新信息，请稍后再试</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -152,7 +229,20 @@
     <script src="{{ url_for('static', filename='js/chat_js/chat_input.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chat_js/chat_navbar.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chat_js/chat_init.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/account/account.js') }}"></script>
+    <!-- 工具函数（必须最先加载） -->
+    <script src="{{ url_for('static', filename='js/account/account_utils.js') }}"></script>
+    <!-- 账户功能模块 -->
+    <script src="{{ url_for('static', filename='js/account/account_sidebar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/account/account_avatar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/account/account_profile.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/account/account_location.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/account/account_device.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/account/account_agents.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/account/account_chat_history.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/account/account_github.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/account/account_navigation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/account/account_auth.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/account/account_admin.js') }}"></script>
 </body>
 
 </html>

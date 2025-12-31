@@ -14,7 +14,7 @@ project_root = Path(__file__).parent.parent.parent.parent.parent
 env_path = project_root / '.env'
 load_dotenv(dotenv_path=env_path)
 
-# ==================== OpenRouter API配置 ====================
+# ==================== OpenRouter API配置（占位，暂未使用）====================
 OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY', '')
 OPENROUTER_BASE_URL = os.getenv('OPENROUTER_BASE_URL', 'https://openrouter.ai/api/v1')
 OPENROUTER_MODEL = os.getenv('OPENROUTER_MODEL', 'cognitivecomputations/dolphin-mistral-24b-venice-edition:free')
@@ -24,7 +24,7 @@ DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY', '')
 DEEPSEEK_BASE_URL = os.getenv('DEEPSEEK_BASE_URL', 'https://api.deepseek.com')
 DEEPSEEK_MODEL = os.getenv('DEEPSEEK_MODEL', 'deepseek-chat')
 
-# ==================== 豆包 Seed-1.6 API配置 ====================
+# ==================== 豆包 Seed-1.6 API配置（占位，暂未使用）====================
 DOUBAO_API_KEY = os.getenv('DOUBAO_API_KEY', '') or os.getenv('ARK_API_KEY', '')  # 兼容官方文档中的 ARK_API_KEY
 DOUBAO_BASE_URL = os.getenv('DOUBAO_BASE_URL', 'https://ark.cn-beijing.volces.com/api/v3')
 DOUBAO_MODEL = os.getenv('DOUBAO_MODEL', 'doubao-seed-1-6-251015')
@@ -33,6 +33,10 @@ DOUBAO_MODEL = os.getenv('DOUBAO_MODEL', 'doubao-seed-1-6-251015')
 MINIMAX_API_KEY = os.getenv('MINIMAX_API_KEY', '')
 MINIMAX_BASE_URL = os.getenv('MINIMAX_BASE_URL', 'https://api.minimaxi.com/anthropic')
 MINIMAX_MODEL = os.getenv('MINIMAX_MODEL', 'MiniMax-M2.1')
+
+# ==================== Gemini API配置 ====================
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
+GEMINI_MODEL = os.getenv('GEMINI_MODEL', 'gemini-2.0-flash-exp')
 
 # ==================== 通用配置 ====================
 DEFAULT_MODE = os.getenv('DEFAULT_MODE', 'normal')
@@ -44,5 +48,6 @@ __all__ = [
     'DEEPSEEK_API_KEY', 'DEEPSEEK_BASE_URL', 'DEEPSEEK_MODEL',
     'DOUBAO_API_KEY', 'DOUBAO_BASE_URL', 'DOUBAO_MODEL',
     'MINIMAX_API_KEY', 'MINIMAX_BASE_URL', 'MINIMAX_MODEL',
+    'GEMINI_API_KEY', 'GEMINI_MODEL',
     'DEFAULT_MODE', 'MAX_HISTORY_LENGTH', 'TEMPERATURE'
 ]

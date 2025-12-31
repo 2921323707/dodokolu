@@ -199,6 +199,11 @@
     box-sizing: border-box;
 }
 
+/* 正方形 Banner 容器与上方轮播图保持一定距离 */
+.banner-container:has(.banner-square) {
+    margin-top: 1.5rem;
+}
+
 /* 广告位 Banner 样式 */
 .banner-ad {
     width: 100%;
@@ -212,4 +217,18 @@
     color: var(--text-secondary);
     font-size: 1rem;
     box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+}
+
+.banner-ad-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* 广告位容器与上方轮播图保持一定距离 */
+.banner-container:has(.banner-ad) {
+    margin-top: 1.5rem;
 }

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Undefined 智能体实现
+Mimico 智能体实现（米米可）
 基于 Minimax API（使用 Anthropic SDK）的 Agent
 Minimax M2.1 是完整的 agentic model，不需要外部工具
 """
@@ -12,13 +12,13 @@ import anthropic
 from config.llm.base.agent import BaseAgent
 from config.llm.base.settings import MINIMAX_API_KEY, MINIMAX_BASE_URL, MINIMAX_MODEL
 from config.llm.base.prompts.utils import get_system_prompt_with_time
-from config.llm.undefined.prompt import SYSTEM_PROMPT_BASE
+from config.llm.mimico.prompt import SYSTEM_PROMPT_BASE
 from config.llm.base.history import save_message
 
 
-class UndefinedAgent(BaseAgent):
+class MimicoAgent(BaseAgent):
     """
-    Undefined 智能体
+    Mimico 智能体（米米可）
     基于 Minimax API（使用 Anthropic SDK）的 Agent 实现
     
     注意：Minimax M2.1 是完整的 agentic model，自带联网搜索、天气查询等功能，
@@ -27,8 +27,8 @@ class UndefinedAgent(BaseAgent):
     
     def __init__(self):
         super().__init__(
-            name="Undefined",
-            description="基于 Minimax API 的智能体，支持工具调用（天气、搜索、表情包等）"
+            name="米米可",
+            description="基于 Minimax API 的智能体，内置联网搜索和天气查询功能"
         )
         self._client = None
         self._model = MINIMAX_MODEL

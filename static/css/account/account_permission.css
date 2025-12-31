@@ -1,0 +1,40 @@
+/* 位置权限提示样式 */
+.permission-prompt {
+    border-left: 4px solid #f59e0b;
+}
+
+.permission-guide {
+    margin-top: 16px;
+    padding: 16px;
+    background: #fef3c7;
+    border-radius: 8px;
+    border: 1px solid #fde68a;
+}
+
+.guide-title {
+    font-weight: 600;
+    color: #92400e;
+    margin: 0 0 12px 0;
+    font-size: 0.95rem;
+}
+
+.guide-steps {
+    color: #78350f;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.guide-steps p {
+    margin: 12px 0 8px 0;
+    font-weight: 500;
+}
+
+.guide-steps ol {
+    margin: 0 0 16px 20px;
+    padding: 0;
+}
+
+.guide-steps li {
+    margin: 6px 0;
+}
+

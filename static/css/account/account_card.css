@@ -1,0 +1,164 @@
+/* 账户卡片样式 */
+.account-card {
+    background: var(--surface, #fff);
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+}
+
+.account-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.account-title {
+    font-size: 1.6rem;
+    margin: 0;
+}
+
+.status-pill {
+    padding: 6px 12px;
+    border-radius: 12px;
+    background: #e0f2fe;
+    color: #0369a1;
+    font-size: 0.95rem;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+.action-icon {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    object-fit: contain;
+}
+
+.action-icon:hover {
+    opacity: 0.8;
+    transform: scale(1.1);
+}
+
+.action-icon:active {
+    transform: scale(1.0);
+    opacity: 0.9;
+}
+
+.btn {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border, #e5e7eb);
+    background: #ffc0cb;
+    /* 与导航 Logo 粉色同步 */
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.05s ease, opacity 0.1s ease;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn-danger {
+    background: #ef4444;
+}
+
+.info-item {
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 12px;
+    padding: 14px 16px;
+    background: var(--surface, #fff);
+}
+
+.info-value {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.info-label {
+    margin-top: 6px;
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.password-info-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.password-display-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.password-value {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+    flex: 1;
+    min-width: 100px;
+}
+
+.password-toggle-btn {
+    background: transparent;
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 6px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.password-toggle-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    display: block;
+}
+
+.password-toggle-btn:hover {
+    background: var(--hover-color, #f1f5f9);
+    border-color: #ffc0cb;
+}
+
+.password-toggle-btn:active {
+    transform: scale(0.95);
+}
+
+.password-change-btn {
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.placeholder {
+    color: #9ca3af;
+}
+

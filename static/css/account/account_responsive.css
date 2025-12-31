@@ -1,0 +1,228 @@
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .background-box {
+        max-width: 100%;
+        left: 0;
+        transform: none;
+    }
+
+    .account-layout {
+        flex-direction: column;
+        margin-top: 60px;
+        padding: 0;
+        gap: 0;
+        height: calc(100vh - 60px);
+    }
+
+    .account-sidebar {
+        width: 100% !important;
+        height: auto;
+        padding: 16px;
+        border-bottom: 1px solid var(--border, #e5e7eb);
+    }
+
+    .account-sidebar.collapsed {
+        width: 100% !important;
+    }
+
+    .sidebar-toggle-btn {
+        display: none;
+    }
+
+    .avatar-section {
+        padding: 12px 0;
+    }
+
+    .account-avatar,
+    .account-avatar-placeholder {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+    }
+
+    .account-sidebar.collapsed .account-avatar,
+    .account-sidebar.collapsed .account-avatar-placeholder {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+    }
+
+    .account-sidebar-nav {
+        height: auto;
+        margin-top: 16px;
+        width: 100%;
+    }
+
+    .sidebar-nav-links {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 0;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .account-sidebar.collapsed .sidebar-nav-links {
+        flex-direction: row;
+    }
+
+    .sidebar-nav-links li {
+        flex: 1;
+        display: flex;
+    }
+
+    .sidebar-nav-link {
+        flex: 1;
+        min-width: 0;
+        text-align: center;
+        justify-content: center;
+        padding: 10px 4px;
+        font-size: 0.85rem;
+        width: 100%;
+    }
+
+    .sidebar-nav-link .sidebar-nav-icon {
+        display: none;
+    }
+
+    .account-sidebar.collapsed .sidebar-nav-link span {
+        display: inline;
+    }
+
+    .sidebar-footer {
+        margin-top: 16px;
+        padding-top: 16px;
+    }
+
+    .sidebar-footer-icon {
+        max-width: 100%;
+    }
+
+    .account-main {
+        padding: 16px;
+        height: auto;
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .account-card {
+        padding: 16px;
+    }
+
+    .account-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .account-title {
+        font-size: 1.4rem;
+    }
+
+    .actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .actions .btn {
+        width: 100%;
+    }
+
+    .action-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .agents-list {
+        grid-template-columns: 1fr;
+    }
+
+    .agent-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .agent-status {
+        align-self: flex-end;
+    }
+
+    .coffee-container {
+        margin-top: 12px;
+    }
+
+    .coffee-image {
+        height: 36px;
+    }
+
+    .chat-history-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .refresh-btn {
+        width: 100%;
+    }
+
+    .chat-history-messages {
+        max-height: 400px;
+        padding: 12px;
+    }
+
+    .chat-message-item {
+        padding: 12px;
+    }
+
+    .message-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .account-sidebar {
+        padding: 12px;
+    }
+
+    .avatar-section {
+        padding: 8px 0;
+    }
+
+    .account-avatar,
+    .account-avatar-placeholder {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+
+    .sidebar-nav-link {
+        min-width: 0;
+        padding: 8px 2px;
+        font-size: 0.75rem;
+    }
+
+    .sidebar-footer-icon {
+        max-width: 100%;
+    }
+
+    .action-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .account-main {
+        padding: 12px;
+    }
+
+    .account-card {
+        padding: 12px;
+    }
+
+    .account-title {
+        font-size: 1.2rem;
+    }
+}

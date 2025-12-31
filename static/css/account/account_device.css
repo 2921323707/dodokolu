@@ -1,0 +1,18 @@
+/* 设备信息卡片样式 */
+#deviceCard {
+    margin-top: 24px;
+}
+
+#deviceInfo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    #deviceInfo {
+        grid-template-columns: 1fr;
+    }
+}

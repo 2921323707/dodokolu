@@ -87,11 +87,11 @@ def build_request_bytes(request_json: dict) -> bytearray:
 
 async def send_request(config: TTSConfig, request_bytes: bytearray, output_file: str, wait_for_complete: bool = True):
     """发送 WebSocket 请求并接收响应"""
-    # websockets 11.0+ 使用 extra_headers 参数
+    # websockets 12.0+ 使用 additional_headers 参数（之前版本使用 extra_headers）
     headers = [("Authorization", f"Bearer; {config.token}")]
     
     with open(output_file, "wb") as file:
-        async with websockets.connect(config.api_url, extra_headers=headers, ping_interval=None) as ws:
+        async with websockets.connect(config.api_url, additional_headers=headers, ping_interval=None) as ws:
             await ws.send(request_bytes)
             
             if wait_for_complete:

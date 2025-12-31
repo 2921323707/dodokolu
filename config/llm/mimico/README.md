@@ -1,14 +1,14 @@
-# Undefined 智能体
+# Mimico 智能体（米米可）
 
 这是基于 Minimax API 的智能体实现模块，使用 Anthropic SDK 进行调用。
 
 ## 目录结构
 
 ```
-undefined/
-├── __init__.py      # 自动注册 UndefinedAgent
-├── agent.py         # UndefinedAgent 实现
-├── prompt.py        # Undefined 专属提示词
+mimico/
+├── __init__.py      # 自动注册 MimicoAgent
+├── agent.py         # MimicoAgent 实现
+├── prompt.py        # Mimico 专属提示词
 ├── reference.py     # 参考调用代码
 └── README.md       # 本文档
 ```
@@ -37,8 +37,8 @@ MINIMAX_API_KEY=your_minimax_api_key_here
 ```python
 from config.llm.base import get_agent
 
-# 获取 Undefined 智能体
-agent = get_agent('undefined')
+# 获取 Mimico 智能体（米米可）
+agent = get_agent('mimico')
 
 # 使用智能体
 for chunk in agent.stream_response(messages, session_id, location, email):

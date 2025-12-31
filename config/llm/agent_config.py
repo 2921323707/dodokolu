@@ -20,7 +20,8 @@ _AGENT_ALIASES: Dict[str, str] = {
 # 注意：此配置只存储真正的智能体，不存储别名
 _AGENT_STATUS: Dict[str, bool] = {
     'suheyao': True,    # 苏禾瑶智能体（真实名称）
-    'undefined': True,  # Undefined 智能体（基于 Minimax API）
+    'mimico': True,     # Mimico 智能体（米米可，基于 Minimax API）
+    'lumina': True,     # Lumina 智能体（基于 Google Gemini Flash 3）
 }
 
 # 线程锁，确保多线程环境下的线程安全

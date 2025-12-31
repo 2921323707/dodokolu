@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_responsive.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_command.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_ai_info.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_carousel.css') }}">
 </head>
 
 <body>
@@ -97,14 +98,21 @@
         <!-- 右侧 Banner 区域 -->
         <aside class="right-sidebar">
             <div class="banner-container">
-                <div class="banner">Banner</div>
-            </div>
-            <div class="banner-container">
-                <div class="banner-square">Banner</div>
-            </div>
-            <div class="banner-container">
-                <div class="banner-ad">广告位</div>
-            </div>
+                <!-- 轮播图：如需添加更多图片，在data-images数组中添加路径，例如：
+                     data-images='["{{ url_for('static', filename='imgs/index_banner/1.jpg') }}", "{{ url_for('static', filename='imgs/index_banner/2.jpg') }}"]'
+                -->
+                <div class="banner"
+                    data-images='["{{ url_for("static", filename="imgs/index_banner/1.jpg") }}","{{ url_for("static", filename="imgs/index_banner/2.jpg") }}"]'
+                    Banner</div>
+                </div>
+                <div class="banner-container">
+                    <div class="banner-square">Banner</div>
+                </div>
+                <div class="banner-container">
+                    <div class="banner-ad">
+                        <img src="{{ url_for('static', filename='imgs/index_banner/advertise/1.gif') }}" alt="广告" class="banner-ad-image">
+                    </div>
+                </div>
         </aside>
 
     </main>
@@ -164,7 +172,7 @@
             <div class="ai-info-container">
                 <div class="ai-info-left">
                     <div class="ai-info-avatar-wrapper" style="cursor: pointer;"
-                        onclick="document.getElementById('avatarUploadInput').click()" title="点击上传头像">
+                        onclick="document.getElementById(' avatarUploadInput').click()" title="点击上传头像">
                         <img id="userInfoAvatar" src="" alt="用户头像" class="ai-info-avatar" style="display: none;">
                         <div id="userInfoAvatarPlaceholder" class="ai-info-avatar"
                             style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #64748b, #94a3b8); color: white; font-size: 2.5rem; font-weight: 600;">
@@ -212,6 +220,7 @@
     <script src="{{ url_for('static', filename='js/chat_js/chat_input.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chat_js/chat_command.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chat_js/chat_navbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat_js/chat_carousel.js') }}"></script>
     <script src="{{ url_for('static', filename='js/chat_js/chat_init.js') }}"></script>
 </body>
 
