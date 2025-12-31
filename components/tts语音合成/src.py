@@ -87,11 +87,36 @@ def build_request_bytes(request_json: dict) -> bytearray:
 
 async def send_request(config: TTSConfig, request_bytes: bytearray, output_file: str, wait_for_complete: bool = True):
     """发送 WebSocket 请求并接收响应"""
-    # websockets 12.0+ 使用 additional_headers 参数（之前版本使用 extra_headers）
+    # websockets 14.0+ 使用 additional_headers，13.1及更早版本使用 extra_headers
     headers = [("Authorization", f"Bearer; {config.token}")]
     
+    # 检测 websockets 版本并选择正确的参数名
+    try:
+        # 尝试使用 importlib.metadata（Python 3.8+）
+        from importlib.metadata import version
+        websockets_version_str = version('websockets')
+        websockets_version = tuple(map(int, websockets_version_str.split('.')[:2]))
+        use_additional_headers = websockets_version >= (14, 0)
+    except (ImportError, ValueError):
+        try:
+            # 回退到 importlib_metadata（Python 3.7 或需要额外安装）
+            from importlib_metadata import version
+            websockets_version_str = version('websockets')
+            websockets_version = tuple(map(int, websockets_version_str.split('.')[:2]))
+            use_additional_headers = websockets_version >= (14, 0)
+        except (ImportError, ValueError):
+            # 如果无法检测版本，默认使用 extra_headers（更兼容旧版本）
+            use_additional_headers = False
+    
     with open(output_file, "wb") as file:
-        async with websockets.connect(config.api_url, additional_headers=headers, ping_interval=None) as ws:
+        # 根据版本选择正确的参数名
+        connect_kwargs = {"ping_interval": None}
+        if use_additional_headers:
+            connect_kwargs["additional_headers"] = headers
+        else:
+            connect_kwargs["extra_headers"] = headers
+        
+        async with websockets.connect(config.api_url, **connect_kwargs) as ws:
             await ws.send(request_bytes)
             
             if wait_for_complete:
