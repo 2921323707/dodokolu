@@ -144,6 +144,28 @@ def init_database():
             CREATE INDEX IF NOT EXISTS idx_album_image_visible ON album_image_config(is_visible)
         ''')
         
+        # 创建项目点赞表
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS project_likes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                like_date DATE NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES user_profile(id) ON DELETE CASCADE
+            )
+        ''')
+        
+        # 创建点赞表的索引
+        cursor.execute('''
+            CREATE INDEX IF NOT EXISTS idx_project_likes_user ON project_likes(user_id)
+        ''')
+        cursor.execute('''
+            CREATE INDEX IF NOT EXISTS idx_project_likes_date ON project_likes(like_date)
+        ''')
+        cursor.execute('''
+            CREATE INDEX IF NOT EXISTS idx_project_likes_user_date ON project_likes(user_id, like_date)
+        ''')
+        
         conn.commit()
         
         if not db_exists:

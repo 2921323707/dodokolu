@@ -174,7 +174,13 @@
                         </div>
                         <div class="section-content">
                             <div class="about-project">
-                                <h2>项目介绍</h2>
+                                <div class="about-project-header">
+                                    <h2>项目介绍</h2>
+                                    <button id="projectLikeBtn" class="like-btn" title="点赞">
+                                        <img src="{{ url_for('static', filename='imgs/icon/赞.png') }}" alt="赞" class="like-icon">
+                                        <span class="like-count" id="projectLikeCount">0</span>
+                                    </button>
+                                </div>
                                 <div class="about-project-content">
                                     <p>DODOKOLU 是一个功能丰富的聊天应用平台，提供AI对话、图像生成、视频生成等多种功能。本项目持续更新迭代，致力于为用户提供更好的使用体验。</p>
                                     <div class="coffee-container">
@@ -240,6 +246,7 @@
     <script src="{{ url_for('static', filename='js/account/account_agents.js') }}"></script>
     <script src="{{ url_for('static', filename='js/account/account_chat_history.js') }}"></script>
     <script src="{{ url_for('static', filename='js/account/account_github.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/account/account_like.js') }}"></script>
     <script src="{{ url_for('static', filename='js/account/account_navigation.js') }}"></script>
     <script src="{{ url_for('static', filename='js/account/account_auth.js') }}"></script>
     <script src="{{ url_for('static', filename='js/account/account_admin.js') }}"></script>

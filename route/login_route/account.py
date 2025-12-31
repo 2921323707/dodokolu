@@ -473,3 +473,113 @@ def get_location_info():
             'success': False,
             'message': f'获取位置信息失败: {str(e)}'
         }), 500
+
+
+@account_bp.route('/api/account/project-likes/count', methods=['GET'])
+def get_project_likes_count():
+    """获取项目总点赞数"""
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute('SELECT COUNT(*) as total FROM project_likes')
+            result = cursor.fetchone()
+            total_likes = result['total'] if result else 0
+            return jsonify({
+                'success': True,
+                'count': total_likes
+            })
+        finally:
+            conn.close()
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'获取点赞数失败: {str(e)}'
+        }), 500
+
+
+@account_bp.route('/api/account/project-likes/today-count', methods=['GET'])
+def get_today_likes_count():
+    """获取当前用户今日已点赞数"""
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'success': False, 'message': '未登录'}), 401
+    
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        try:
+            from datetime import date
+            today = date.today().isoformat()
+            cursor.execute(
+                'SELECT COUNT(*) as count FROM project_likes WHERE user_id = ? AND like_date = ?',
+                (user_id, today)
+            )
+            result = cursor.fetchone()
+            today_count = result['count'] if result else 0
+            return jsonify({
+                'success': True,
+                'count': today_count
+            })
+        finally:
+            conn.close()
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'获取今日点赞数失败: {str(e)}'
+        }), 500
+
+
+@account_bp.route('/api/account/project-likes/like', methods=['POST'])
+def like_project():
+    """点赞项目（每天最多10次）"""
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'success': False, 'message': '未登录'}), 401
+    
+    try:
+        from datetime import date
+        today = date.today().isoformat()
+        
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        try:
+            # 检查今日已点赞数
+            cursor.execute(
+                'SELECT COUNT(*) as count FROM project_likes WHERE user_id = ? AND like_date = ?',
+                (user_id, today)
+            )
+            result = cursor.fetchone()
+            today_count = result['count'] if result else 0
+            
+            if today_count >= 10:
+                return jsonify({
+                    'success': False,
+                    'message': '今日点赞次数已达上限（10次）'
+                }), 400
+            
+            # 添加点赞记录
+            cursor.execute(
+                'INSERT INTO project_likes (user_id, like_date) VALUES (?, ?)',
+                (user_id, today)
+            )
+            conn.commit()
+            
+            # 获取总点赞数
+            cursor.execute('SELECT COUNT(*) as total FROM project_likes')
+            total_result = cursor.fetchone()
+            total_likes = total_result['total'] if total_result else 0
+            
+            return jsonify({
+                'success': True,
+                'message': '点赞成功',
+                'total_count': total_likes,
+                'today_count': today_count + 1
+            })
+        finally:
+            conn.close()
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': f'点赞失败: {str(e)}'
+        }), 500
