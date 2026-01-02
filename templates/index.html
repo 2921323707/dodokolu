@@ -37,6 +37,44 @@
         </div>
     </nav>
 
+    <!-- 移动端侧边栏菜单 -->
+    <div class="mobile-menu-panel" id="mobileMenuPanel">
+        <div class="mobile-menu-overlay" onclick="toggleMobileMenuPanel()"></div>
+        <div class="mobile-menu-content">
+            <div class="mobile-menu-header">
+                <h3>功能菜单</h3>
+                <button class="mobile-menu-close-btn" onclick="toggleMobileMenuPanel()" aria-label="关闭菜单">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+            <div class="mobile-menu-banner-square">
+                <a href="/check" class="mobile-banner-item" id="mobileDailyCheckin">
+                    <img src="{{ url_for('static', filename='imgs/icon/打卡.png') }}" alt="每日打卡"
+                        class="mobile-banner-item-icon">
+                    <div class="mobile-banner-item-text">每日打卡</div>
+                </a>
+                <a href="/anime_show" class="mobile-banner-item" id="mobileAnime">
+                    <img src="{{ url_for('static', filename='imgs/icon/bilibili.png') }}" alt="番剧"
+                        class="mobile-banner-item-icon">
+                    <div class="mobile-banner-item-text">每日一文</div>
+                </a>
+                <a href="/miku_study" class="mobile-banner-item" id="mobileMikuStudy">
+                    <img src="{{ url_for('static', filename='imgs/icon/学习.png') }}" alt="miku伴学"
+                        class="mobile-banner-item-icon">
+                    <div class="mobile-banner-item-text">miku伴学</div>
+                </a>
+                <a href="/custom" class="mobile-banner-item" id="mobileCustomArea">
+                    <img src="{{ url_for('static', filename='imgs/icon/资源.png') }}" alt="待定义"
+                        class="mobile-banner-item-icon">
+                    <div class="mobile-banner-item-text">待定义</div>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <main class="container">
         <!-- 聊天区域 -->
         <section class="chat-section" id="chatSection">
@@ -53,6 +91,14 @@
                         <span id="modeText">标准版</span>
                     </button>
                     <button class="clear-btn" onclick="clearHistory()">Clear</button>
+                    <!-- 移动端菜单按钮 -->
+                    <button class="mobile-menu-arrow-btn" id="mobileMenuArrowBtn" onclick="toggleMobileMenuPanel()"
+                        aria-label="打开菜单">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 4L7 10L13 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </button>
                 </div>
             </div>
             <div class="chat-messages" id="chatMessages">
@@ -102,15 +148,37 @@
                      data-images='["{{ url_for('static', filename='imgs/index_banner/1.jpg') }}", "{{ url_for('static', filename='imgs/index_banner/2.jpg') }}"]'
                 -->
                 <div class="banner"
-                    data-images='["{{ url_for("static", filename="imgs/index_banner/1.jpg") }}","{{ url_for("static", filename="imgs/index_banner/2.jpg") }}"]'
+                    data-images='["{{ url_for("static", filename="imgs/index_banner/1.jpg") }}","{{ url_for("static", filename="imgs/index_banner/2.jpg") }}","{{ url_for("static", filename="imgs/index_banner/3.jpg") }}","{{ url_for("static", filename="imgs/index_banner/4.jpg") }}","{{ url_for("static", filename="imgs/index_banner/5.jpg") }}","{{ url_for("static", filename="imgs/index_banner/6.jpg") }}"]'
                     Banner</div>
                 </div>
                 <div class="banner-container">
-                    <div class="banner-square">Banner</div>
+                    <div class="banner-square">
+                        <a href="/check" class="banner-item" id="dailyCheckin">
+                            <img src="{{ url_for('static', filename='imgs/icon/打卡.png') }}" alt="每日打卡"
+                                class="banner-item-icon">
+                            <div class="banner-item-text">每日打卡</div>
+                        </a>
+                        <a href="/anime_show" class="banner-item" id="anime">
+                            <img src="{{ url_for('static', filename='imgs/icon/bilibili.png') }}" alt="番剧"
+                                class="banner-item-icon">
+                            <div class="banner-item-text">每日一文</div>
+                        </a>
+                        <a href="/miku_study" class="banner-item" id="mikuStudy">
+                            <img src="{{ url_for('static', filename='imgs/icon/学习.png') }}" alt="miku伴学"
+                                class="banner-item-icon">
+                            <div class="banner-item-text">miku伴学</div>
+                        </a>
+                        <a href="/custom" class="banner-item" id="customArea">
+                            <img src="{{ url_for('static', filename='imgs/icon/资源.png') }}" alt="待定义"
+                                class="banner-item-icon">
+                            <div class="banner-item-text">待定义</div>
+                        </a>
+                    </div>
                 </div>
                 <div class="banner-container">
                     <div class="banner-ad">
-                        <img src="{{ url_for('static', filename='imgs/index_banner/advertise/1.gif') }}" alt="广告" class="banner-ad-image">
+                        <video src="{{ url_for('static', filename='video/recommend/ad1.mp4') }}" class="banner-ad-image"
+                            autoplay loop muted playsinline></video>
                     </div>
                 </div>
         </aside>

@@ -12,6 +12,8 @@ from route.admin_route import admin_bp
 from route.heaven_route import heaven_bp
 from route.user_message import user_message_bp
 from route._github import github_bp
+from route.index_box.check.api import check_api_bp
+from route.index_box.fiction.api import fiction_api_bp
 
 __all__ = [
     'chat_bp',
@@ -22,5 +24,7 @@ __all__ = [
     'admin_bp',
     'heaven_bp',
     'user_message_bp',
-    'github_bp'
+    'github_bp',
+    'check_api_bp',
+    'fiction_api_bp'
 ]

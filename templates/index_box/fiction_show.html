@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小说阅读 - JY's Chat</title>
+    <!-- CSS 文件 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index_box/fiction_show/fiction_show.css') }}">
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <span>JY's Chat</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/alert/">提醒</a></li>
+                <li><a href="/feedback">反馈</a></li>
+                <li><a href="/#chat">对话</a></li>
+                <li><a id="authNavLink" href="/login">登录</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="fiction-container">
+        <!-- 左侧导航栏 -->
+        <aside class="fiction-sidebar">
+            <div class="sidebar-header">
+                <h2 class="sidebar-title">文章列表</h2>
+                <button class="refresh-btn" id="refreshBtn" onclick="loadFictionList()" title="刷新列表">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <polyline points="1 20 1 14 7 14"></polyline>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="sidebar-content" id="sidebarContent">
+                <div class="loading-state">
+                    <p>加载中...</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 右侧阅读区域 -->
+        <section class="fiction-reader">
+            <div class="reader-header" id="readerHeader" style="display: none;">
+                <h1 class="article-title" id="articleTitle"></h1>
+                <div class="article-meta">
+                    <span class="meta-item" id="articleDate"></span>
+                    <span class="meta-item" id="articleWordCount"></span>
+                </div>
+            </div>
+            <div class="reader-content" id="readerContent">
+                <div class="empty-state">
+                    <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        <line x1="8" y1="7" x2="16" y2="7"></line>
+                        <line x1="8" y1="11" x2="16" y2="11"></line>
+                        <line x1="8" y1="15" x2="12" y2="15"></line>
+                    </svg>
+                    <p class="empty-text">请从左侧选择一篇文章开始阅读</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- JavaScript 文件 -->
+    <script src="{{ url_for('static', filename='js/chat_js/chat_navbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/index_box/fiction_show/fiction_show.js') }}"></script>
+</body>
+
+</html>

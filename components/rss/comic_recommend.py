@@ -187,45 +187,61 @@ def save_recommendation(content):
 
 def run_recommendation():
     """执行完整的推荐流程"""
+    from datetime import datetime
+    
     try:
-        logger.info("=" * 50)
-        logger.info("开始执行番剧推荐任务")
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        logger.info("=" * 70)
+        logger.info(f"📺 [{timestamp}] 开始执行番剧推荐任务...")
+        logger.info("=" * 70)
         
         # 1. 加载 RSS 源
         rss_urls = load_rss_sources()
         if not rss_urls:
-            logger.warning("没有找到 RSS 源，任务结束")
+            logger.warning("   ⚠️  没有找到 RSS 源，任务结束")
+            logger.info("=" * 70 + "\n")
             return
+        
+        logger.info(f"   📡 已加载 {len(rss_urls)} 个 RSS 源")
         
         # 2. 获取所有 RSS 源的信息
         all_items = []
         for rss_url in rss_urls:
             items = fetch_rss_items(rss_url, max_items=20)
             all_items.extend(items)
+            logger.info(f"   📥 从 {rss_url} 获取了 {len(items)} 条信息")
         
         if not all_items:
-            logger.warning("未能获取到任何 RSS 条目，任务结束")
+            logger.warning("   ⚠️  未能获取到任何 RSS 条目，任务结束")
+            logger.info("=" * 70 + "\n")
             return
         
+        logger.info(f"   📊 总共获取 {len(all_items)} 条 RSS 条目")
+        
         # 3. 调用大模型整理
+        logger.info("   🤖 正在调用大模型整理推荐内容...")
         recommendation_content = call_deepseek_api(all_items)
         
         # 4. 保存到日期文件
+        logger.info("   💾 正在保存推荐内容...")
         save_recommendation(recommendation_content)
         
         # 5. 将txt文件转换为json格式
         try:
             data_dir = Path(__file__).parent / 'data'
             json_data = txt_to_json(data_dir=data_dir, auto_save=True)
-            logger.info(f"JSON文件已成功生成: {json_data.get('date', 'unknown')}.json")
+            logger.info(f"   ✅ JSON文件已成功生成: {json_data.get('date', 'unknown')}.json")
         except Exception as e:
-            logger.error(f"转换JSON文件时发生错误: {e}", exc_info=True)
+            logger.error(f"   ❌ 转换JSON文件时发生错误: {e}", exc_info=True)
         
-        logger.info("番剧推荐任务执行完成")
-        logger.info("=" * 50)
+        logger.info(f"\n✅ [{timestamp}] 番剧推荐任务执行完成")
+        logger.info("=" * 70 + "\n")
         
     except Exception as e:
-        logger.error(f"执行推荐任务时发生错误: {e}", exc_info=True)
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        logger.error("=" * 70)
+        logger.error(f"❌ [{timestamp}] 执行推荐任务时发生错误: {e}")
+        logger.error("=" * 70 + "\n", exc_info=True)
 
 
 def schedule_job():
@@ -246,6 +262,7 @@ def schedule_job():
 def start_schedule_in_thread():
     """在后台线程中启动定时任务"""
     import threading
+    from datetime import datetime
     
     def run_schedule():
         # 设置四个时间点执行
@@ -253,8 +270,9 @@ def start_schedule_in_thread():
         schedule.every().day.at("14:00").do(run_recommendation)
         schedule.every().day.at("20:00").do(run_recommendation)
         schedule.every().day.at("02:00").do(run_recommendation)
-        logger.info("(◕‿◕) 番剧推荐小助手已经在后台悄悄启动啦~")
-        logger.info("   会在每天的 8:00、14:00、20:00 和 2:00 准时为你推荐好看的番剧哦 (｡◕‿◕｡)")
+        
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        logger.info(f"   ⏰ [{timestamp}] 定时任务已注册: 每天 8:00、14:00、20:00、2:00 执行")
         
         while True:
             schedule.run_pending()
@@ -262,7 +280,6 @@ def start_schedule_in_thread():
     
     thread = threading.Thread(target=run_schedule, daemon=True)
     thread.start()
-    logger.info("(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ 番剧推荐小助手的守护线程已经启动，正在默默工作呢~")
     return thread
 
 

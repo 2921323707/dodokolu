@@ -9,4 +9,6 @@
 #   - 精确匹配：'/login' 只匹配 '/login'
 #   - 前缀匹配：'/api' 匹配所有以 '/api' 开头的路径（如 '/api/chat', '/api/login' 等）
 MAINTENANCE_PAGES = [
+    '/miku_study',
+    '/custom',
 ]

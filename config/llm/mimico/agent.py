@@ -28,7 +28,7 @@ class MimicoAgent(BaseAgent):
     def __init__(self):
         super().__init__(
             name="米米可",
-            description="基于 Minimax API 的智能体，内置联网搜索和天气查询功能"
+            description="分析历史记录w"
         )
         self._client = None
         self._model = MINIMAX_MODEL

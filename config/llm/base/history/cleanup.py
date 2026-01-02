@@ -60,13 +60,21 @@ def cleanup_empty_json_files():
     Returns:
         dict: 清理结果统计
     """
+    from datetime import datetime
+    
     deleted_count = 0
     error_count = 0
     total_size_freed = 0
     
     try:
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        logger.info("=" * 70)
+        logger.info(f"🧹 [{timestamp}] 开始执行历史记录清理任务...")
+        logger.info("=" * 70)
+        
         if not HISTORY_DIR.exists():
-            logger.info(f'历史记录目录不存在: {HISTORY_DIR}')
+            logger.info(f'   ℹ️  历史记录目录不存在: {HISTORY_DIR}')
+            logger.info("=" * 70 + "\n")
             return {
                 'success': True,
                 'deleted_count': 0,
@@ -91,25 +99,40 @@ def cleanup_empty_json_files():
                         json_file.unlink()
                         deleted_count += 1
                         total_size_freed += file_size
-                        logger.info(f'已删除空文件: {json_file}')
+                        logger.info(f'   🗑️  已删除空文件: {json_file.name}')
                 except Exception as e:
                     error_count += 1
-                    logger.error(f'删除文件 {json_file} 时出错: {e}')
+                    logger.error(f'   ❌ 删除文件 {json_file.name} 时出错: {e}')
+        
+        # 格式化文件大小
+        size_str = f"{total_size_freed} 字节"
+        if total_size_freed > 1024:
+            size_str = f"{total_size_freed / 1024:.2f} KB"
+        if total_size_freed > 1024 * 1024:
+            size_str = f"{total_size_freed / (1024 * 1024):.2f} MB"
         
         result = {
             'success': True,
             'deleted_count': deleted_count,
             'error_count': error_count,
             'total_size_freed': total_size_freed,
-            'message': f'清理完成：删除了 {deleted_count} 个空文件，释放了 {total_size_freed} 字节'
+            'message': f'清理完成：删除了 {deleted_count} 个空文件，释放了 {size_str}'
         }
         
-        logger.info(result['message'])
+        logger.info(f"\n📊 任务统计:")
+        logger.info(f"   ✅ 删除文件数: {deleted_count}")
+        logger.info(f"   ❌ 错误数量: {error_count}")
+        logger.info(f"   💾 释放空间: {size_str}")
+        logger.info("=" * 70 + "\n")
+        
         return result
         
     except Exception as e:
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         error_msg = f'清理空文件时发生错误: {e}'
-        logger.error(error_msg, exc_info=True)
+        logger.error("=" * 70)
+        logger.error(f"❌ [{timestamp}] {error_msg}")
+        logger.error("=" * 70 + "\n", exc_info=True)
         return {
             'success': False,
             'deleted_count': deleted_count,
@@ -127,12 +150,13 @@ def start_cleanup_schedule():
     import threading
     import schedule
     import time
+    from datetime import datetime
     
     def run_schedule():
         # 设置每天 0:00 执行清理
         schedule.every().day.at("00:00").do(cleanup_empty_json_files)
-        logger.info("(◕‿◕) 历史记录清理任务已经启动")
-        logger.info("   会在每天的 0:00 自动清理空的 JSON 文件哦 (｡◕‿◕｡)")
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        logger.info(f"   ⏰ [{timestamp}] 定时任务已注册: 每天 0:00 执行")
         
         while True:
             schedule.run_pending()
@@ -140,7 +164,6 @@ def start_cleanup_schedule():
     
     thread = threading.Thread(target=run_schedule, daemon=True)
     thread.start()
-    logger.info("(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ 历史记录清理任务的守护线程已经启动，正在默默工作呢~")
     return thread
 
 

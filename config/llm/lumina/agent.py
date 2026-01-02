@@ -24,7 +24,7 @@ class LuminaAgent(BaseAgent):
     def __init__(self):
         super().__init__(
             name="Lumina",
-            description="基于 Google Gemini Flash 3 的智能体，支持工具调用（天气、搜索等）"
+            description="基于 Google Gemini Flash 3 的智能体，进行每日一文的创作"
         )
         self._client = None
         self._model = GEMINI_MODEL

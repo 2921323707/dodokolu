@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>每日打卡 - JY's Chat</title>
+    <!-- CSS 文件按功能模块拆分 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat_css/chat_navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index_box/check/check.css') }}">
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <span>JY's Chat</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/alert/">提醒</a></li>
+                <li><a href="/feedback">反馈</a></li>
+                <li><a href="/#chat">对话</a></li>
+                <li><a id="authNavLink" href="/login">登录</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="check-container">
+        <div class="check-content">
+            <!-- 左侧清单区域 -->
+            <div class="check-list-section">
+                <div class="list-header">
+                    <h2 class="list-title">今日待打卡清单</h2>
+                    <button class="add-item-btn" onclick="showAddItemModal()" title="添加打卡项">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="list-content" id="checkListContent">
+                    <!-- 清单项将通过 JS 动态填充 -->
+                    <div class="list-loading">加载中...</div>
+                </div>
+            </div>
+
+            <!-- 右侧上传识别区域 -->
+            <div class="check-upload-section">
+                <!-- 标题区域 -->
+                <div class="check-header">
+                    <h1 class="check-title">每日打卡</h1>
+                    <p class="check-subtitle">上传你的学习打卡截图，自动识别并推送提醒</p>
+                </div>
+
+                <!-- 上传区域 -->
+                <div class="upload-section">
+                    <div class="upload-area" id="uploadArea">
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                        <div class="upload-placeholder" id="uploadPlaceholder">
+                            <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            <p class="upload-text">点击或拖拽图片到此处上传</p>
+                            <p class="upload-hint">支持 JPG、PNG、GIF、WEBP 格式</p>
+                        </div>
+                        <div class="upload-success" id="uploadSuccess" style="display: none;">
+                            <svg class="success-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            <p class="success-text">上传成功</p>
+                            <button class="remove-image-btn" onclick="removeImage()">重新上传</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 识别按钮 -->
+                <div class="action-section">
+                    <button class="analyze-btn" id="analyzeBtn" onclick="analyzeImage()" disabled>
+                        <span class="btn-text">开始识别</span>
+                        <span class="btn-loading" style="display: none;">识别中...</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 结果模态框 -->
+    <div class="check-modal" id="resultModal" onclick="closeModalOnBackdrop(event)">
+        <div class="check-modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 class="modal-title">打卡识别结果</h3>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- 结果内容将通过 JS 动态填充 -->
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加/编辑清单项模态框 -->
+    <div class="check-modal" id="itemModal" onclick="closeItemModalOnBackdrop(event)">
+        <div class="check-modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 class="modal-title" id="itemModalTitle">添加打卡项</h3>
+                <button class="modal-close" onclick="closeItemModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="itemAppName">应用名称</label>
+                    <input type="text" id="itemAppName" class="form-input" placeholder="例如：多邻国、百词斩等"
+                        onkeypress="if(event.key==='Enter') saveCheckItem()">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-secondary" onclick="closeItemModal()">取消</button>
+                <button class="modal-btn modal-btn-primary" onclick="saveCheckItem()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript 文件 -->
+    <script src="{{ url_for('static', filename='js/chat_js/chat_navbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/index_box/check/check.js') }}"></script>
+</body>
+
+</html>

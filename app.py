@@ -11,7 +11,9 @@ from route import (
     admin_bp,
     heaven_bp,
     user_message_bp,
-    github_bp
+    github_bp,
+    check_api_bp,
+    fiction_api_bp
 )
 from database import init_database
 from config.maintenance.maintenance import MAINTENANCE_PAGES
@@ -23,23 +25,74 @@ CORS(app)  # 允许跨域请求
 # 初始化数据库（如果不存在则创建）
 init_database()
 
-# 启动番剧推荐定时任务（在后台线程中运行）
-try:
-    from components.rss.comic_recommend import start_schedule_in_thread
-    start_schedule_in_thread()
-    print("番剧推荐小助手已经启动")
-    print("会在每天的 8:00、14:00、20:00 和 2:00 准时为你推荐好看的番剧")
-except Exception as e:
-    print(f"启动番剧推荐定时任务失败: {e}")
+# ============================================================================
+# 定时任务初始化
+# ============================================================================
+from datetime import datetime
+import os
 
-# 启动历史记录清理定时任务（在后台线程中运行）
-try:
-    from config.llm.base.history.cleanup import start_cleanup_schedule
-    start_cleanup_schedule()
-    print("历史记录清理任务已经启动")
-    print("会在每天的 0:00 自动清理空的 JSON 文件")
-except Exception as e:
-    print(f"启动历史记录清理定时任务失败: {e}")
+def init_scheduled_tasks():
+    """初始化所有定时任务"""
+    tasks = [
+        {
+            'name': '番剧推荐',
+            'module': 'components.rss.comic_recommend',
+            'function': 'start_schedule_in_thread',
+            'schedule': '每天 8:00、14:00、20:00、2:00',
+            'description': '自动推荐好看的番剧'
+        },
+        {
+            'name': '历史记录清理',
+            'module': 'config.llm.base.history.cleanup',
+            'function': 'start_cleanup_schedule',
+            'schedule': '每天 0:00',
+            'description': '自动清理空的 JSON 文件'
+        },
+        {
+            'name': '打卡提醒',
+            'module': 'components.check.check_reminder',
+            'function': 'start_check_reminder_schedule',
+            'schedule': '每天 9:00、15:00、21:00',
+            'description': '检查打卡状态并发送提醒'
+        },
+        {
+            'name': '每日故事生成',
+            'module': 'components.fiction.fiction_generate',
+            'function': 'start_fiction_schedule',
+            'schedule': '每天 6:00',
+            'description': '自动生成一篇新故事'
+        }
+    ]
+    
+    print("\n" + "=" * 70)
+    print("🚀 正在启动定时任务...")
+    print("=" * 70)
+    
+    success_count = 0
+    failed_count = 0
+    
+    for task in tasks:
+        try:
+            module = __import__(task['module'], fromlist=[task['function']])
+            func = getattr(module, task['function'])
+            func()
+            success_count += 1
+            print(f"✅ [{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {task['name']} - 启动成功")
+            print(f"   📅 执行时间: {task['schedule']}")
+            print(f"   📝 功能说明: {task['description']}")
+        except Exception as e:
+            failed_count += 1
+            print(f"❌ [{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {task['name']} - 启动失败: {e}")
+    
+    print("=" * 70)
+    print(f"📊 定时任务启动完成: 成功 {success_count}/{len(tasks)}, 失败 {failed_count}/{len(tasks)}")
+    print("=" * 70 + "\n")
+
+# 只在主进程中初始化定时任务，避免 Flask 重载时重复执行
+# 使用环境变量标记，确保只执行一次
+if os.environ.get('WERKZEUG_RUN_MAIN') != 'true':
+    # 第一次启动时执行
+    init_scheduled_tasks()
 
 # 维护模式检查中间件
 @app.before_request
@@ -71,11 +124,43 @@ app.register_blueprint(admin_bp)
 app.register_blueprint(heaven_bp)
 app.register_blueprint(user_message_bp)
 app.register_blueprint(github_bp)
+app.register_blueprint(check_api_bp)
+app.register_blueprint(fiction_api_bp)
 
 @app.route('/')
 def index():
     """主页面（通用路由）"""
     return render_template('index.html')
+
+
+@app.route('/check')
+def check_page():
+    """每日打卡页面"""
+    return render_template('index_box/check.html')
+
+
+@app.route('/fiction_show')
+def fiction_show_page():
+    """小说阅读页面"""
+    return render_template('index_box/fiction_show.html')
+
+
+@app.route('/anime_show')
+def daily_article_page():
+    """每日一文页面"""
+    return render_template('index_box/fiction_show.html')
+
+
+@app.route('/miku_study')
+def miku_study_page():
+    """miku伴学页面"""
+    return render_template('index_box/.html')
+
+
+@app.route('/custom')
+def custom_page():
+    """待定义页面"""
+    return render_template('index_box/.html')
 
 
 @app.route('/database/avator/<path:filename>')

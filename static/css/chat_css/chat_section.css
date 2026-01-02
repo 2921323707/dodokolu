@@ -73,19 +73,25 @@
 }
 
 @keyframes pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
     }
+
     50% {
         opacity: 0.6;
     }
 }
 
 @keyframes pulse-checking {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
         transform: scale(1);
     }
+
     50% {
         opacity: 0.7;
         transform: scale(1.1);
@@ -161,6 +167,7 @@
     height: calc(100vh - 130px);
     min-height: 600px;
     box-sizing: border-box;
+    padding-top: 25px;
 }
 
 /* Banner 容器 */
@@ -172,7 +179,7 @@
 /* Banner 样式 */
 .banner {
     width: 100%;
-    height: 120px;
+    height: 150px;
     background-color: var(--card-bg);
     border-radius: 12px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -184,19 +191,66 @@
     box-sizing: border-box;
 }
 
+/* 轮播图容器向上扩展，不影响下面盒子位置 */
+.banner-container:has(.banner:not(.banner-square):not(.banner-ad)) {
+    margin-top: -30px;
+}
+
 /* 正方形 Banner 样式 */
 .banner-square {
     width: 100%;
     aspect-ratio: 1 / 1;
-    background-color: var(--card-bg);
+    background-image: url('../../imgs/deco/chat_index/multi_box/bc.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     border-radius: 12px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    box-sizing: border-box;
+}
+
+/* Banner 功能项样式 */
+.banner-item {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: var(--text-secondary);
-    font-size: 1rem;
-    box-sizing: border-box;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+}
+
+.banner-item:hover {
+    transform: translateY(-4px);
+}
+
+.banner-item:active {
+    transform: translateY(-2px);
+}
+
+.banner-item-icon {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    margin-bottom: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.banner-item:hover .banner-item-icon {
+    transform: scale(1.1);
+}
+
+.banner-item-text {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary, #1e293b);
+    text-align: center;
 }
 
 /* 正方形 Banner 容器与上方轮播图保持一定距离 */
@@ -207,7 +261,7 @@
 /* 广告位 Banner 样式 */
 .banner-ad {
     width: 100%;
-    height: 150px;
+    height: 170px;
     background-color: var(--card-bg);
     border-radius: 12px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);

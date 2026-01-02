@@ -166,6 +166,58 @@ def init_database():
             CREATE INDEX IF NOT EXISTS idx_project_likes_user_date ON project_likes(user_id, like_date)
         ''')
         
+        # 创建打卡清单表
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS check_list (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                app_name TEXT NOT NULL,
+                is_active INTEGER NOT NULL DEFAULT 1,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES user_profile(id) ON DELETE CASCADE
+            )
+        ''')
+        
+        # 创建打卡记录表
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS check_record (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                check_list_id INTEGER NOT NULL,
+                check_date DATE NOT NULL,
+                check_status TEXT NOT NULL DEFAULT 'pending',
+                app_name TEXT,
+                check_in_date TEXT,
+                details TEXT,
+                confidence TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES user_profile(id) ON DELETE CASCADE,
+                FOREIGN KEY (check_list_id) REFERENCES check_list(id) ON DELETE CASCADE,
+                UNIQUE(user_id, check_list_id, check_date)
+            )
+        ''')
+        
+        # 创建打卡相关索引
+        cursor.execute('''
+            CREATE INDEX IF NOT EXISTS idx_check_list_user ON check_list(user_id)
+        ''')
+        cursor.execute('''
+            CREATE INDEX IF NOT EXISTS idx_check_list_active ON check_list(is_active)
+        ''')
+        cursor.execute('''
+            CREATE INDEX IF NOT EXISTS idx_check_record_user ON check_record(user_id)
+        ''')
+        cursor.execute('''
+            CREATE INDEX IF NOT EXISTS idx_check_record_list ON check_record(check_list_id)
+        ''')
+        cursor.execute('''
+            CREATE INDEX IF NOT EXISTS idx_check_record_date ON check_record(check_date)
+        ''')
+        cursor.execute('''
+            CREATE INDEX IF NOT EXISTS idx_check_record_user_date ON check_record(user_id, check_date)
+        ''')
+        
         conn.commit()
         
         if not db_exists:

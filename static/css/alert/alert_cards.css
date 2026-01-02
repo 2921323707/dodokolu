@@ -52,6 +52,13 @@
     position: relative;
 }
 
+/* 待办事项的 placeholder-content 特殊样式 */
+.todo-section .placeholder-content {
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0;
+}
+
 /* 画集展示框的图片背景效果 */
 #galleryPlaceholder {
     position: relative;
@@ -96,6 +103,44 @@
 .todo-section:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(255, 193, 7, 0.3);
+}
+
+/* 圆形进度环容器 */
+.circular-progress-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.circular-progress {
+    width: 140px;
+    height: 140px;
+    transform: rotate(-90deg);
+}
+
+.circular-progress-bg {
+    transition: stroke 0.3s ease;
+}
+
+.circular-progress-fill {
+    transition: stroke-dashoffset 0.5s ease, stroke 0.3s ease;
+}
+
+.circular-progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.circular-progress-percent {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary, #333);
 }
 
 /* 画集展示框 */

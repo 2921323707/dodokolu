@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', function () {
     setInterval(updateHolidayTime, 1000);
     // 初始化画集展示框点击事件
     initGallerySection();
+    // 初始化打卡状态检查
+    initCheckStatus();
 });
 
 // 获取当前时间字符串（时:分:秒）
