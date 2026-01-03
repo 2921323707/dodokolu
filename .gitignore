@@ -1,3 +1,9 @@
+# ==================== Git 忽略规则 ====================
+# 本文件已针对 Python 3.10+ 进行全面优化
+# 兼容版本: Python 3.10, 3.11, 3.12, 3.13, 3.14 及以上版本
+# 包含 Python 3.10+ 新特性的相关文件和缓存规则
+# 增强了对不同操作系统和开发工具的兼容性支持
+
 # ==================== Python 相关 ====================
 # Python 缓存文件（Python 3.10+ 兼容，增强容错）
 __pycache__/
@@ -365,6 +371,15 @@ install.log
 *.pyw
 *.pyz
 *.pyzw
+*.pyi  # Python 3.10+ 类型存根文件
+
+# Python 3.10+ 特定缓存和临时文件
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+.python-version  # pyenv 版本文件
+.python-version.*  # pyenv 版本备份
 
 # Python 虚拟环境（增强：覆盖更多可能的名称）
 venv/
@@ -376,12 +391,19 @@ venv.bak/
 .ENV/
 venv*/
 env*/
+virtualenv/
+.virtualenv/
+VIRTUAL_ENV/
 
 # Python 包分发（增强容错）
 *.dist-info/
 *.dist/
 *.tar.bz2
 *.tar.xz
+*.whl
+*.egg
+*.egg-info/
+**/*.egg-info/
 
 # Python 运行时和调试文件
 *.prof
@@ -389,6 +411,24 @@ env*/
 *.pstats
 *.trace
 *.pdb
+*.pycprof  # Python 3.10+ 性能分析文件
+
+# Python 3.10+ 类型检查和静态分析缓存
+.mypy_cache/
+**/.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+.pyright/
+.pyrightcache/
+.ruff_cache/
+.pylint.d/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
 
 # Python 环境变量（增强容错，确保所有变体都被忽略）
 .env
@@ -400,6 +440,7 @@ env*/
 .env.production
 .env.staging
 .env.backup
+.env.*.local
 
 # Python 配置缓存（增强容错）
 setup.cfg.bak
@@ -408,4 +449,40 @@ setup.py.bak
 requirements*.txt.bak
 requirements*.txt.old
 requirements*.txt.tmp
+Pipfile.lock
+poetry.lock
+
+# Python 3.10+ 项目配置文件备份
+pyproject.toml.bak
+setup.cfg.bak
+MANIFEST.in.bak
+
+# Python 3.10+ 构建产物
+build/
+dist/
+*.egg-info/
+*.whl
+*.tar.gz
+*.zip
+
+# Python 3.10+ 测试和覆盖率文件
+.pytest_cache/
+.hypothesis/
+test-results/
+junit.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Python 3.10+ Jupyter Notebook 相关
+.ipynb_checkpoints/
+*.ipynb_checkpoints/
+*.ipynb
+
+# Python 3.10+ 开发工具配置
+.flake8
+.pylintrc.bak
+.mypy.ini.bak
+pyrightconfig.json.bak
+ruff.toml.bak
 
