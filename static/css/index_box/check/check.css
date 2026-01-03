@@ -556,13 +556,44 @@
         padding: 1rem;
     }
 
+    .check-upload-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .check-header {
+        width: 100%;
+        max-width: 100%;
+    }
+
     .check-title {
         font-size: 2rem;
+    }
+
+    .upload-section {
+        width: 100%;
+        display: flex;
+        justify-content: center;
     }
 
     .upload-area {
         padding: 1.5rem 1rem;
         min-height: 180px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .action-section {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .analyze-btn {
+        width: 100%;
+        max-width: 300px;
     }
 
     .check-modal-content {
